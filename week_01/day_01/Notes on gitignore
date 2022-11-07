@@ -1,6 +1,4 @@
-Homework_file_03
-
-i created a file called file_to_ignore.txt
-it is not pushed to the repo because it has been added to the .gitignore file_to_ignore
-this is a text file but it is hidden, you can see the contents using GiThub
-if you type ls -a in erminal, you can see all the hidden files
+I created a file called file_to_ignore.txt
+It is not pushed to the repo because it has been added to the .gitignore file
+This is a text file but it is hidden, you can see the contents using GIThub
+Also, if you type ls -a in terminal, you can see all the hidden files
