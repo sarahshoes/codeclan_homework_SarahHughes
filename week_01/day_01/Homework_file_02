@@ -1,0 +1,10 @@
+Another homework file - with a question.
+When I create a repo it makes a new folder so I ended up with
+
+codeclan_homework_SarahHughes
+  codeclan_homework_SarahHughes
+
+is this what im supposed to be doing?
+
+When I look in terminal I can see only the second level folder is labelled as a git: (main)
+you can rename folders in terminal with the mv command
