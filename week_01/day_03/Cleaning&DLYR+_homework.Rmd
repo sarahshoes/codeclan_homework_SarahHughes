@@ -1,0 +1,155 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(skimr)
+```
+```{r}
+movies_data <- read_csv("data/movies.csv")
+```
+```{r}
+head(movies_data,10)
+```
+noticed there is a column for date and this is being read in as a character string so may need converting if we want to analyse by date
+
+```{r}
+skim(movies_data)
+```
+shows there are lots of missing data in homepage and tagline
+and a few in overview and release date and runtime
+
+check column names - they all seem OK
+
+```{r}
+names(movies_data)
+```
+
+Q2
+```{r}
+movies_selected <- movies_data %>% 
+  select(original_title,runtime,budget)
+movies_selected
+```
+
+Q3
+
+```{r}
+movies_selected %>% 
+  summarise(title_na = sum(is.na(original_title)),
+            runtime_na = sum(is.na(runtime)),
+            budget_na = sum(is.na(budget))
+            )
+```
+there are just 2 missing values in runtime
+
+Q4
+
+removing cases where runtime=0
+first checking it works
+```{r}
+movies_selected %>%
+  mutate(runtime = na_if(runtime,0)) %>% 
+  arrange(runtime) 
+```
+```{r}
+movies_selected <- movies_selected %>%
+  select(original_title,runtime,budget) %>% 
+  mutate(runtime = na_if(runtime,0))
+```
+
+```{r}
+summary(movies_selected["runtime"])
+```
+
+answer - 37 missing values
+
+Q5
+```{r}
+movies_imputed <- movies_selected %>%
+  mutate(runtime= coalesce(runtime, mean(runtime, na.rm =TRUE))) 
+```
+
+```{r}
+summary(movies_data["runtime"])
+```
+
+```{r}
+summary(movies_selected["runtime"])
+```
+
+```{r}
+summary(movies_imputed["runtime"])
+```
+just checking impact of my corrections. Makes sense as runtime now ranges from 14 to 338 with no NA's       
+
+Q6
+```{r}
+movies_imputed %>% 
+  arrange(runtime) %>% 
+  head(10)
+```
+```{r}
+movies_imputed %>% 
+  arrange(desc(runtime)) %>% 
+  head(10)
+```
+       
+       
+```{r}
+movies_imputed <- movies_imputed %>% 
+  mutate(budget = if_else(budget<100,median(budget), budget)) %>% 
+  arrange(budget)
+```
+       
+check results of above
+```{r}
+summary(movies_imputed)
+```
+
+## Extension
+
+Q1
+```{r}
+movies_budgets <- movies_imputed %>% 
+  mutate(budget_type = case_when(
+         budget >= 40*1e6 ~ "Big budget",
+         budget >= 12*1e6 ~ "Medium budget",
+         TRUE ~ "Small budget"
+  )) %>% 
+  arrange(desc(budget))
+```
+double check results of above
+```{r}
+movies_budgets %>% 
+  group_by(budget_type) %>% 
+  summarise(count=n(), min_budget=min(budget), max_budget=max(budget))
+```
+Q2
+
+```{r}
+my_isna_fun <- function(x) {
+  sum(is.na(x))
+}
+```
+
+
+```{r}
+movies_data %>%
+    select(where(is.numeric)) %>% 
+    summarise(
+    across(.cols = where(is.numeric),
+                .fns = my_isna_fun)
+                )
+```
+
+```{r}
+movies_data %>%
+    select(where(is.character)) %>% 
+    summarise(
+    across(.cols = where(is.character),
+                .fns = my_isna_fun)
+                )
+```
