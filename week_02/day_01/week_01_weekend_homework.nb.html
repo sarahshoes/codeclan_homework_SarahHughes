@@ -11,7 +11,7 @@
 
 
 
-<title>R Notebook</title>
+<title>Week1-WeekendHomeWork-SarahH</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1746,12 +1746,23 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">R Notebook</h1>
+<h1 class="title toc-ignore">Week1-WeekendHomeWork-SarahH</h1>
 
 </div>
 
 
 <!-- rnb-text-begin -->
+<p><strong>Notes</strong> this script uses the goodreads book dataset
+download from <a href="https://www.kaggle.com/jealousleopard/goodreadsbooks" class="uri">https://www.kaggle.com/jealousleopard/goodreadsbooks</a> and
+save to a data folder</p>
+<p>next time ill maybe add this function download.file(url, destfile,
+method, quiet = FALSE, mode = “w”, cacheOK = TRUE, extra =
+getOption(“download.file.extra”), headers = NULL, …)</p>
+<p><strong>Ideas</strong> Find my perfect book list filter on a robust
+and objective rating recently written - but cant work out dates yet :(
+not tolkien or harry potter! looks lke i need a bit of data wrangling -
+some zeros that don’t make sense and NA’s. I only want data I can rely
+on.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHNraW1yKVxuYGBgIn0= -->
@@ -1759,286 +1770,517 @@ display: none;
 library(skimr)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2RhdGEgPC0gcmVhZF9jc3YoXCJkYXRhL21vdmllcy5jc3ZcIilcbmBgYCJ9 -->
-<pre class="r"><code>movies_data &lt;- read_csv(&quot;data/movies.csv&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChtb3ZpZXNfZGF0YSwxMClcbmBgYCJ9 -->
-<pre class="r"><code>head(movies_data,10)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>noticed there is a column for date and this is being read in as a
-character string so may need converting if we want to analyse by
-date</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2tpbShtb3ZpZXNfZGF0YSlcbmBgYCJ9 -->
-<pre class="r"><code>skim(movies_data)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYm9va3NfZGF0YSA8LSByZWFkX2NzdihcImRhdGEvYm9va3MuY3N2XCIpIFxuYGBgIn0= -->
+<pre class="r"><code>books_data &lt;- read_csv(&quot;data/books.csv&quot;) </code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZzogT25lIG9yIG1vcmUgcGFyc2luZyBpc3N1ZXMsIGNhbGwgYHByb2JsZW1zKClgIG9uXG55b3VyIGRhdGEgZnJhbWUgZm9yIGRldGFpbHMsIGUuZy46XG4gIGRhdCA8LSB2cm9vbSguLi4pXG4gIHByb2JsZW1zKGRhdClSb3dzOiAxMTEyNyBDb2x1bW5zOiAxMuKUgOKUgCBDb2x1bW4gc3BlY2lmaWNhdGlvbiDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbkRlbGltaXRlcjogXCIsXCJcbmNociAoNyk6IHRpdGxlLCBhdXRob3JzLCBpc2JuLCBpc2JuMTMsIGxhbmd1YWdlLi4uXG5kYmwgKDUpOiBib29rSUQsIGF2ZXJhZ2VfcmF0aW5nLCBudW1fcGFnZXMsIHJhdC4uLlxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<pre><code>Warning: One or more parsing issues, call `problems()` on
+your data frame for details, e.g.:
+  dat &lt;- vroom(...)
+  problems(dat)Rows: 11127 Columns: 12── Column specification ───────────────────────────
+Delimiter: &quot;,&quot;
+chr (7): title, authors, isbn, isbn13, language...
+dbl (5): bookID, average_rating, num_pages, rat...
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>shows there are lots of missing data in homepage and tagline and a
-few in overview and release date and runtime</p>
-<p>check column names - they all seem OK</p>
-<!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMobW92aWVzX2RhdGEpXG5gYGAifQ== -->
-<pre class="r"><code>names(movies_data)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2tpbShib29rc19kYXRhKVxuYGBgIn0= -->
+<pre class="r"><code>skim(books_data)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>notes on how to check differences. filter for when they are not the
-same original_title seems to be linked to original_language</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2RhdGEgJT4lIFxuICBzZWxlY3QodGl0bGUsIG9yaWdpbmFsX3RpdGxlLCBvcmlnaW5hbF9sYW5ndWFnZSkgJT4lIFxuICBmaWx0ZXIodGl0bGUgIT0gb3JpZ2luYWxfdGl0bGUpICU+JSBcbiAgYXJyYW5nZSh0aXRsZSkgIFxuYGBgIn0= -->
-<pre class="r"><code>movies_data %&gt;% 
-  select(title, original_title, original_language) %&gt;% 
-  filter(title != original_title) %&gt;% 
-  arrange(title)  </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Q2</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX3NlbGVjdGVkIDwtIG1vdmllc19kYXRhICU+JSBcbiAgc2VsZWN0KG9yaWdpbmFsX3RpdGxlLCBydW50aW1lLCBidWRnZXQpXG5tb3ZpZXNfc2VsZWN0ZWRcbmBgYCJ9 -->
-<pre class="r"><code>movies_selected &lt;- movies_data %&gt;% 
-  select(original_title, runtime, budget)
-movies_selected</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Q3</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX3NlbGVjdGVkICU+JSBcbiAgc3VtbWFyaXNlKHRpdGxlX25hID0gc3VtKGlzLm5hKG9yaWdpbmFsX3RpdGxlKSksXG4gICAgICAgICAgICBydW50aW1lX25hID0gc3VtKGlzLm5hKHJ1bnRpbWUpKSxcbiAgICAgICAgICAgIGJ1ZGdldF9uYSA9IHN1bShpcy5uYShidWRnZXQpKVxuICAgICAgICAgICAgKVxuYGBgIn0= -->
-<pre class="r"><code>movies_selected %&gt;% 
-  summarise(title_na = sum(is.na(original_title)),
-            runtime_na = sum(is.na(runtime)),
-            budget_na = sum(is.na(budget))
-            )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<div id="summarymovies_selected-gies-the-same-answer" class="section level1">
-<h1>summary(movies_selected) gies the same answer</h1>
+<!-- rnb-output-begin eyJkYXRhIjoi4pSA4pSAIERhdGEgU3VtbWFyeSDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgIFZhbHVlcyAgICBcbk5hbWUgICAgICAgICAgICAgICAgICAgICAgIGJvb2tzX2RhdGFcbk51bWJlciBvZiByb3dzICAgICAgICAgICAgIDExMTI3ICAgICBcbk51bWJlciBvZiBjb2x1bW5zICAgICAgICAgIDEyICAgICAgICBcbl9fX19fX19fX19fX19fX19fX19fX19fICAgICAgICAgICAgICBcbkNvbHVtbiB0eXBlIGZyZXF1ZW5jeTogICAgICAgICAgICAgICBcbiAgY2hhcmFjdGVyICAgICAgICAgICAgICAgIDcgICAgICAgICBcbiAgbnVtZXJpYyAgICAgICAgICAgICAgICAgIDUgICAgICAgICBcbl9fX19fX19fX19fX19fX19fX19fX19fXyAgICAgICAgICAgICBcbkdyb3VwIHZhcmlhYmxlcyAgICAgICAgICAgIE5vbmUgICAgICBcbiJ9 -->
+<pre><code>── Data Summary ────────────────────────
+                           Values    
+Name                       books_data
+Number of rows             11127     
+Number of columns          12        
+_______________________              
+Column type frequency:               
+  character                7         
+  numeric                  5         
+________________________             
+Group variables            None      </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbIm9uZV9za2ltX2RmIiwidGJsX2RmIiwidGJsIiwiZGF0YS5mcmFtZSJdLCJucm93Ijo3LCJuY29sIjo4LCJzdW1tYXJ5Ijp7IkEgdGliYmxlIjpbIjcgw5cgOCJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE2MVVRV3ZiTUJSV0hEdE9URk1DT2UyMDYyQWtwQzFsdSsyd3NSOHdOdWhObFcwMUZyRWxUWktiOXRaZlBBYUR3UzdKSkVjdlRiVXlNbGhBMFh2UDM5UHorNzRuZi9wd2RaRmRaUWloUG9xakNQVVRhNkxreStlUHM3ZklScXpUUXpFYXVmM09ncWJXR05vMXNTdjFEeExEVEUyOWs1TFdWRUpwNzhaTTU5emJBMmVmWFhodlhCTytiTW1TNGtLVWtEMlJiVjZ6Z2hnbU9DNkpnZmlvaSt1S0twZloxZjc3NzlSaDNuM2ZPZis2SDlTSU9tWnNIM1psM3UvNUhUQWI2Mzd6ejhkK09mdjlrZS9xTWE4a1FpOStJUFQ2MXE2MWpiMjBiZVNXN3AvSG5mTkVySVNUaG1xMEUyb0lsT3NWYS9BdFVZemtlOEZHSERkTWE4YVhnQ3BFSTJ0cUtGYVBBdlFieHZjbXVZTXF0SkhtM2p0RGpsdk92cmFRa3EwclpxaVdwS0RCeTQyVVdNL2hCVjFuMFlQOTIyNjN2MEtnSFFHQ0xScUF2UjAxejRBS1VSK0EwRWtBU3NzYjdDcDZSaUI4Y3AwTHNkSnUxTWgxa0RJb0RWN1JleTltNytGUGtnZExKVnJweWs2ZmtXQ2NFMDJ4bzd5aENxU0lqbVE5T0FwT3dhMm1wVDFsaW5ZamVLaHUzRkFDR2tXNkJFc3VRRGQ1ZnJrM0x4K2pieUFheTdNRmhPT0thZU1MSlA5eEJxSnRRRVRLVzlzWUs0Q1hvaUtLRkthNzZKdFE2VzUremIwTVpUek1lbm9OaXBwb0hhQXpwL2I4UnUzR0lTeVNDdW0rUHRxem5BVEpQUlVFSmkxM2cxWE9pcXJscTluNUFnYkdMNWpJOU1BZUJtUUF3d1BLbDR3RGVVbE5jbHA3NTlUZWd1N0t6S1ZpM0VBcjdtN01qVEFFY0ptN0NEN1NOWWMydndHZVp4ejQ1QVVBQUE9PSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["skim_variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n_missing"],"name":[2],"type":["int"],"align":["right"]},{"label":["complete_rate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["min"],"name":[4],"type":["int"],"align":["right"]},{"label":["max"],"name":[5],"type":["int"],"align":["right"]},{"label":["empty"],"name":[6],"type":["int"],"align":["right"]},{"label":["n_unique"],"name":[7],"type":["int"],"align":["right"]},{"label":["whitespace"],"name":[8],"type":["int"],"align":["right"]}],"data":[{"1":"title","2":"0","3":"1","4":"2","5":"254","6":"0","7":"10352","8":"0","_rn_":"1"},{"1":"authors","2":"0","3":"1","4":"3","5":"750","6":"0","7":"6643","8":"0","_rn_":"2"},{"1":"isbn","2":"0","3":"1","4":"4","5":"10","6":"0","7":"11126","8":"0","_rn_":"3"},{"1":"isbn13","2":"0","3":"1","4":"10","5":"13","6":"0","7":"11127","8":"0","_rn_":"4"},{"1":"language_code","2":"0","3":"1","4":"2","5":"13","6":"0","7":"31","8":"0","_rn_":"5"},{"1":"publication_date","2":"0","3":"1","4":"1","5":"10","6":"0","7":"3682","8":"0","_rn_":"6"},{"1":"publisher","2":"0","3":"1","4":"2","5":"67","6":"0","7":"2294","8":"0","_rn_":"7"}],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[7]},"pages":{}}}
+  </script>
 </div>
-<div id="mapmovies_selected-sumis.na." class="section level1">
-<h1>map(movies_selected, ~sum(is.na(.)))</h1>
+<!-- rnb-frame-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbIm9uZV9za2ltX2RmIiwidGJsX2RmIiwidGJsIiwiZGF0YS5mcmFtZSJdLCJucm93Ijo1LCJuY29sIjoxMSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI1IMOXIDExIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQTdWVnowL1VRQlR1L3VMSEFzdEdpQ1plSk1ZWWlHRkZETkdMb1JvaWdva1JJd2tRWXBudERydk5icWVsTTJVWEVwTGR4RWc4UVR6d0YzQUZTVHdaUFJqQ3hZdUVvQjcwWU9SQWpBZEZFL1dBc25iYW1jS09IdkJnMDNiZWZPK2JOOVAzdnVuYzZoazZIeDJLU3BJVWtzTEJvQlNLT0tZVUdieDl0ZjJpNUNCT0p5Q0ZwVnJhRmh4U2syUFVPVStjc3Bpaktta1kyYjRlMW91QlNXaUJORlFzUURTVVptZ3RzblhGZEdETWdBYlBqUlhWc0JGaDRCRUNDMFN4NEtRRzg5empVTjI1dkN2TUhuN0ZxSzk3eCt0MGYvNFZPMjczOS9zdHgzY3ErZkxMOWFkSG41eStJVGNXZnM2OEdyd3UyMVV6clVQem5mTEczUk4zMXRwaWN2SFR4NGxMU3k5OC92TUhTNXNQRjc5MnYwYkRYellHRm1SMGF1dm1tN05iOHE3OS9lMXFjVjVlYkJrZUwxM0I0bm9PY1hueDE0NFZhVWVPdFg1Ym5SdHRrek9lVXg1aDdVbUJ2N24rek1VYmw1dW4zL2N1eTlhS3g1dTk1clc5eFVyK3U1RVdGNC9QamRJWjVHa1c5MUhKbTFkZnFlUnY5M244WnNaNzdQa3ZEOXovUUFmSVAwTHpqQitYM05vVWFmVWF0eFptM2Z1ZTk5NkhTL3l1aEdjUGVFci9DbGRvTTRLQURqRmJUeDJYR001cXVqSUpMQTBrYzlBWG9xSnJHTzhyczBFMWRETUhpU3RZemdyckVDQm1CM0dLVzJZSHMwSm1aNWR2ZHUyakZ6Z2FOczkxY0RpYzBUQVJGbHhyR2ZrRVh6UVZlSkFtdGx3dTc0ckVGQ0JBY2RpY0dKQ2tNL20va2xRamQ0QWsxUXVrNnRTNFFtZGtXZUp3L1JqZHZsaWhJY2FFSVZVcG9tVGhsR1BSUDBUQVUxVWxJMjBadGttbmJaTCs5RFlrQVlZS0xZTU9MVjZlNENFcklZVGlVUlFidzVRVHBja041WVdzK1k5bHEvalZoWFFOK1NZb2NQVkIzU1JUckZPREZCdHBFemFYVWpTZjBRakVKbERaSndYTFFpS3FuWDhqdERTVjUwWE5BQXVvQkZwT1owK3N0S3RwTW1XS1pmU0RDQnREelFHTUJXNlUxam94Ym5saUVLZW9Oa3lpR1FpekhFZUV3UUZMQU9JMm9ySkt0YXNaRzJYYk96dTRYTmpEOVJnNVlOY0pxZkNQRW9qU0d1S3BpK1JBRXViNHVlTHNBWGZESkV4TDgwK01LTjBaQ1dJUXdIbFJ1ZzBZNG42Y3RQY2JzNHMydCtVR0FBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["skim_variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n_missing"],"name":[2],"type":["int"],"align":["right"]},{"label":["complete_rate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["mean"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p0"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["p25"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["p50"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["p75"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["p100"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["hist"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"bookID","2":"0","3":"1.0000000","4":"21310.938887","5":"1.309336e+04","6":"1","7":"10287.00","8":"20287.00","9":"32104.50","10":"45641","11":"▇▇▆▇▆","_rn_":"1"},{"1":"average_rating","2":"4","3":"0.9996405","4":"3.934075","5":"3.504853e-01","6":"0","7":"3.77","8":"3.96","9":"4.14","10":"5","11":"▁▁▁▇▆","_rn_":"2"},{"1":"num_pages","2":"4","3":"0.9996405","4":"336.405556","5":"2.411526e+02","6":"0","7":"192.00","8":"299.00","9":"416.00","10":"6576","11":"▇▁▁▁▁","_rn_":"3"},{"1":"ratings_count","2":"0","3":"1.0000000","4":"17936.490159","5":"1.124794e+05","6":"0","7":"104.00","8":"745.00","9":"4993.50","10":"4597666","11":"▇▁▁▁▁","_rn_":"4"},{"1":"text_reviews_count","2":"0","3":"1.0000000","4":"541.864474","5":"2.576175e+03","6":"0","7":"9.00","8":"47.00","9":"237.50","10":"94265","11":"▇▁▁▁▁","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10],"total":[11]},"rows":{"min":[10],"max":[10],"total":[5]},"pages":{}}}
+  </script>
 </div>
-<div id="or-use-the-lambda-function" class="section level1">
-<h1>or use the lambda function</h1>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX3NlbGVjdGVkICU+JSBcbiAgc3VtbWFyaXNlKGFjcm9zcyhldmVyeXRoaW5nKCksIH5zdW0oaXMubmEoLngpKSkpXG5gYGAifQ== -->
-<pre class="r"><code>movies_selected %&gt;% 
-  summarise(across(everything(), ~sum(is.na(.x))))</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>there are just 2 missing values in runtime</p>
-<p>Q4</p>
-<p>removing cases where runtime=0 first checking it works</p>
+<p>** Notes** First steps nned to be data ‘cleaning’ Initially only 4
+records with ratings_count as NA Remove erroneous or incomplete records
+We are looking for robust ratings so… Some data has a rating but the
+rating count is zero (80) - remove these data as we cannot trust them.
+Some books have zero pages (76) - remove these data as record is not
+trustworthy. In some records the author is “NOT A BOOK” (5)</p>
+<p>Total 161 records removed. Im keeping them in bad_books_data (just
+for fun, or maybe good practice)</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX3NlbGVjdGVkICU+JVxuICBtdXRhdGUocnVudGltZSA9IG5hX2lmKHJ1bnRpbWUsMCkpICU+JSBcbiAgYXJyYW5nZShydW50aW1lKSBcbmBgYCJ9 -->
-<pre class="r"><code>movies_selected %&gt;%
-  mutate(runtime = na_if(runtime,0)) %&gt;% 
-  arrange(runtime) </code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuKGJhZF9ib29rc19kYXRhIDwtIGJvb2tzX2RhdGEgJT4lIFxubXV0YXRlKHJhdGluZ3NfY291bnQgPSBuYV9pZihyYXRpbmdzX2NvdW50LCAwKSkgJT4lICAgXG5tdXRhdGUoYXV0aG9ycyA9IG5hX2lmKGF1dGhvcnMsIFwiTk9UIEEgQk9PS1wiKSkgJT4lICBcbm11dGF0ZShudW1fcGFnZXMgPSBuYV9pZihudW1fcGFnZXMsIDApKSAlPiUgXG5maWx0ZXIoaWZfYW55KGV2ZXJ5dGhpbmcoKSwgfmlzLm5hKC54KSkpICU+JSBcbnNlbGVjdChhdXRob3JzLCB0aXRsZSwgYXZlcmFnZV9yYXRpbmcsIFxuICAgICAgIHJhdGluZ3NfY291bnQsIG51bV9wYWdlcykpXG5gYGAifQ== -->
+<pre class="r"><code>(bad_books_data &lt;- books_data %&gt;% 
+mutate(ratings_count = na_if(ratings_count, 0)) %&gt;%   
+mutate(authors = na_if(authors, &quot;NOT A BOOK&quot;)) %&gt;%  
+mutate(num_pages = na_if(num_pages, 0)) %&gt;% 
+filter(if_any(everything(), ~is.na(.x))) %&gt;% 
+select(authors, title, average_rating, 
+       ratings_count, num_pages))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX3NlbGVjdGVkIDwtIG1vdmllc19zZWxlY3RlZCAlPiVcbiAgc2VsZWN0KG9yaWdpbmFsX3RpdGxlLHJ1bnRpbWUsYnVkZ2V0KSAlPiUgXG4gIG11dGF0ZShydW50aW1lID0gbmFfaWYocnVudGltZSwwKSlcbmBgYCJ9 -->
-<pre class="r"><code>movies_selected &lt;- movies_selected %&gt;%
-  select(original_title,runtime,budget) %&gt;% 
-  mutate(runtime = na_if(runtime,0))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShtb3ZpZXNfc2VsZWN0ZWRbXCJydW50aW1lXCJdKVxuYGBgIn0= -->
-<pre class="r"><code>summary(movies_selected[&quot;runtime&quot;])</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>answer - 37 missing values</p>
-<p>Q5</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2ltcHV0ZWQgPC0gbW92aWVzX3NlbGVjdGVkICU+JVxuICBtdXRhdGUocnVudGltZT0gY29hbGVzY2UocnVudGltZSwgbWVhbihydW50aW1lLCBuYS5ybSA9VFJVRSkpKSBcbmBgYCJ9 -->
-<pre class="r"><code>movies_imputed &lt;- movies_selected %&gt;%
-  mutate(runtime= coalesce(runtime, mean(runtime, na.rm =TRUE))) </code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShtb3ZpZXNfZGF0YVtcInJ1bnRpbWVcIl0pXG5gYGAifQ== -->
-<pre class="r"><code>summary(movies_data[&quot;runtime&quot;])</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShtb3ZpZXNfc2VsZWN0ZWRbXCJydW50aW1lXCJdKVxuYGBgIn0= -->
-<pre class="r"><code>summary(movies_selected[&quot;runtime&quot;])</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShtb3ZpZXNfaW1wdXRlZFtcInJ1bnRpbWVcIl0pXG5gYGAifQ== -->
-<pre class="r"><code>summary(movies_imputed[&quot;runtime&quot;])</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>just checking impact of my corrections. Makes sense as runtime now
-ranges from 14 to 338 with no NA’s</p>
-<p>Q6</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2ltcHV0ZWQgJT4lIFxuICBhcnJhbmdlKHJ1bnRpbWUpICU+JSBcbiAgaGVhZCgxMClcbmBgYCJ9 -->
-<pre class="r"><code>movies_imputed %&gt;% 
-  arrange(runtime) %&gt;% 
-  head(10)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2ltcHV0ZWQgJT4lIFxuICBhcnJhbmdlKGRlc2MocnVudGltZSkpICU+JSBcbiAgaGVhZCgxMClcbmBgYCJ9 -->
-<pre class="r"><code>movies_imputed %&gt;% 
-  arrange(desc(runtime)) %&gt;% 
-  head(10)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTYxLCJuY29sIjo1LCJzdW1tYXJ5Ijp7IkEgdGliYmxlIjpbIjE2MSDDlyA1Il19fSwicmRmIjoiSDRzSUFBQUFBQUFBQThWY1NZeGN4M2tleTZabGNaa1pTcFJOVVJaVldxeHAwcDV1RGhjdDR5anFiZmFlUmRQREdUR1FJMWYzcStrdTlldFhyYmZNVE5OSW9qZzJBanVMRVFRSTRDQUhLODdCQmhMRGh4eDBzQVBCek5FQmZQUFo4REU1K09JY3JYeC9iYjF3U0lud0lRT1FQVjJ2MW4vNS91Ly82NUhiMVRldW5Yemo1TVRFeENjblB2WFFReE9mUElGZkowN2MzRm1jZlhrQ0xmanlpWWxQVFR4Q24wZm85Qmc5eFo5cC9IblBQcmhVVTVFSSsyd3I1SkZJQzNVZTh6WmJWZTBvU2ZHZ3NLTzZiSjBucVlnVE8rRDg2SUIxSG5mWXNvcDRaSitmWHVKeG4xWGF2TmYxYlNlckttdXhQUjRtYmR2eTlCcVBSY1RZNWt4RlJaR0tDelVlWTlocW50VjVnNmZxd2JvOVY0b2w5dHRyWTB0SllURy9sMmZMUEF3TGUvbjFQRnNTWWNEajFIYWRYTTFDeVNORyt4YWhPOVNUK2hnN2gxeEdoWFhaYkhNUnNxMllmb2tEMitXeGhWRGU1ZzJSdHRtQmlsZ3BqbVRYUHZxYnpSNDJXWkZwSDlPMitHMEp3YTN5cmtqWVZoWUgvVUtWUjVJbWxGR3ozUkROamwraWtrV1JqRnB0M2kxVVJVT1I2Q0U5bkVWRmhXM1JaV3RLaFczT2s4SzJiSGJZdWxLWXJKN0cvTEFoU0F4UWx1cnppTWJHM0kvRWhoNzVFRC8rMDJ6eTFBcE92UmlLTGhhMFRaL0Z4bGc1Vm9kUllZdG5JYlBic2s5bnlBcllFdWFrL2JrdGwybi9pekdQT295dFoyRW9ZdHQ5dWh4blRjRks0WUdNMk5wZ2thZTJlQXBKU3M0cUtvNE9CZFN5eGxQQnlsa01DM042cnZFTVIxaEkzc25rZ1FnTHQ2RDJVRUxJOG5aWFJJRzAzYVlxT0hGSXVvT0l3MUJPVEx4THphOHU4VVpNRW9ZSW1uZitqYlAxTysvRjcyVGlkcUVNNndrNFc4dlRHSndEaXkvaTl5eU9lWitWSURVY3pjNzlrbGNLNlIxYmc2UkZydzNGMW5qVUtwU2l0SzJpUGxzV1BBd0s1WkRMMklqT0RuOWlGVDZRd2dCWi9WRHVwOUQ1Z1F4WWhTZkMrYzFxRmtoV2hwSkVtaGEyWVVMMmQvdjh6SjdFaVhnWGg4YTB6bkdXODB0NXRvZXpPa3M5dXhpTFFNUmtEMXQ1VmhQUjdZOTY4TVZsSG1jZFNhZm1IZDZWaFFWb2pReTQyUlp4d1dpbmcwTWVoc3JwOGhRcCtEWmI0L3NkN3Z4bXF5MUQyWU5GaHlFNXRwSDhtYXFDNUp2UVhDei84eTl0MTBmV3llM1dlTjhkL1FrblNUS0xnallydGhTcUEyODdGOHM0TzBBajdpY3BEd3NEVDZ2emZpamMwVSt1Y3BnM3dFWjFuRXkzRmJUQnFyd2RGbDdQUkpUQzlLQ2FqckRiZTVvTXZDNjdYUlVsaFZYQm8xbnJpdVg0emc5Z0lNNnNTbEVRaTBPUzIwNnNNcWVSNlcwRlAwdFpqVEFrRWdlK2V4MWFLdk1rQWFMRmtUL0V5WG9QSUxLaFVtellMUC80cXJyemZjV1dNdG5sOFozdkF3KzJWZUlFK3VTSVVDcTgyMnRBemF6ZVZONGtKcGUwZ1FMTG9pQVVmUWQyQmxxMlJiQ1Bvd1NGbXNwWUZZYWpvb0NSa3FBbEo3R0xTMExGTGNHMjg5dmFBeUFmV0Y2ZlZSVXAzWjNuZ2tjOEZRTFVDM29MRUJITXd0bFdLUlJIMklTSUdhRjR4NTk1eWlEQkJzM2V3dEl1QnBSQ0xUbWNLdk1RVzJxUmZ5QXlFRlpMVVZqT1dtMkc4Y25BRE1hN2tMaENpWE9WK3JGNGdJbW1WdDF4MmNJQmo5ekluSEhLQlVTUHJvUjE1WGF5dUFXTFV2dHNweTAySTdFTlZlUVIxUjRzK2p5NmJRSUYyYytpNkVlRHVIZnZKMS9TdXlmVHFnb1loMGpTUWxuRW9VeHZ3OE1hSVRBWFd3RmlkbnM4Y29xZmNyNjZPUVBsK0ttZUhHc3V3T0J4cUYwZWVRMC92WlRCc1E0RThKOW5wSmxDRldnRllHUmJZamkwajVna1FkUjZFMGRPM1FadUdQbVJEY1FCa0NNK0VBUWtBZThtaGJvZ1hSTThScUpmV0lIVWdjWUpRbXg0Vnp3YWpVdFBhandvOCtnQTlpTXNPdEJQVFhqb1hJcEZpKzBRREdQK0ZMQUZ5Mm9ySHoyZU4vc3FIUkZxVjdFRENweFJldnU0cUhaKytQa3d3anRSV2FkbjhEcUtwME94dXR0THZDaWVzdDNLZWJaRlRDTEd4Z1ZzTGtwRksrTC9QNTJlM0FDaGdkS3FZbDJMY2pOTkZSUWMzZlpCK2hNM0RIWWdBb0E1akhRd2dpL0xGbUNVYUowN05Rd2ZPdXdYZHRxcXk2SGZQSnBVaDlTTmhVQlBaSnBpS1JObjBaS1ZGV1JtL1N4b3dhUkZINFlBVE5RN1hsSXgvYVkzQVhBRG5hbUVoa0Fla2tuVjB3em14blQwQUU5Sk9uMDlDdUFGRFNVQngwcHVZK3M4Skg1YXd2WlNzSWwxMFljZG8zY2ZITVN3aEUyOTZsMkNXOHkvQVpqSHpvWGpaWHZvR0hjOThPMnA4RUJFQlFxbm1EWWNrQlNQMk1zWjVCN0RZWGxHTUlsakp2Zm9Zb05tV1NWTmh4WlBqWFZaQlJQWkpFUWhlTDNYUE1jc2RXR3NDOUVIbkJIQ2NQdTlSS3c3aE5LMkNGL2dHalVRVUJXQ3FXSlh3VEV3LzlSOUI3aXRMZVFKdFZRelZlQXBCWXFGV29ESlFGQ1g3cUpTQnUwUUc5dWpSTXJGQzJNUmV5SVpoTG1QQWZPVEE2SUE4SFFlUEwyZGRXVkhBUzg2aUo0QVVoZWZTeUhUNFVvTWNUYlkvQjRGVVZJVVd5RkJJZ0o2dm5rRzlob29nb3Q0QU4zblNXTmJSRUZsb1pTMWdLd01zay84NmMvdGtJL0V2TlVXU1VJRVc0SEQyR2YyTk1oVUtKUVNWNkZzZ0R5Z2hNd2xsWjdsTFlSd01CVlRyRm1TamNIazA1YXE2Qi9TL0lEQ0dMRWl1TUdBOTIzejU2MkpMOEhjeWNMM2lISmlTd0o1aDF2cktVMFM2QXh0RVhZaElpa0MwaHMwMVBLd09XVTBSSjZwc3R2ZUNKOWZwMlJ2Uy9VRTIweVF3TUFqNnp3OFFHeU1CUkhPUURXYkRwN08yS3hoYVpoMVh5ajFRRHBVb09KTVp6azZXdTd4MW9CV1BiWXI0eFprelNrZ2pHWU5wM1F1QnlvSkxtYWJybHAvTHhGcmxrbEN3bTBodmc2MW1LQU9HNFpURGRuYlV4c3dTTWZKMldxY3A2RmtnQWhOcVR2RGxmdkt5b09UdGl1RTF0aE4vcmx0dUVrVjIvUm5MSVU5NFpQUzMrL3hFem83ZFBKZkU1U0E2UWpnUkRoVENvZ1lnSWdLY0xjaGJEOHFMRW9RQVdhaHhPbUVXUE15Z04wQ05hVjhKSk9WbFJYbnIydXlhK09qVjhaOTlQVDhFdEY0VnV0SGdRZmtXaGFFV1pkNENQb25vWFFlY3ZYZVdlZFEwbFdvVW82L3J2YjNCd25VODBUNmJIK2tQeEhoRnorRXJoRVIxaW1DSkcwdmtjc2JZRWQ5dHRlV3FRNFhZWkxHcWdzcUhTTlBhaTZFTWFCbmRnSGI4dGg0Q3BFR2lTVS9Tb1ZEcmZNYWtaWlZwREliUGtmVDY2Y3MreWErbWZJSXBsWll5dm9hZzVyZSswNVhRbVM4WkhjRFZuMjZySGxtcFowMXBKUGhpZUZrOC9TT3p2L1JwRHB1b3NjQlNid0wxNG9Tem02cEZvOEFaTTV1djBCMW5GSk1zYkpRSld1cHAxZ1ZBWlBrRHdhQTlHS2dyZ3VyZVowdzdLaXdJeEVKTFpPdXQ3bExTNmMzZUorOEFpbDduYmRiM0tHRWwzKzlEd0tJb1JUZHRRSldLS1FITGdaZXVCbEI4QUU0TVU4eklFVWRsb0VzTXBXRGdnQnlQWWdTeXFGY3NwWjFFRGRhRlBienQvRFZTK1dNRnJHRVprQVJmZVFZUWUzQ3Nnb0I2Nk93YzNyWXlsd2JFaWtFcVRvbkYzTTRiUGxTbnJrRXpma2NHUTJjaENNY1JZV0Y0RkI3WlRLQUxiWks1VEdkZnFnRFNBVWhFQ01VY1JVeUc0K2dUNE1sOFpqQmhiWFRJUDFzdFJOTHhnRGFQdWlVaWViRXNEYmFEelJMdFk1QStOVG1wOFlpdGppQ1N3eGlReG5BV2lSYjdkUnhrRFVFYldpK29BVUswVVNOTUVNNExxdUcxbXpCbGc4NlFITmswNlZ3bi9oUFdWRHBEMk5xNUcwQWRSRHdDT3VzWldtS3N6cG5ycmZobjJUZkZqQW9meWtnQmdaVVVNT3VkYnBWME5rSmc5K1d3b0NBZUJYQmJ5Uk5PYmtLV0ttSmRqd29LbEU5a3B3RDFqbTdwNVJ6dmJlWE5XTWpmbWJTQm55SGU0ZU81QzNCZWcxaFJkYVFDTjNEd2hWd3E3K1ByZm05UTVqNHBZVWpkOG5CbTBTQ09MalVOcUxGd0puUExrRVpFUUZKdmRtR3R0UGJveVpTaWJsc01XMXJqZ2VzQ1NLbmJlTE1nSzVvdUpoNFVjZk5aZG1DN1dJc2NXQ0lnNnFTUjRjREl6dFRKbklEaTlIeWM5Wk50UksyM0ljeElwWkJZMnl2RDliSHNKb3ZYTmd3djVRZmpmUm5kaVd4TmtBMDdkTTJ6dWtVa0NHK1FFaFVJL1EveStEZ1JIODlaZHZCd2FVLzMzY055d2NJZGJYOGlCYmRqR0RNaFhWRjFaeDFxdFlVWEZVUys4TytZWnVhN2ZpTTJsZk45aVNSTHdCU0JxTW9jMUxpSHRkWk1IYkFWdUlEcVl0d2I0dVF5azNMbWVhbkd4TDBGRXF1OEpZbzFJU0NYYWNwVlg5R1N0eVBqMVNzR2I0RmcyckMzR2FXTXFSQkM5dzh3V0pYcjF5NXluS2pnd2E5THRtQjEzYmFndDNBR0tBMzVZOFo5cEN3QWp1MmVSVWhJdkl3ZVhFMWc3c0hiSE4vbndxamdNc1VBVWUwK2xRcUNweDhYeTExcVp4SGNadEtaVkVYQ3A2bmhBeGduRkd0bVZBQXFBSmNaSEFwU0MraXV1cENJSWR3dEx5UUpGUVg0MkZDWlE0L0pZM2RFVWVRM1VkTzdwTC9pdW9xRVVndTJOdzhLNUUxQTM2UVlTMjhnd0g0M01nYStIdFhKRDB1a0hrZkZVb0hYc3FMemxIMXZNamdXWTlTUjluVXU4S1pzVzdhbjBkc1JKeTZUT1VINEFDUEw1UE1MNityUm4rV3NPdXl3MWFTOFE0WXRnajZOSDRyQzRLWnFDMTRNTXJFSHl2MVl0QjZXR0tmWlZoM05ZdmNhWEtEa3YyTDgzcSt6UWphM2xPRUtzdVFJb1NDTGV3N0w5a2tNb3VtUnA5d01Bb0pXZGtMYkZNWEk5YjdoSklTZXM1dGdKdVhBdVNQRk5mMDRZQ053UDBtNWJnaEFjWGNLN05YcnpzanF0REtOeVBnVVpwcDdlMm9CbTgyRlh6MjJPbnZtbXoyUlRmVmZqVkdnZ1VEcFAzRjVFRGFHRE5LS3h1RVp3VWozZTBzU1lBQWgxUUEwMVphd05GeFpLekQzd2JjOTJjUUEwV1RLSE5kd08yYTFBUDVRN0FQclhoZ2ZvRTJYdVZzRnhtaWhOMEVndVVjczRQUmtCdXg1NjY2dlYyZzN2Vk0xMkd0aTVTeEFJRGVNNXJkZkQzUE5yanM4Y3k1U1pQNjNYVjd3Q3BWVnNvQ2lRUXZCb0hQWXBoTkNjMDdiWGp3TnJJY3FkZW94Q0M3RU9ITktFc3l1Rmh1RFVaUWIvSzRCMFRsMk53MS9QRjZPRitUSFdIeVdBWmx3UElWSVl2SHVpL3FMWE5vZndFZTFCSkVIbk03aE84RWVIUnZBeG9YeVNaN2JzNU51VmlDVzJlQjlXa3k1T0ZiQ2ttaFJ0OVJ6RUQ4eEFrSWxBSjJDMVp2ekliOEkvTmdzRUFiR0UrcklSTzRWSlBjSFRLUThUNElvTER5clNuS1MxVWNCdFFndThCTmIveVBMbVVoc2M0WXFvWWJIUXp1d2JaS2tld2lFRkN1RHZWRHZUQTlxQkt6c1p4NUJ1dG9xNHlxN2dJV0FjK0gyeUN4UjNJRkdsTUJ3eUhNdm1Uc3ExSzE4LzdodG9CRFJDUUZjbjRMcWpnbWZTdjFzTjV6VitmWlF0TGt5Q1QzeVV5SnowQVJOZDRhMVBrMDVGSk5GR3dWOXRTVW1sb3VTaTBCYnc0MDdWM1hKdThzcTBNNEZ3Z0Q0QkY2aGJ3aXB1TmFxSUM3bS9zZ0NtRW5JVmV3WFdoS0pOdnMyY0gzZVd1NVZJWmhLd25vdmpva3FDb2pPTkNUYlpJcFBZQThubldaeGtxVUVGZ2s4NE1WcU8rR1liNVllT0ZJQzltem9GeFpsN3lwbm9NOXMzb29SSTlXMGRnMHo2NWVoMTBwZ2dPWG1WU3g2RmFza0pYNzJsQ0ZRT0pRSWRMbUtvVHZKSGo5eXlWN05mSDhyb2g0a3dFclJSckpOanVnci96TGdOTGJQLzlyY2NCWkFuN2xHQTd0ZHhIYTNVTEFEeUVIdDB4K2lhN1IxcmxtcGdUc0JxL3M5b3dlTnpSUzF0c1NVR3FXUG5jTFdjT2RIN0xYTThDZHdJY1VzVXNNTGc4dWRJeXdhYTUrU2dRdVpybEYwTm9zQWYxSFlIRUh1VmJUeHBvZFVCKzZGV2tTWTBxWWpPTTdQMHlvY3RTZ2RuamdZR3JuQmpTMHhtTUMwbUJtQmRqZ1ZMQ3FBd01NZ015ekx1QTU4N3JpZzJsTkd6a1UyUm5sNC9Bc2tlbmptd1RpalpWZHh1WmVuTHMrTy9mUzNBMDc0MmRMb1BPcVEyUEtZU2EwNlF6S2ZhK0NBQWlSWWdkQXlVWVdOeEp6ZW1pMUNhM1NxQ1drZi9Bb3V1QlN4SDJ3eE1zdlhabWRlK1hLRlR2Sml3UTRicG9OSUFHNWFDSmhaTG5CelJTRUIyVVoyOVBBNU9SNGJpdEc3bnJuQnhTMWxxbEVKUWNjNlpUV0JQeDZRSWZuUVBzQ0tRQWdrWjZXbkNVTVNEdkwyUkV5QVR4b0VMS3dDQUh4a0dESUNVTDdzQWlwMmhYcEUvYVFQTGpVYmJaRVpEaHAwNG1KQlJEcUFBcGgvV2hZYVJyNnNFaG5Hb291TjdSWEtxVFkydmZOb2VIZ0dtYlNtV1Iyb1U5SWhvMVl3TmtiMnM5TEsraGhnajhnR2FrYXBsNkpXdkJ4NEZIVVZMcTRxcytuRFh3ZnlJellLQVlVd3pHcVJSbDJSL2pieFFvSFRjaENic2dXZ3Ayd0RvSjk5YjBQRWZxem5VUEZBQ09VUkNIY0U4SkNhNGpKelF3Tlc5QUZBQlludm5iSkwwdFZDOWxvVUJuZThBTW53b0pHZjRLVW1Bcm03cW5Hc29WUXdORkgzWFNZaWF4YlpxaFJHZG1oaXVkTkxXdGRKd0l3eWtOaWFwVFVWRFRGQVQrR2RIb1Vnd1prN3hsTnowenhBTGdSUWI2RW9VQVZTcXA0NEVuRUt3L0NjQTFiSFdXM09ZMU01bUlOYksxcFNWZkV0dHI5aE1qbHJrSzh1alo3L1lINnZ6VDdzdTIvVitPc3hVRVhlaENtRERoN2xaazRuQ1Q2ZWc2TUkxZkRya3FHOEhHTk15NHBlWFdZQ09wd2lDZHRldVMwK0NYelpvMDVwdXAyelExcnJwUTFZdVRTNitTbDJ0K0JHNTVXNUhXZ0VWUzhFYzZlSVYxaU9HUGp3RVg4cURQclBDQnVVRllIM0Z2SzZaazZES1FMOWRTVTQ3bFhLenhTUGFKVTVDVWRUWVoybGJTZVY5TmdMaW1IamcrbzRuRnJrTkplcFkwdElWaVQ5U0p1UVpRWlZydytUd2E5RmduQ0ZYMEZ5ZlhyQi9Da1o0YTVwQitKL3BTaXhpbVY1d1E4dllRL3QxVDIyakFKdUh1ZE9TUWx5NFJIZG40TDFKclN1WVVlMWpnbVhGdzdCVW0xMGI4eGVNWGdNOENZQm56ZUhlcUNwc3lwcGgxMDFhKzVCVEIrd2IvYjhQQVcrSWlRN3NiZ1dVdmtacXQwbHg0YnpnajhwVlFwSnRicEthZVdsM3N3VE9Uc2dWYUdoMTE5YWZicXk1NU4xMkZHS2tRbzZ5Y2pjM3Q0K095V1NwTTJNR040Q2o5ZXk1c3FPNE4wMElHRUM5MUlnYTgvVU8rcjd2dzZNb0pvMGQwRXkxRjFpY3JCOVVQZWFwbE51bDE4em1RUWZjeTlyMjhMWktEclZRNDlsN0g5T3ZJM0hRUVdxTm8ybU1UYjlSZUFqVmdITEdxbDIrUE5ZMWYwbmFlcjBsZ1ZGWDNMeWtQd2RSTS9USFFtWFZjcGsyUTVxb3VDN01OSE1jdExYMlpWcWNEOGNkNmhVMmpwd0U3QnlpbjBJTXhHRkxCSHgzckpuOVRtU0x6TXJiMzdrYngrbFhBRjRLUkxXOGVTZXdKckdKMUN4T2U2bE9ETG94ZDE5Z1JiWURsTG5jMWJCVEROWGlKODhsUFM4VWxvWWdwTjdORmZHOHFuQ3lkMXJyeU00TzdlcTVuODlkZS85ZXV2Ly8ydi8vdy9mdlpUTnVkMHZ3UXZuWW0xY3lMVVJGVEpaTXkyMWJ0MHNlc2FYMkJWMVdwaEJiYVMwanNJcWtmWEE1U0NvYnZ6MXN2Zy9raUtFWTVObm9wSGxvQ1RNVUxhejI1bU1VenRNSHAyeEtSQWwxbXVTa1gxSFdUL1lQZnVuTTk0QTk2THBZN3FZRnM5TEUxeGgrME9yamZPMTJZMllkaG9aTTBaV2l5MDMrM3pTK3ROTU4vRDJXVlFkTXFXU3p2a3JjYzBlak5Gc3JFWjlKTkU5QW1ZcUxSQlhFcGpLZ0pvVS9TR2d0cDVqZkFLSmdnMzJnT0dzTGxYcmwxajExNXhkR2RsSnFRYkVWMExIdmNlUGVVS2JDT2FTZGtTY2l6UXVsYkUvZFp2YVZwSjNGTy85UklqeUJQV1kwY0JiVWlIcVlXdW91MXdjeUdLVExHbDh5ekVaWW82SmpQU0hZKzdUYnkrSjZuaWxNQ2k5MU5HOGF5bVdySXpEKzhScHJZTGdPdGlEQ2dXeUZSdTd1VTVYOEk0VjlQc0lHbkxIb1Y5d25GZmZycSt6SW1LNlZmcVVsaUxMdVJTaHBSUXJRYlM1eTM0eUE2UkxHMnA4TkVyYnQ3SDY1SU84R3hkaHFSVWd5ck9hTjVmNzRQb3RHTGVhMHU2SkJCTnFRdGM3bDVTc2pKU0NEZ1JhQ3FNY2FnZGFWbUtuSXhwbWg3aSsxRlR4RDJ3QlhIRW1uM2QwcE9ZRFh3Y2ZpY2JJTWZRZGlEcFpvT0ZrbTRUTXMwWWdrd0ZXTGJMRE9PVFNUNmYxenRSY2RabFVPSTJwWDc2eTQ3SUdvaERrdnUzUG1iV3VHVktCRjFsMldMMUNIRXhwd0h0QlJKWFFobVJaNDZtdG9OOHZrcXh1SXVFenMwRVpvczBpdzRLWVpncER3VEZVU1RXYVhkZy9wOWZ6U2dCcmlMTUJjUTZxQll6dnN4NTQ2Z3hVbG1RS3hIQlZDT2RhdHZuVThzR2FYVHBwdVFUTC9EYWVrL0NPNmxrbzR1bS9sYm5jQkZac1hPYWhhTmVxRWlMaEFyeDBCZ0FYbHZuOXFhSE1WWUw2MXVoTGhEWSt4UDRuVFJGMGJvUUhacUtxS3cyK3dWVDN4UFIwS0cvcEJmU0wwTG80YXNpeVJKeUhTMUQwR3Vpd01SWnk0UFhFMi9RMDFqb3FoVVM4RkxjVFY2YmgxVDZ5bXBMSStVaWNnMTZHN1VGMngxYThCbDM3YnFvVktvTGVCWDlKaG05dURlU1o1emJRdUNqOUQ1aUdiMzgwMVdSZFBuMFhBVk1nZW0vY2hWOXFWZ0tLWnNhTXc1czgwQVJKbnBxYXFKS21CSlJOdFU5WFQ1SVozVzZNaWljVllZdjB0Z3VwOXgycENwbFVtWHNiNDJ1TGZTMHlOKzY1cmRLT0lTcVh4NEdHTXVZeTFUVXhxblhlY2k3R2F6TnBLOTBPVHJjMmUzbTZhcWlGNHNnMURYeUFhcjVZT1VkS1hSR2xiem1jdDAxMWR1Lzg1TUd3SW1LaFV2aG5aLzRlMTVkcXR5VnVtWllpbE90WXAwUGU5cjhCWVJEYTFqMUh0VVVOUm5MMFd0d2RKTVc5NGJsODZoaE9kM0lERmdDQ1hkc1pPNGFEZ2hLSXVoT1psQnEvSjYrNktVSWtnTDdTeW55aFhsTmRjbEVUYUZUMTZCMFdTV2xhdUVlU1dveEN3bXZrelRPbWthQXR1SzFxTitmeEorYkFFV003Y0tncUQ1d0lGdmN3dnhXRnZkVUFzbFJ0NnJvSVZUcmtFaFZzUmlJREdlaTE3R01yUE11Q0VLTkNJMjZWcS9MM0R5SzZMSXU1MzlENkhrbkU2R25YelY2TmFBUHdBdXA1alY0ZVgrUll2VzJKbnFZU0dmM3VSSklPY0FPSWgxT1kwd2RHWWsyY3QrUUtsR2UvbDl6dFNya1ppbnZJQ3F0MkVzRkIwakxNUERiU0MxeFhucWJsMDRXSmZzK0Y1M2RobGNqTUpuZ1VZbFZrb0NuMFJ0Z0xjNDJ1eGErWGJKaEI5V3BXSkhFQ3VQMHUwUGNpcDZ1cEdpRzJVb1dVbDRZRHBVUzVxbjBSeWNHTmFjcXZhNHBMU3pXNkRXSVpGQmJPN3REOVZLTFhPVDU3c0c1T3NMaklheW13M0lyU2FqanZaUFBGRXk5MjFNRTdjaHQvQzMyRTZBNXNQVkZZcU4wa1lWWktjbU9sYXVFTFd0dmQreUlycnE1Yk1GN2IxSlJubDRHTXpjMFBQVFBFaDl4TnB3VjdTcHZ3N29pTTN4RFBvSUp0YXpaNlJOdzZ6bnErbzExOERDbnFTYzBScEE1bDlVUnkrbmZZQVN6M3FkMGZhRkNiMWZCU3VrdzlHNC9BaDcrSmswOGQ4Tm52WlJlMEJvYlE0bkZ0T2JOMnRUQWtnYkZpSXVMVkkrcVNTTDRPYUFjVlkwSWVMQTc5cHluS0pmMTdhdCtvWEZlbDZLelZGOFVnU0lGNHdWS00rSXI1dDMyY29aZ3llb2NqSFM0Vm5vVGRtSHEyWUZtcGVRRmh1VzZienJsSEwzdEh0aWhNL3NicGYzVXBwSEU3TTBNMjdRck1ZaUJwbkoreE9xcUtVVTZLUDM4ZzZudndqV1NGQnhxRnlyV0JUUzZ2cUQwenFiU092YkZ3aHVsRmlwNkNWSXN0citRSkpTUTdydU1lVUhIVU5oTjJ6aEg1QXdGdGdlLzA1elNsbGdIaTl1MUNIbWR2blMxaFdvMGNDZ3E1cm9iRVdTZmgvelFhbmhkaGgyMm5la1NsWUpVNmFvRkpDWHdPYXBPNU8rK2RYY09vT3RwTFdXc0FtYUZjMlVKNFJpeDNEUlJnN29ZQlI3WlRCUFBLbUlpbHdtOTI5LzNON3pQVk1BV2VFdVFOU3h5d3VlZHRuNjFRdytoUzU3aEtzQnh0QmNiNkVEWGlhN0E3SEJOVU9nVkVrK0luelFGdThSbnJRdjBoZ0c4ZW5BTlVCcTd1SitISWtacHZBNGQ1Z1VBdXY4MzJRUGRnTnFyZnp0Uk5ueTM0bkZpaDBqSkR0MFcrYUlGaUhPVkg5Qy81RkNHdkFEWGUvU09COTN2VTNGVGx4T3hveExsWFltQWdwaCtTYnVjUlgzMHltM3pSa01pVVlRdlg2SkVFMy9lSzA1ZmZQLzEvLzdtMHhQMnAvam96K25udi96M1QzLy9seWRmN2YxTDhiVDlmczUrbnJUdGt4aDk4ZjN0NGhTK29jbVBtN2FmYnR6VUwzV0g0dVQ3ZWtCeGl2NSsvWCtLdnIrZGIrcTc5UE9QeGRObUg4VnBtdlhWZC96ejA5OTVNL2ZibjMzSHQzL0dqVGZ0RTJNL2cvWGMrdWowWnU1L0IvdTA3Vk51SFhyODJ6dkZhWDJjVjkyOHhjbmJ2MXI2MGJtdkZhZC9kSTUrSzA2YS9melpiMmlXaC8rNWVOTEs0YXo5bktidXQzL2wxemxqNUZ3OGE4L2g1cC9jMXorRC9kQnFiMTRxVHVwbHpybm54ZE5tZmRmUHIrdjA4Nmc5eDJQWDlJL2Y5N1FkNzlZOW81dmZMRTZiK2YyNlRxOW5yYnpjOTlOMkg5Wk8vTDc4ZHljZiszblcySUdUYzNISzlqdnR6bUgzNGZwTnU4OXY2bzdGczI1K2R3N2I3dlJ6eXZVemN2SnljUE9kc2ZiajVEczFadCtUcHYwdXZUaTVQRHB1UVc2Y1BkOWp0ci9mbjlQWDJMelQ5dnluUisyeStMQ3huN3ZzYjh6Ky9YTnJUNFB2ZGg5VDJyeVd2Yjg4NnVaem45Wi9UbHQ3bkxUZm5UMjU4M3pLN05QTGNjcmE5MW5yQjA0K3ppOGVkdnU5aDV5Y1A3cDFwdTArSjhmdHpMYWZkZkl6NXgvSXhlcjVFYnVlRy9jWjQxZmo2M3U3T0dWeDVmUW9iZzMwT0ladms5NVBOUjQ2T1hoNXZHajZqYmZmNjlPZC82NzJ6OXYxY3FQUGk3c2ZtUGFJamJiTG9tbi80K0pvKzdidDMvdXhsZFBZZk0vYmRSYmZQWDRmZjJDZnUvTy9QRGIrbW0xdkhqLytJOC9mdmNlNmw4ZlcyYkxydkduUCtaWGk4ZVBtYkwrZlh6Q2Z5MmIrNGorTnJsUHNqODEvdzQ2N1B0cisybTlzKzc4YWhYaDdyWTJOSDlPajJSMzZMWXkxTDlsMjYvbGV6elc3ejdvOW41V3puMmQ4L2hmTWQ3OC90Ni84V1B1YjlyTnE1Nzlpdi8vUkIrWXorNnI1ZlB1RGtmbjlPbGNuam0xL1lEMi9jUHc4N3Z4dXZ4ODV6L2t4T1d6WWM3MXV6M1hqd2ZicmNlSlBqai8vUjQ1bmRyeTFzL0Z6RkN0MmZ4c2Y4M3hPajdmTWZ1NkpEN3QyM2x0RjgvbnZUeDdmYis0QjViRjEvLzdqOGkyV0o5eVA0WWQvYXZjZjkwYjdPVHY4aGozWHQzOXNQZy9zOStEZDBmNjd0cis4eC9tLy9admoyNk43OUgvbkYvYy9WL0VlNDBLenIyTHlFWExwZkhEOCtLbzl4N0w5M0xLZkIrYVhZbXkvcDczUjg3L2h6dis5MGZiWGoxL0hQMC90dUhQMzM2L3ZmOFJHNS8rN2U4aGg2MlBPdC9tdVdYOWk0dGpQY2JuOHZyanljWEhqOThhdi9iSDlXM3NxTnV4NWJUd3BIakx6K1ZmMitUZDY1dk9yOW5rOE5rODJiZHBYamo5SE1UVUg5SGIwcmwxUGpjM3pkdkcrY3ZEKzl4ZDIvTGZzdk8vYTl1VjdyRy9qdXZNUDMvOXY3ZWVpTy9kWDc3OSs4VjduTXcrS1gvdUYrY3pzZkdQODVxNXhYN1g5a3U5OXJIV0xoNlByZTMvOHpnZWo2KzY3OVl1ai9YdFdEdFpQeC9IYythdjdQdlpmdnB5STZCOG1USmgzNFUrNDF4VzRmcTNIVlFoT3BETDFGWlZKZmlDb2FQRVdsWXo4bTE1bnpMZmtMVjNBdEkyUFJGbjNyUjY5Mmo2MjZDT3hPc3k3aGMvZ3owTjBoZzgvL1BDdDhkMDE5Yi9hTTd0empTY0Rudks4Zm8wVjMzNDNOdVJocGE5Sk1laWg0Zi9KeHY4WE4vRll3M1FXMFU2QzJXWTdpenF6Vnlrc25kVFB6YzhaKy90N1E3K2ZNR3MrOU9HWTNENHRvdGJnQmRvVElXLzRmeG81U2ZWNk9uR2U3aFdkaEU2aU5jbW5LdlUxb1pOTkZib1dmYmlKMy8wZlB6ckphOEZIQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["authors"],"name":[1],"type":["chr"],"align":["left"]},{"label":["title"],"name":[2],"type":["chr"],"align":["left"]},{"label":["average_rating"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["ratings_count"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["num_pages"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"Lonely Planet/Sarah Johnstone/Tom Masters","2":"Lonely Planet Londres","3":"4.03","4":"NA","5":"480"},{"1":"Lonely Planet/Mark Honan","2":"Out to Eat London 2002 (Lonely Planet Out to Eat)","3":"0.00","4":"NA","5":"295"},{"1":"Gary Chapman","2":"The 5 Love Languages / The 5 Love Languages Journal","3":"4.70","4":"22","5":"NA"},{"1":"Doug Walsh","2":"Juiced Official Strategy Guide","3":"0.00","4":"NA","5":"112"},{"1":"Karen  O'Connor/Larry J. Sabato","2":"American Government: Continuity and Change  Alternate Edition","3":"2.83","4":"NA","5":"664"},{"1":"Karen  O'Connor/Larry J. Sabato","2":"Essentials of American and Texas Government: Continuity and Change","3":"3.50","4":"NA","5":"854"},{"1":"Aristophanes/F.W. Hall/W.M. Geldart","2":"Comoediae 1: Acharenses/Equites/Nubes/Vespae/Pax/Aves","3":"5.00","4":"NA","5":"364"},{"1":"Julian Markels","2":"Melville and the politics of identity: From *King Lear* to *Moby-Dick*","3":"3.33","4":"NA","5":"164"},{"1":"Mark Twain/Michael Prichard","2":"The Tragedy of Pudd'nhead Wilson","3":"3.79","4":"3","5":"NA"},{"1":"Elizabeth von Arnim","2":"April  May und June","3":"3.88","4":"NA","5":"88"},{"1":"Open City Magazine/James Purdy/Daniel Pinchbeck/Michael Cunningham/Deborah Garrison/Rem Koolhaas/Rick Moody/Strawberry Saroyan/Debra Garrison","2":"Open City 6: The Only Woman He Ever Left","3":"0.00","4":"NA","5":"200"},{"1":"NA","2":"Murder by Moonlight & Other Mysteries (New Adventures of Sherlock Holmes 19-24)","3":"4.00","4":"7","5":"NA"},{"1":"NA","2":"The Unfortunate Tobacconist & Other Mysteries (Sherlock Holmes 1-6)","3":"3.50","4":"12","5":"NA"},{"1":"Ian Fleming","2":"Dr No / Moonraker / Thunderball / From Russia with Love / On Her Majesty's Secret Service / Goldfinger","3":"3.98","4":"NA","5":"862"},{"1":"Dan Brown/Paul Michael","2":"The Da Vinci Code (Robert Langdon  #2)","3":"3.84","4":"91","5":"NA"},{"1":"John Grisham/Michael Beck/Frank  Muller","2":"The Summons / The Brethren","3":"3.99","4":"241","5":"NA"},{"1":"Bruce Alvin King","2":"V.S. Naipaul","3":"2.00","4":"NA","5":"240"},{"1":"Patricia Cornwell/Kate Burton","2":"The Patricia Cornwell CD Audio Treasury: All That Remains / Cruel & Unusual (Kay Scarpetta  #3  #4)","3":"4.16","4":"202","5":"NA"},{"1":"Laura Esquivel/Yareli Arizmendi","2":"Like Water for Chocolate","3":"3.95","4":"121","5":"NA"},{"1":"Carol Marinelli","2":"The Baby Emergency (Tennengarrah Clinic #1)","3":"3.60","4":"NA","5":"285"},{"1":"Gabriel García Márquez/Brenda K. Marshall/F. Murray Abraham","2":"A Study Guide to Gabriel Garcia Marquez' One Hundred Years of Solitude","3":"4.11","4":"75","5":"NA"},{"1":"Michael Crichton/Stephen Lang/Anthony Heald/Blair Brown","2":"The Michael Crichton Collection: Airframe / The Lost World / Timeline","3":"4.16","4":"267","5":"NA"},{"1":"Jonathan Swift/David Case","2":"Gulliver's Travels","3":"3.57","4":"4","5":"NA"},{"1":"Judi Barrett/Ron Barrett","2":"Animales No Se Visten  Los (Animals Should Definitely Not Wear Clothing) with CD","3":"4.11","4":"NA","5":"32"},{"1":"William Arrow","2":"Return to the Planet of the Apes #2: Escape from Terror Lagoon","3":"3.00","4":"10","5":"NA"},{"1":"H.G. Wells","2":"The Complete Science Fiction Treasury of H.G. Wells","3":"4.14","4":"45","5":"NA"},{"1":"Frederick P. Lenz","2":"How To Meditate: An Anthology Of Talks On Meditation And \"Meditation: The Bridge Is Flowing But The River Is Not\"","3":"0.00","4":"NA","5":"228"},{"1":"Frederick P. Lenz","2":"Insights: Talks On The Nature Of Existence","3":"0.00","4":"NA","5":"304"},{"1":"Haruki Murakami/Ellen Archer/Patrick Lawlor","2":"Blind Willow  Sleeping Woman: 24 Stories","3":"3.84","4":"28","5":"NA"},{"1":"Franz Kafka","2":"Der Prozess","3":"3.98","4":"2","5":"NA"},{"1":"Philip Pullman","2":"Clockwork (Cover to Cover)","3":"3.87","4":"24","5":"NA"},{"1":"Dobrica Erić","2":"Venac sonetnih venaca; Puževa srma","3":"0.00","4":"NA","5":"222"},{"1":"M.M. Kaye","2":"The Far Pavilions","3":"4.21","4":"19","5":"NA"},{"1":"Stephen King/John  Glover","2":"Gray Matter and Other Stories from Night Shift","3":"3.93","4":"156","5":"NA"},{"1":"Billy Crystal/Elizabeth Sayles","2":"Ya Sé Que Te Quiero","3":"4.19","4":"NA","5":"40"},{"1":"Jason Hook","2":"Roald Dahl: The Storyteller (Famous Lives)","3":"4.06","4":"NA","5":"48"},{"1":"Roald Dahl/Quentin Blake","2":"Les Nouvelles Recettes irrésistibles de Roald Dahl","3":"4.14","4":"NA","5":"64"},{"1":"Dan Simmons/Jean-Daniel Brèque","2":"Les Larmes d'Icare","3":"3.81","4":"NA","5":"357"},{"1":"Andrew P. Trout","2":"City on the Seine: Paris in the Time of Richelieu and Louis XIV  1614-1715","3":"4.17","4":"NA","5":"288"},{"1":"Robert L. Geneve","2":"A Book of Blue Flowers","3":"3.83","4":"NA","5":"327"},{"1":"Sam Bass Warner","2":"Streetcar Suburbs: The Process of Growth in Boston  1870-1900","3":"NA","4":"236","5":"NA"},{"1":"SparkNotes","2":"A Streetcar Named Desire (SparkNotes Literature Guide)","3":"3.29","4":"NA","5":"96"},{"1":"João Guimarães Rosa","2":"Premières Histoires","3":"4.33","4":"NA","5":"205"},{"1":"Stephen King/Campbell Scott","2":"The Shining","3":"4.22","4":"13","5":"NA"},{"1":"Graham Handley","2":"Brodie's notes on Aldous Huxley's brave new world","3":"0.00","4":"NA","5":"71"},{"1":"James Redfield/Lou Diamond Phillips","2":"The Celestine Prophecy","3":"3.64","4":"64","5":"NA"},{"1":"George R.R. Martin/Roy Dotrice","2":"A Clash of Kings (A Song of Ice and Fire  #2)","3":"4.41","4":"113","5":"NA"},{"1":"Michael Pollan/Scott Brick","2":"The Botany of Desire: A Plant's-Eye View of the World","3":"4.06","4":"117","5":"NA"},{"1":"Alexander  Walker","2":"It's Only a Movie  Ingrid: Encounters on and Off Screen","3":"3.80","4":"NA","5":"320"},{"1":"Frank N. Magill","2":"American Film Guide","3":"0.00","4":"NA","5":"5"},{"1":"Albert Camus","2":"Caligula and Three Other Plays","3":"4.04","4":"17","5":"NA"},{"1":"Agatha Christie/Hugh Fraser","2":"One  Two  Buckle My Shoe (Hercule Poirot  #23)","3":"3.76","4":"14388","5":"NA"},{"1":"Agatha Christie/Rosalind Ayres","2":"A Caribbean Mystery","3":"3.80","4":"49","5":"NA"},{"1":"Agatha Christie/Hugh Fraser","2":"The Listerdale Mystery And Eleven Other Stories","3":"3.56","4":"1824","5":"NA"},{"1":"J. Martin Evans","2":"The Man and the Author: John Milton: Twentieth Century Perspectives","3":"0.00","4":"NA","5":"386"},{"1":"David E. Smith (Turgon of TheOneRing.net","2":"The Tolkien Fan's Medieval Reader","3":"NA","4":"400","5":"NA"},{"1":"Karen  O'Connor/Larry J. Sabato","2":"American Government: Continuity and Change  Texas Edition","3":"2.83","4":"NA","5":"1088"},{"1":"Richard P. Feynman","2":"The Feynman Lectures on Physics Vols 3-4","3":"4.71","4":"21","5":"NA"},{"1":"Richard P. Feynman","2":"The Feynman Lectures on Physics Vols 7-8","3":"4.80","4":"20","5":"NA"},{"1":"Chris L. Demarest/Berlitz Publishing Company","2":"La gata perdida = The Missing Cat (Las Aventuras de Nicolas = Adventures with Nicholas)","3":"4.14","4":"NA","5":"64"},{"1":"Patrick O'Brian","2":"Master and Commander (Aubrey/Maturin Book 1)","3":"4.10","4":"1","5":"NA"},{"1":"Patrick O'Brian/Simon Vance","2":"The Reverse of the Medal (Aubrey/Maturin  #11)","3":"4.41","4":"3598","5":"NA"},{"1":"Gustave Flaubert/Donada  Peters","2":"Madame Bovary","3":"3.67","4":"3","5":"NA"},{"1":"Stephen King/Ron McLarty","2":"'Salem's Lot","3":"4.02","4":"56","5":"NA"},{"1":"David   Ward/Parveen Adams/Seamus Heaney/Ivan Gaskell","2":"Canopy: A Work for Voice and Light in Harvard Yard","3":"0.00","4":"NA","5":"63"},{"1":"NA","2":"The Goon Show  Volume 4: My Knees Have Fallen Off!","3":"5.00","4":"3","5":"2"},{"1":"NA","2":"The Goon Show: Moriarty Where Are You?","3":"4.43","4":"NA","5":"2"},{"1":"NA","2":"The Goon Show  Volume 11: He's Fallen in the Water!","3":"5.00","4":"2","5":"2"},{"1":"John Banville/John      Lee","2":"The Sea","3":"3.51","4":"42","5":"NA"},{"1":"Greg Tang/Heather Cahoon","2":"Math Fables","3":"4.03","4":"NA","5":"40"},{"1":"David Axton/Dean Koontz/Paul Michael","2":"Icebound","3":"3.76","4":"46","5":"NA"},{"1":"Dean Koontz/Stephen Lang","2":"From the Corner of His Eye","3":"4.03","4":"29","5":"NA"},{"1":"Robert   Harris/Michael Cumpsty","2":"Pompeii","3":"3.82","4":"7","5":"NA"},{"1":"Robert B. Parker/Joe Mantegna","2":"Hundred-Dollar Baby (Spenser  #34)","3":"3.82","4":"57","5":"NA"},{"1":"Robert B. Parker/Joe Mantegna","2":"The Spenser Collection: Volume I (Spenser  #27-28)","3":"4.26","4":"77","5":"NA"},{"1":"Robert B. Parker/Joe Mantegna","2":"School Days (Spenser  #33)","3":"3.87","4":"24","5":"NA"},{"1":"Robert B. Parker/Joe Mantegna","2":"Potshot (Spenser  #28)","3":"3.89","4":"2","5":"NA"},{"1":"Nelson DeMille/Otto Penzler","2":"The Best American Mystery Stories 2004","3":"3.55","4":"3","5":"NA"},{"1":"James Ellroy/Otto Penzler/John Biguenet/Michael Connelly/Thomas H. Cook/Sean Doolittle/Brendan DuBois/David Edgerley Gates/Joe Gores/James Grady/Clark Howard/Stuart M. Kaminsky/Joe R. Lansdale/Michael Malone/Annette Meyers/Joyce Carol Oates/Robert B. Parker/F.X. Toole/Daniel Waterman/Scott Wolven/Fred Melton","2":"The Best American Mystery Stories 2002","3":"3.58","4":"NA","5":"1"},{"1":"Stephen Hunter/Beau Bridges","2":"Time To Hunt (Bob Lee Swagger  #3)","3":"4.26","4":"11","5":"NA"},{"1":"Stephen Hunter/Philip Bosco","2":"The Day Before Midnight","3":"4.01","4":"1","5":"NA"},{"1":"Stephen Hunter/Jay O. Sanders","2":"Hot Springs (Earl Swagger  #1)","3":"4.13","4":"3","5":"NA"},{"1":"Stephen Hunter/Beau Bridges","2":"Point Of Impact (Bob Lee Swagger  #1)","3":"4.27","4":"15","5":"NA"},{"1":"Stephen Hunter/Will Patten","2":"Dirty White Boys","3":"4.05","4":"1","5":"NA"},{"1":"Douglas Preston/Lincoln Child/Scott Brick","2":"The Book of the Dead  (Pendergast  #7; Diogenes  #3)","3":"4.13","4":"112","5":"NA"},{"1":"Douglas Preston/Lincoln Child","2":"The Wheel of Darkness (Pendergast  #8)","3":"3.93","4":"41","5":"NA"},{"1":"E.L. Doctorow/Sam Waterston","2":"Waterworks","3":"3.44","4":"16","5":"NA"},{"1":"Michael Crichton/Chris Noth/Anthony Heald","2":"The Michael Crichton Collection: Jurassic Park / The Lost World / The Andromeda Strain","3":"4.29","4":"107","5":"NA"},{"1":"James Wesley","2":"Patriots (The Coming Collapse)","3":"NA","4":"342","5":"NA"},{"1":"Agatha Christie/Hugh Fraser","2":"And Then There Were None","3":"4.26","4":"214","5":"NA"},{"1":"Elizabeth Berg","2":"Open House","3":"3.70","4":"NA","5":"NA"},{"1":"Rumiko Takahashi","2":"らんま½ 12","3":"4.06","4":"NA","5":"176"},{"1":"Al Franken","2":"You're Good Enough  You're Smart Enough  & Doggone It  People Like You!","3":"3.89","4":"18","5":"NA"},{"1":"John Weld/Phil Interlandi","2":"Laguna  I Love You: The Best of \"Our Town\"","3":"0.00","4":"NA","5":"285"},{"1":"Gordon Korman","2":"The Deep (Dive Trilogy)","3":"3.78","4":"NA","5":"148"},{"1":"Jay Parini/August Wilson","2":"American Writers  Supplement VIII","3":"0.00","4":"NA","5":"400"},{"1":"T. Coraghessan Boyle","2":"L'Orient  c'est l'Orient","3":"3.64","4":"NA","5":"370"},{"1":"Christopher   Black/Mark Anestis","2":"McGraw-Hill's SAT I (McGraw-Hill's SAT I)","3":"3.67","4":"NA","5":"890"},{"1":"Eleanor J. Gibson","2":"An Odyssey in Learning and Perception","3":"4.50","4":"NA","5":"654"},{"1":"Andrew      Hunt","2":"The Road To War  1933 39","3":"0.00","4":"NA","5":"128"},{"1":"Anthony E. Wolf","2":"I'll Be Home Before Midnight and I Won't Get Pregnant","3":"0.00","4":"NA","5":"288"},{"1":"Daniel Goleman/Warren Bennis","2":"The Power of Truth: A Leading with Emotional Intelligence Conversation with Warren Bennis","3":"3.82","4":"11","5":"NA"},{"1":"Georg Wilhelm Friedrich Hegel","2":"Wissenschaft der Logik: Die Lehre Vom Begriff (1816)","3":"4.78","4":"NA","5":"337"},{"1":"James M. Kouzes","2":"Leadership Challenge","3":"4.05","4":"NA","5":"50"},{"1":"Mary Pope Osborne/Salvatore Murdocca","2":"Haunted Castle on Hallows Eve (Magic Tree House #30)","3":"4.04","4":"7","5":"NA"},{"1":"Frank  Graham","2":"Since \"Silent Spring\"","3":"3.78","4":"1","5":"NA"},{"1":"Apollodorus/Richard Wagner","2":"Mythographi Graeci 1: Apollodori Bibliotheca  Apollodori epitoma  Procli excerpta ex cycli epici carminibus  Pediasmi libellus de duodecim Herculis...Graecorum et Romanorum Teubneriana","3":"0.00","4":"NA","5":"335"},{"1":"Virginia Lee Burton","2":"Katy and the Big Snow (Book & Cassette)","3":"4.24","4":"NA","5":"40"},{"1":"Julia Glass","2":"Secretos De Familia","3":"3.57","4":"NA","5":"528"},{"1":"Robert A. Weiss/Margaret A. Weiss/Karen L. Beasley","2":"Sclerotherapy and vein treatment","3":"0.00","4":"NA","5":"248"},{"1":"Neal Barrett Jr./Martha Banta","2":"Judge Dredd (Audio Cassette)","3":"2.96","4":"6","5":"NA"},{"1":"Georg Wilhelm Friedrich Hegel/Michael John Petry","2":"The Berlin Phenomenology","3":"0.00","4":"NA","5":"210"},{"1":"Ram Dass/Richard Alpert","2":"Here We All Are","3":"4.21","4":"61","5":"NA"},{"1":"Ram Dass/Richard Alpert","2":"A Spiritual Journey","3":"4.16","4":"68","5":"NA"},{"1":"Ram Dass/Richard Alpert","2":"Finding and Exploring Your Spiritual Path: An Exploration of the Pleasures and Perils of Seeking Personal Enlightenment","3":"3.95","4":"21","5":"NA"},{"1":"Rick Osborne/Kevin Miller","2":"Your Child and Jesus: A Family Activity Book","3":"0.00","4":"NA","5":"112"},{"1":"Adrian Guelke/Michael Cox/Fiona Stephen","2":"A Farewell to Arms?: Beyond the Good Friday Agreement","3":"4.33","4":"NA","5":"624"},{"1":"Dan Hitt/James Beckett III","2":"Beckett Football Card Price Guide","3":"0.00","4":"NA","5":"830"},{"1":"Kim Harrison","2":"Pacto Con un Demonio","3":"4.39","4":"NA","5":"512"},{"1":"Virginia Lee Burton","2":"Choo Choo (Carry Along Book & Cassette Favorites)","3":"3.91","4":"NA","5":"48"},{"1":"Gayle Lynds/Robert Ludlum/Don Leslie","2":"The Altman Code (Covert-One  #4)","3":"3.95","4":"5","5":"NA"},{"1":"John Grisham/Michael Beck/Blair Brown/D.W. Moffett","2":"John Grisham Value Collection: A Time to Kill  The Firm  The Client","3":"4.50","4":"476","5":"NA"},{"1":"J. Michael Lennon/Lawrence M. Lasher","2":"Conversations with Bernard Malamud (Literary Conversations)","3":"4.00","4":"NA","5":"156"},{"1":"Nancy White Carlstrom/Lori McElrath-Eslick","2":"Does God Know How to Tie Shoes?","3":"4.20","4":"NA","5":"32"},{"1":"Anna Maxted","2":"Kopfüber ins Glück","3":"3.54","4":"NA","5":"512"},{"1":"Hugh Honour/John Fleming","2":"The Visual Arts: A History","3":"3.85","4":"NA","5":"960"},{"1":"George E. Stanley/Guy Francis","2":"Operation Spy School (Adam Sharp  #4)","3":"3.80","4":"NA","5":"44"},{"1":"Clive Barker","2":"The Damnation Game","3":"3.82","4":"NA","5":"374"},{"1":"Barry Chubin","2":"13th Directorate","3":"2.62","4":"8","5":"NA"},{"1":"Brown","2":"Brown's Star Atlas: Showing All The Bright Stars With Full Instructions How To Find And Use Them For Navigational Purposes And Department Of Trade Examinations.","3":"NA","4":"49","5":"NA"},{"1":"Terry Brooks","2":"First King of Shannara (Shannara Prequel)","3":"3.96","4":"1","5":"NA"},{"1":"Paramahansa Yogananda","2":"La Ley del Exito","3":"4.44","4":"NA","5":"32"},{"1":"Tom Arnett/Dick Stivers/Don Pendleton","2":"Five Rings of Fire (Able Team  #11)","3":"3.64","4":"39","5":"NA"},{"1":"J.R.R. Tolkien/Martin Shaw","2":"The Silmarillion  Volume 3","3":"4.19","4":"60","5":"NA"},{"1":"Nayantara Sahgal","2":"Mistaken Identity","3":"2.98","4":"NA","5":"324"},{"1":"Michael Syvanen/Clarence I. Kado","2":"Horizontal Gene Transfer","3":"4.00","4":"NA","5":"445"},{"1":"United Feature Syndication","2":"Random House Crossword Mega Omnibus  Volume 1","3":"0.00","4":"NA","5":"336"},{"1":"Jasmine C.M. Luk/Angel M.Y. Lin","2":"Classroom Interactions as Cross-Cultural Encounters: Native Speakers in EFL Lessons","3":"0.00","4":"NA","5":"241"},{"1":"Georgina Grey","2":"Turn of the Cards","3":"3.00","4":"3","5":"NA"},{"1":"Gordon Korman/Holter Graham","2":"Shipwreck (Island I)","3":"3.80","4":"103","5":"NA"},{"1":"John Grisham","2":"Tiempo De Matar","3":"4.07","4":"3","5":"NA"},{"1":"Louis Sachar","2":"Super Fast Out of Control","3":"3.75","4":"NA","5":"128"},{"1":"James E. Campbell","2":"The American Campaign: U.S. Presidential Campaigns and the National Vote","3":"5.00","4":"NA","5":"314"},{"1":"Carl Hiaasen/Edward Asner","2":"The Carl Hiaasen Collection: Lucky You and Sick Puppy","3":"4.32","4":"90","5":"NA"},{"1":"Janet Evanovich/Charlotte Hughes","2":"The Full Box (Full  #1-4)","3":"4.29","4":"101","5":"NA"},{"1":"Edgar Rice Burroughs/John Bolen","2":"The Chessmen of Mars (Barsoom #5)","3":"3.83","4":"5147","5":"NA"},{"1":"Better Homes and Gardens","2":"Day and Night","3":"0.00","4":"NA","5":"32"},{"1":"Terry Pastor/Damon Knight/Philip K. Dick/C.M. Kornbluth/Bob Shaw/Frederik Pohl/Alfred Bester/C.L. Moore/Henry Kuttner/Robert Sheckley/James Blish/Cordwainer Smith/Brian W. Aldiss/Jack Vance","2":"Worlds of Wonder","3":"4.13","4":"NA","5":"368"},{"1":"Jim Lehrer","2":"Fine Lines (One-Eyed Mack  #6)","3":"3.23","4":"17","5":"NA"},{"1":"Sara Barton-Wood","2":"Bill Gates: Computer Legend (Famous Lives)","3":"5.00","4":"NA","5":"48"},{"1":"Herman Melville/Hershel Parker/G. Thomas Tanselle/Harrison Hayford/Robert Sandberg/Alma MacDougall Reising","2":"Billy Budd  Sailor and Other Uncompleted Writings: The Writings of Herman Melville  Volume 13","3":"3.11","4":"NA","5":"1016"},{"1":"Glenn M. Schwartz","2":"After Collapse: The Regeneration of Complex Societies","3":"4.00","4":"NA","5":"336"},{"1":"James Craig Holte","2":"The Fantastic Vampire: Studies in the Children of the Night: Selected Essays from the Eighteenth International Conference on the Fantastic in the Arts","3":"0.00","4":"NA","5":"176"},{"1":"Kenneth H. Blanchard","2":"Mission Possible","3":"3.44","4":"NA","5":"242"},{"1":"Mary Higgins Clark/Jan Maxwell","2":"Stowaway and Milk Run: Two Unabridged Stories From Mary Higgins Clark","3":"3.49","4":"64","5":"NA"},{"1":"Babette Smith","2":"A Cargo of Women: Susannah Watson and the Convicts of the Princess Royal","3":"3.58","4":"NA","5":"264"},{"1":"Bill Hybels/Keri Wyatt Kent","2":"Courageous Faith Through the Year","3":"3.50","4":"NA","5":"327"},{"1":"Warren G. Bennis","2":"The Leadership Challenge: Skills for Taking Charge","3":"0.00","4":"NA","5":"60"},{"1":"Victoria Holt","2":"The Mask of the Enchantress","3":"3.85","4":"21","5":"NA"},{"1":"Peter  Dale/Ian          Hamilton/Anthony Thwaite","2":"Anthony Thwaite: In Conversation With Peter Dale and Ian Hamilton","3":"0.00","4":"NA","5":"96"},{"1":"David Bromberg/Jay Ungar/Molly Mason/Garrison Keillor/Mark O'Connor/Jonathan Winters/Duck Baker/Washington Irving/Anjelica Huston/Nicolas Cage/Leo Kottke","2":"Treasury of American Tall Tales: Volume 1: Davy Crockett  Rip Van Winkle  Johnny Appleseed  Paul Bunyan (Rabbit Ears)","3":"3.86","4":"36","5":"NA"}],"options":{"columns":{"min":{},"max":[10],"total":[5]},"rows":{"min":[10],"max":[10],"total":[161]},"pages":{}}}
+  </script>
 </div>
-<div id="answer-using-slice" class="section level1">
-<h1>answer using slice</h1>
-<p>slice is subsetting data by index - good for decimating, selecting
-all odd. all even, for example</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX3NlbGVjdGVkICU+JSBcbnNsaWNlX21heChydW50aW1lLCBuPTEwKVxuYGBgIn0= -->
-<pre class="r"><code>movies_selected %&gt;% 
-slice_max(runtime, n=10)</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX3NlbGVjdGVkICU+JSBcbnNsaWNlX21pbihydW50aW1lLCBuPTEwKVxuYGBgIn0= -->
-<pre class="r"><code>movies_selected %&gt;% 
-slice_min(runtime, n=10)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9idXN0X2Jvb2tzX2RhdGEgPC0gYm9va3NfZGF0YSAlPiUgXG5tdXRhdGUocmF0aW5nc19jb3VudCA9IG5hX2lmKHJhdGluZ3NfY291bnQsIDApKSAlPiUgICBcbm11dGF0ZShhdXRob3JzID0gbmFfaWYoYXV0aG9ycywgXCJOT1QgQSBCT09LXCIpKSAlPiUgIFxubXV0YXRlKG51bV9wYWdlcyA9IG5hX2lmKG51bV9wYWdlcywgMCkpICU+JSBcbmRyb3BfbmEoKVxuYGBgIn0= -->
+<pre class="r"><code>robust_books_data &lt;- books_data %&gt;% 
+mutate(ratings_count = na_if(ratings_count, 0)) %&gt;%   
+mutate(authors = na_if(authors, &quot;NOT A BOOK&quot;)) %&gt;%  
+mutate(num_pages = na_if(num_pages, 0)) %&gt;% 
+drop_na()</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2ltcHV0ZWQgPC0gbW92aWVzX2ltcHV0ZWQgJT4lIFxuICBtdXRhdGUoYnVkZ2V0ID0gaWZfZWxzZShidWRnZXQ8MTAwLG1lZGlhbihidWRnZXQpLCBidWRnZXQpKSAlPiUgXG4gIGFycmFuZ2UoYnVkZ2V0KVxuYGBgIn0= -->
-<pre class="r"><code>movies_imputed &lt;- movies_imputed %&gt;% 
-  mutate(budget = if_else(budget&lt;100,median(budget), budget)) %&gt;% 
-  arrange(budget)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2tpbShyb2J1c3RfYm9va3NfZGF0YSlcbmBgYCJ9 -->
+<pre class="r"><code>skim(robust_books_data)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>check results of above</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShtb3ZpZXNfaW1wdXRlZClcbmBgYCJ9 -->
-<pre class="r"><code>summary(movies_imputed)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<div id="extension" class="section level2">
-<h2>Extension</h2>
-<p>Q1</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2J1ZGdldHMgPC0gbW92aWVzX2ltcHV0ZWQgJT4lIFxuICBtdXRhdGUoYnVkZ2V0X3R5cGUgPSBjYXNlX3doZW4oXG4gICAgICAgICBidWRnZXQgPj0gNDBlNiB+IFwiQmlnIGJ1ZGdldFwiLFxuICAgICAgICAgYnVkZ2V0ID49IDEyZTYgfiBcIk1lZGl1bSBidWRnZXRcIixcbiAgICAgICAgIFRSVUUgfiBcIlNtYWxsIGJ1ZGdldFwiXG4gICkpICU+JSBcbiAgYXJyYW5nZShkZXNjKGJ1ZGdldCkpXG5gYGAifQ== -->
-<pre class="r"><code>movies_budgets &lt;- movies_imputed %&gt;% 
-  mutate(budget_type = case_when(
-         budget &gt;= 40e6 ~ &quot;Big budget&quot;,
-         budget &gt;= 12e6 ~ &quot;Medium budget&quot;,
-         TRUE ~ &quot;Small budget&quot;
-  )) %&gt;% 
-  arrange(desc(budget))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>double check results of above</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2J1ZGdldHMgJT4lIFxuICBncm91cF9ieShidWRnZXRfdHlwZSkgJT4lIFxuICBzdW1tYXJpc2UoY291bnQ9bigpLCBtaW5fYnVkZ2V0PW1pbihidWRnZXQpLCBtYXhfYnVkZ2V0PW1heChidWRnZXQpKVxuYGBgIn0= -->
-<pre class="r"><code>movies_budgets %&gt;% 
-  group_by(budget_type) %&gt;% 
-  summarise(count=n(), min_budget=min(budget), max_budget=max(budget))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>Q2</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlfaXNuYV9mdW4gPC0gZnVuY3Rpb24oeCkge1xuICBzdW0oaXMubmEoeCkpXG59XG5gYGAifQ== -->
-<pre class="r"><code>my_isna_fun &lt;- function(x) {
-  sum(is.na(x))
-}</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2RhdGEgJT4lXG4gICAgc2VsZWN0KHdoZXJlKGlzLm51bWVyaWMpKSAlPiUgXG4gICAgc3VtbWFyaXNlKFxuICAgIGFjcm9zcyguY29scyA9IHdoZXJlKGlzLm51bWVyaWMpLFxuICAgICAgICAgICAgICAgIC5mbnMgPSBteV9pc25hX2Z1bilcbiAgICAgICAgICAgICAgICApXG5gYGAifQ== -->
-<pre class="r"><code>movies_data %&gt;%
-    select(where(is.numeric)) %&gt;% 
-    summarise(
-    across(.cols = where(is.numeric),
-                .fns = my_isna_fun)
-                )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2RhdGEgJT4lXG4gICAgc2VsZWN0KHdoZXJlKGlzLmNoYXJhY3RlcikpICU+JSBcbiAgICBzdW1tYXJpc2UoXG4gICAgYWNyb3NzKC5jb2xzID0gd2hlcmUoaXMuY2hhcmFjdGVyKSxcbiAgICAgICAgICAgICAgICAuZm5zID0gbXlfaXNuYV9mdW4pXG4gICAgICAgICAgICAgICAgKVxuYGBgIn0= -->
-<pre class="r"><code>movies_data %&gt;%
-    select(where(is.character)) %&gt;% 
-    summarise(
-    across(.cols = where(is.character),
-                .fns = my_isna_fun)
-                )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2RhdGEgJT4lXG4gICAgc2VsZWN0KHdoZXJlKGlzLm51bWVyaWMpKSAlPiUgXG4gICAgc3VtbWFyaXNlKFxuICAgIGFjcm9zcyguY29scyA9IHdoZXJlKGlzLm51bWVyaWMpLFxuICAgICAgICAgICAgICAgIC5mbnMgPSB+c3VtKGlzLm5hKC54KSkpXG4gICAgICAgICAgICAgICAgKVxuYGBgIn0= -->
-<pre class="r"><code>movies_data %&gt;%
-    select(where(is.numeric)) %&gt;% 
-    summarise(
-    across(.cols = where(is.numeric),
-                .fns = ~sum(is.na(.x)))
-                )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW92aWVzX2RhdGEgJT4lXG4gICAgc2VsZWN0KHdoZXJlKGlzLmNoYXJhY3RlcikpICU+JSBcbiAgICBzdW1tYXJpc2UoXG4gICAgYWNyb3NzKC5jb2xzID0gd2hlcmUoaXMuY2hhcmFjdGVyKSxcbiAgICAgICAgICAgICAgICAuZm5zID0gfnN1bShpcy5uYSgueCkpKVxuICAgICAgICAgICAgICAgIClcbmBgYCJ9 -->
-<pre class="r"><code>movies_data %&gt;%
-    select(where(is.character)) %&gt;% 
-    summarise(
-    across(.cols = where(is.character),
-                .fns = ~sum(is.na(.x)))
-                )</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
+<!-- rnb-output-begin eyJkYXRhIjoi4pSA4pSAIERhdGEgU3VtbWFyeSDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgIFZhbHVlcyAgICAgICAgICAgXG5OYW1lICAgICAgICAgICAgICAgICAgICAgICByb2J1c3RfYm9va3NfZGF0YVxuTnVtYmVyIG9mIHJvd3MgICAgICAgICAgICAgMTA5NjYgICAgICAgICAgICBcbk51bWJlciBvZiBjb2x1bW5zICAgICAgICAgIDEyICAgICAgICAgICAgICAgXG5fX19fX19fX19fX19fX19fX19fX19fXyAgICAgICAgICAgICAgICAgICAgIFxuQ29sdW1uIHR5cGUgZnJlcXVlbmN5OiAgICAgICAgICAgICAgICAgICAgICBcbiAgY2hhcmFjdGVyICAgICAgICAgICAgICAgIDcgICAgICAgICAgICAgICAgXG4gIG51bWVyaWMgICAgICAgICAgICAgICAgICA1ICAgICAgICAgICAgICAgIFxuX19fX19fX19fX19fX19fX19fX19fX19fICAgICAgICAgICAgICAgICAgICBcbkdyb3VwIHZhcmlhYmxlcyAgICAgICAgICAgIE5vbmUgICAgICAgICAgICAgXG4ifQ== -->
+<pre><code>── Data Summary ────────────────────────
+                           Values           
+Name                       robust_books_data
+Number of rows             10966            
+Number of columns          12               
+_______________________                     
+Column type frequency:                      
+  character                7                
+  numeric                  5                
+________________________                    
+Group variables            None             </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbIm9uZV9za2ltX2RmIiwidGJsX2RmIiwidGJsIiwiZGF0YS5mcmFtZSJdLCJucm93Ijo3LCJuY29sIjo4LCJzdW1tYXJ5Ijp7IkEgdGliYmxlIjpbIjcgw5cgOCJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE2MVV3VzRUTVJCMU5ydlp6WXBXa1hLQ0gwQkNTdFEycXVER0FjUUhWQ0QxNW5wMzNheVZYWHV4dmJTNTlSUDRMTDZBT3o5UWNlV1NZTzk2MHRSVUtFaEVjand6ZWVPeDM1dkp4ZnZMUlhxWklvU0dLQXdDTkl5TWlhSlBIei9NM2lBVE1jNEFoV2hzOTFzRG1ob2pNV3RpVnV4K2lEVFRGWFZPVEZwZENxbWNHektWY1dlUHJIMjZjTjVSUmZpeUpVdUtjMUZBOXFScHM0cmxSRFBCY1VFMHhNZGRYSlZVMnN5dTl0OC94eGJ6OW1mdi9PdStWeVBvbUVIOWpaMmZ1QjB3RytQZW16MTFzY2paN3c2OHE4TzgvSUhRODY4SXZmcmVML1RDUE1PSWtIdzc3SnhIWWtXYzFGU2hYcWdFS0ZjclZ1TXZSREtTN1FRYmMxd3pwUmhmQWlvWGRWTlJUYkY4RUdCWU03NHp5UzFVb1hXajE4NUpPRzQ1Kzl4Q1NucFRNazFWUTNMcVhXNHN4YzBjTHRpeGVtZSt0dHZ0THg5b1dvQmdnd2Jnb0tmbUNWQXVxajBRZXVhQjR1SWEyNHFPRVFoUHI2VElXcVZ4SnNSSzJZNGpWMTdtcU5CNFJkZE8wOEhkbjF5UGxsSzBqYTArZlVLSm80d29paTN6TlpXZ1NIQWcrZDVSY0FwdUZTM01LVlBVZCtLK3lHRk5DVWdWcUFLczVnVGthODdPZCtiNVEvUTFSTVBtOUFUQ1ljbVVkZ1dpLzlnS3dkWWpJdWF0ZVJqTGdaZThKSkxrdXB2M2pTOTQxOFo2M2ZocTdtYzlub2E4SWtwNTZOU3FQYitXZlZmNFJXTFIyRDhoNVZpT3ZPU0I5QUtUbHR2K0ttWjUyZkxWN0d3QkRlTVdOR2E4WnljZUdjRHdpUElsNDBCZVZKR01WczQ1TnNQUVRjNjhrWXhyZUlvZGtia1dtZ0F1dGZQZ0l0M2owT1kzM3VUcFUrc0ZBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["skim_variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n_missing"],"name":[2],"type":["int"],"align":["right"]},{"label":["complete_rate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["min"],"name":[4],"type":["int"],"align":["right"]},{"label":["max"],"name":[5],"type":["int"],"align":["right"]},{"label":["empty"],"name":[6],"type":["int"],"align":["right"]},{"label":["n_unique"],"name":[7],"type":["int"],"align":["right"]},{"label":["whitespace"],"name":[8],"type":["int"],"align":["right"]}],"data":[{"1":"title","2":"0","3":"1","4":"2","5":"254","6":"0","7":"10209","8":"0","_rn_":"1"},{"1":"authors","2":"0","3":"1","4":"3","5":"750","6":"0","7":"6544","8":"0","_rn_":"2"},{"1":"isbn","2":"0","3":"1","4":"9","5":"10","6":"0","7":"10966","8":"0","_rn_":"3"},{"1":"isbn13","2":"0","3":"1","4":"13","5":"13","6":"0","7":"10966","8":"0","_rn_":"4"},{"1":"language_code","2":"0","3":"1","4":"2","5":"5","6":"0","7":"26","8":"0","_rn_":"5"},{"1":"publication_date","2":"0","3":"1","4":"8","5":"10","6":"0","7":"3640","8":"0","_rn_":"6"},{"1":"publisher","2":"0","3":"1","4":"2","5":"67","6":"0","7":"2248","8":"0","_rn_":"7"}],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[7]},"pages":{}}}
+  </script>
 </div>
+<!-- rnb-frame-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbIm9uZV9za2ltX2RmIiwidGJsX2RmIiwidGJsIiwiZGF0YS5mcmFtZSJdLCJucm93Ijo1LCJuY29sIjoxMSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI1IMOXIDExIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQTdWVlMyalVRQmllZmJmcFl4ZTNQUXFDRlVUWXBRK0tIaXlOVUt6MVZFV2hTQ0dkelU1M3cyNGVaaVo5SGFUMTRJTWVLb0xhWTZFaUhxUjRFTVdERjR0UXdVT3RSUkVSYXcvaVRSRkVzTmgxSnNtazNiRmdQYmdrTy8vLy9WLyttZnovTjVQVFBRTWQwb0FFQUlpQWFEZ01JakZxZ3RqWk04Y3pSd0JGcUJNQ1VWREx4akZLU2xPamp0NHB4dklEOFp4cGx2cDZmSzhSamlBYkZwQmlRNklaQlIrdE5SeGRzU2lNZmFEQkMyTkZOUjJEK09BZWdzYUlZcU1SRFkzeUNLVzZjKzM4YTJTeDdxK2U4N2VSOCtYVkYzdmYzVnRQeThucGFYVGcxaFBaYVcrYWx6UlZmdm1zTi80K2taU25NbmRXcnJjY0RmalBaMjg4WEo3LzFyMnkya1pPcWw5a0kvWjIvNFg0bkx4eHQvbm4wdEt5ZkxzbjMxLy9xTHpiOVlqcmx4ZC9yVEZIYnV5eTV0OUlYWEp4emczS2cvM2UyQ0x3WHkwT3VYaHlvV25pWSsrQ2JLOTV2Q3VXTjU0UStCL090YnA0YW1idzRQZW5NL0tFRjVRZk5IdWpNVnZOLzlTM3o4V2JmTjdqKys1NDdOVFZ6NVBNL3hHNTV2TlR3TzNOSk90ZWN2M21aZmU2NVAxdndWUDhvdkRGS25ZUW1mcFh1RXFiTVFQcVZGcmVldXE0eEhCSjA1VVJhR3N3VjBhQkVCVmR3M2hMbVEycXFWdGxSRnpCY2xaVVI5RHc3VERPYzh0cTlhMkkxZDRabUoxYjZHR09ScTIyVmc1SGl4b213b0pyYlhNMHl4Zk5CQjVtaGExVUtoc2lNUThKVkNpYkUwTUFISHE5STBrMXk5dElvRjRnSmZMRENwdlJyeEtIMDBPMm1YTXdVZGd1eGdyTE5DUThHYzhUcFlUR3FjVU9pdENrMi9scVJzRTJIWXZObmdaL1JodHlFQ09GZFVOSE51OVNlSmNORVZMeExJcURVWjVtU2J1cHZKUTEvN0Y3VlNkZVJOZU13SVJqWElSSXQ4aTQ3OVFZaW1ObzV4MnVLR20wcUJHRUxhajZyeFN1Q0lWSTBDTVMyWnJLNjZJV29RMVZnbXpxYklvTmQ2Vk54aTJ4bTBFU1lYK29aWWl4d0pWWXI3UER0cWNKY1lxRWFSSE5OTEJmNDVqd2NNZ1dnSlJqTUhYbE0yclJNVXFaOWc0dUYvL21zb3h0cyt1RVVnUmZGR1FVTklPWExsYUdPVlRtbnhlNkZkeDlrN1ZzTGZod1NHeURaSWxKSU9kSmJEZjRpUHR5WVBNM0xCU25nT3dHQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["skim_variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n_missing"],"name":[2],"type":["int"],"align":["right"]},{"label":["complete_rate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["mean"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p0"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["p25"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["p50"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["p75"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["p100"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["hist"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"bookID","2":"0","3":"1","4":"21296.466533","5":"1.310517e+04","6":"1","7":"10235.75","8":"20237.50","9":"32104.75","10":"45641","11":"▇▇▆▇▆","_rn_":"1"},{"1":"average_rating","2":"0","3":"1","4":"3.943137","5":"2.942012e-01","6":"1","7":"3.78","8":"3.96","9":"4.14","10":"5","11":"▁▁▁▇▂","_rn_":"2"},{"1":"num_pages","2":"0","3":"1","4":"339.130038","5":"2.401828e+02","6":"1","7":"197.00","8":"302.00","9":"416.00","10":"6576","11":"▇▁▁▁▁","_rn_":"3"},{"1":"ratings_count","2":"0","3":"1","4":"18197.109794","5":"1.132814e+05","6":"1","7":"113.25","8":"782.00","9":"5141.00","10":"4597666","11":"▇▁▁▁▁","_rn_":"4"},{"1":"text_reviews_count","2":"0","3":"1","4":"549.706456","5":"2.594196e+03","6":"0","7":"10.00","8":"48.00","9":"244.75","10":"94265","11":"▇▁▁▁▁","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10],"total":[11]},"rows":{"min":[10],"max":[10],"total":[5]},"pages":{}}}
+  </script>
 </div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Q1 - What languages are these books written in?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9idXN0X2Jvb2tzX2RhdGEgJT4lIFxuZ3JvdXBfYnkobGFuZ3VhZ2VfY29kZSkgJT4lIFxuc3VtbWFyaXNlKGxhbl9jb3VudCA9IG4oKSkgJT4lIFxuYXJyYW5nZShkZXNjKGxhbl9jb3VudCkpXG5gYGAifQ== -->
+<pre class="r"><code>robust_books_data %&gt;% 
+group_by(language_code) %&gt;% 
+summarise(lan_count = n()) %&gt;% 
+arrange(desc(lan_count))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MjYsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMjYgw5cgMiJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE0VlN1MDdETUJSMTNJYXFrVnBWNnNiSW5nekF3TXBETVBPbzFLMHlxWnNHWER0eWJCVXhzZk41L0FPZlFiaE9mZDJTaGVFa3h5ZSsxK2Y0NXVGbWZwYk1FMEpJai9RcEpiMFlLSWxuVDdmcEJRRUZGaEhwazZGN3Y4R21LUkFuVGdESC9rT1B5OExUbU10MDluaXd1THZDVFhYRmtLNDBSMXB3amZTbGtrZzNWaUI5WHl1a2xRcDdDNTBmSEhKOWlYcHAyTjdVQnFsZ0JxbTJkVEMwRFM2WTJGTWRPaFRpZ0JiQlc0MHFsY0dsM0Zzek50QXRGL0FhdFZkRlR1N0JyQVgrNWZFSldBQlNnTHZXTWNBTndwVU9YTEoyS0R0UWoraC8vSmxaTE5tRzEzNWUxSXNqd1dSaFdjRVh1VnBpOENHSXNMYlNkRm9NdGRwbTJNWmxvUi93YUpybXUzdFdMbGlOWjZHWUxKbGgyVXBEUGF4K09pVURWWmxTU1NpaVU1LzRzRGpTSFdGaXBYT3lUUE8xbGEvcDZibS9NaGVkZUh2Ujdyb0RwN3N6YWVON3hiN1hFZnkxcGNUNHNXRFBITWM1aHNodDRxelNwY1IvSndHMXpvd3lEUGNsdVJLb3RPSEl6eStYWURHa1VBTUFBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["language_code"],"name":[1],"type":["chr"],"align":["left"]},{"label":["lan_count"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"eng","2":"8785"},{"1":"en-US","2":"1397"},{"1":"en-GB","2":"211"},{"1":"spa","2":"211"},{"1":"fre","2":"139"},{"1":"ger","2":"95"},{"1":"jpn","2":"45"},{"1":"mul","2":"19"},{"1":"zho","2":"14"},{"1":"por","2":"10"},{"1":"grc","2":"9"},{"1":"en-CA","2":"7"},{"1":"ita","2":"5"},{"1":"enm","2":"3"},{"1":"lat","2":"3"},{"1":"rus","2":"2"},{"1":"swe","2":"2"},{"1":"ale","2":"1"},{"1":"ara","2":"1"},{"1":"gla","2":"1"},{"1":"glg","2":"1"},{"1":"msa","2":"1"},{"1":"nl","2":"1"},{"1":"nor","2":"1"},{"1":"tur","2":"1"},{"1":"wel","2":"1"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[26]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Ans.26 language codes. English language included eng en-USA and en-CA
+en-GB. ?? Investigate what mul and enm are.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9idXN0X2Jvb2tzX2RhdGEgJT4lIFxuICBmaWx0ZXIobGFuZ3VhZ2VfY29kZSAlaW4lIGMoXCJtdWxcIiwgXCJlbm1cIikpICU+JSBcbiAgc2VsZWN0KGF1dGhvcnMsIHRpdGxlLCBsYW5ndWFnZV9jb2RlKVxuYGBgIn0= -->
+<pre class="r"><code>robust_books_data %&gt;% 
+  filter(language_code %in% c(&quot;mul&quot;, &quot;enm&quot;)) %&gt;% 
+  select(authors, title, language_code)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MjIsIm5jb2wiOjMsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMjIgw5cgMyJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE4VlczWElUTnhSZUVseUd6TkNoZjdtZ0YyaVlkZ290M2szQ1VGcW1OOGFPN1ZDTTNjUWszSFdPdGNkZUVhMjBJMmxOekJVdjFLZm8yL1FoU0kvV0t3T0dkdWhGVzgrc0xlbjhmK2M3OGg1Mm50N1plcm9WUmRGbWRIRmpJOXBzMERKcVBCbDNtejlFZEVLYkM5SEY2TEwvUFNPbHp5ck5LTHBLejNZdHVEVVFQQU9VYk1nem00ekFHY0ZQMlVPWVF5bGQ4a1FhY1lyc0JDeksydURiWTJGbVFpWjlWR2JCRGt1Yk9hMVlGNFRoVXBlekxPbkZvNWoxdEpacGJmSEZPQ3Y1SWhVcDJxUWRkMk4ybEF1WGZZaHdlNzgwb3Foa0haaUxsUDJzNThEdC95eTkxa005blJwY3NIWUdKVWVUUEJSU3NnRW9WV3ZzdktQeENBeWgxVUZRN0FFcXExWFNqUi9IN0ZCUGhOL1ZkdkZBekVycVJZcXNqV1lPeXFGbFJ3QnpUQTBrUnc2VUpKK3Rva0E1Z1RLdnJXNk1ZQ0kxZTR5bVRDSHBhQVV5cFZCelZNSm0xRHRwQTU2ZjFMMTdwMFhiSTZGU01Na0pGU0lnWjMxS0RUaCtrUFM3anMrVHRhU1laUUtOU0tnb05JNlJrVDFkSklGZkEzaFJtdHJrZWg5TlRuQ3hQbHFMZjFrWUh3TVhyclRKQUtnZkhGbS9kRVMyRUdBQVo4K1JnQjlTU1hPQnlYNU1pWjJBeVlXYWViV1E3Z2dkR2c5NVNPVkVVTUptb3NsWkNIVzlWV2dwZGFvTmhYc0lPZUZPUFRRelpGMERMOUJFMGNzS2lTNm1WQ0xYckFlRy8vNGJzRWZhY0FpajhVN2JqK05XVE9TUmMweDZFbFZLbWJHaDlBMS9ld28vM2QzWjJXR0h5TFZKV1Z2UEtkOWE4dlUralJXUndzYkxoQVNuVlFzVml2UStlNkQxcVdXN3plL0RNUGVGZFpxSXBxZk1aVWlWUzExb3BkQUtJaDVCUXlhbk1SbnMvVE9EdTZzSTE5b0x5cWV3TEtHR2M3Uk8rT1dBVUFrZzNHdG5RcVlHbGZkSmZRWXUwZXYwUlVFUUw2aWQzbGFsUnVmQUtTUkprSmVUWVA3VlVWa1UxRGJsMkluT3lVdkM5aVZ5WjZEU1hMcXJkWGZIUmovemVkYUtCMFVtWnNSNllLMWNFOUsrb3JHbkRpZ2Y5R0ExWnpmNktDdUxVYVpKbjRzM25Bd05WYlVLc1RNbUgyMm8rRklTVG1QdzFkelVSc3dFelZuVEVtT2w3eXFtd2dtdGJyMisxcEFkQ3Q5STRhZDV5WWRhdUgrRXZpUlN0MnhLT0RDYVdmWkxLYzQwelZHVFZWSk9Vb3BFdHJYd21SZlNWb0svYVlqSXRiUFBseGtXRG9UNnhySmppcmpLL3U1eTNoazcxcEx0M2E5NVU5UG1Ybk4zajFVelI3dzg4NGFrU2tnRXgxOE81U0l2UERURDFOTnZ0SEJaMkFWeVBzWWNWd29IMW1YNWEzMGFuQmxCNm9KeXl5ZDZvS1pvbFBiY3FLNE55b2t1cnVmTHRObllVS2NrZUdUWXpRZkNBMXVDWlB0dlkvdFJCMzJZUU9IV3pBK2s5UHpvVmRlSzhNdU9nR3B1R0xrYUd2QWtEeFQyZVR3U0V3UFV6MTIyR3FJNzhZLzFsTi8yR3NzZVljcEdHblByRS83YjJmL3BmVVM1ejdwaTZwQjR0ZVFOcUxRaVpZLzZZS2l3a2RGVmttdTN3V1pleW45N2lTcC96L0kvQ0x5V3c5dXZLUTNscjk0YWpzMzY4QktVTHRPckc3SGhoSlBoeitlS0JNK1JHZjdLZFlwcjNpNGIvVHdPSHEvUXMvR1N2czdQei85WUQ4c2wyQkEySEc2bDRDQ2VHcktuM2FzMWswdTZxQWFZblByWHFzYWE4UVd6ZG5DMVZENlR0TW16VXAwMjkrNzZDSlY4K2JsU3I3ZmZXRzh1WTI2YzE3NGFZUUJRMGUwVElHaEltS3plemo2bWtxdUs0OExRdjF3b2hVNXQ3TFNEb0xkRkV4Tk9xdUtpVjM4QzNXVlhQMDRLQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["authors"],"name":[1],"type":["chr"],"align":["left"]},{"label":["title"],"name":[2],"type":["chr"],"align":["left"]},{"label":["language_code"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Michael Ochs/Patrick Javault/Ulrike Wasel","2":"1000 Record Covers","3":"mul"},{"1":"Virgil/Henry Rushton Fairclough/G.P. Goold","2":"Eclogues. Georgics. Aeneid: Books 1-6","3":"mul"},{"1":"Thucydides/C.F. Smith","2":"History of the Peloponnesian War: Bk. 1-2","3":"mul"},{"1":"Thucydides/C.F. Smith","2":"History of the Peloponnesian War: Bk. 5-6","3":"mul"},{"1":"Euripides/David Kovacs","2":"Cyclops / Alcestis / Medea","3":"mul"},{"1":"Euripides/David Kovacs","2":"Children of Heracles / Hippolytus / Andromache / Hecuba","3":"mul"},{"1":"Euripides/David Kovacs","2":"Suppliant Women / Electra / Heracles","3":"mul"},{"1":"Euripides/David Kovacs","2":"Trojan Women / Iphigenia Among the Taurians / Ion","3":"mul"},{"1":"Euripides/David Kovacs","2":"Helen / Phoenician Women / Orestes","3":"mul"},{"1":"Geoffrey Chaucer/Jill Mann","2":"The Canterbury Tales (original-spelling edition)","3":"enm"},{"1":"Geoffrey Chaucer/Larry Dean Benson/F.N. Robinson","2":"The Riverside Chaucer","3":"enm"},{"1":"Miguel de Cervantes Saavedra/Stanley Appelbaum","2":"Selections from Don Quixote - Selecciones de Don Quijote de la Mancha","3":"mul"},{"1":"Pablo Neruda/Donald Devenish Walsh","2":"The Captain's Verses","3":"mul"},{"1":"Virgil/G.P. Goold","2":"Virgil  Vol 2: Aeneid Books 7-12  Appendix Vergiliana","3":"mul"},{"1":"Pindar/William H. Race","2":"Olympian Odes. Pythian Odes","3":"mul"},{"1":"Pindar/William H. Race","2":"Nemean Odes. Isthmian Odes. Fragments","3":"mul"},{"1":"Dante Alighieri/Robert Pinsky/Michael Mazur","2":"The Inferno of Dante: A New Verse Translation (Bilingual Edition)","3":"mul"},{"1":"Hermann Hesse/Stanley Appelbaum","2":"Demian","3":"mul"},{"1":"Tacitus/Maurice Hutton/Robert Maxwell Ogilvie/E.H. Warmington/William Peterson/Michael Winterbottom","2":"Agricola / Germania / Dialogue on Oratory","3":"mul"},{"1":"Apollodorus/James George Frazer","2":"The Library 1  Books 1-3.9","3":"mul"},{"1":"Federico García Lorca","2":"The Selected Poems of Federico García Lorca","3":"mul"},{"1":"Geoffrey Chaucer/V.A. Kolve/Glending Olson","2":"The Canterbury Tales: Fifteen Tales and the General Prologue","3":"enm"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[22]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>quick google of example book on goodreads shows me that ‘enm’ is
+medieval english and ‘mul’ is multiple languages</p>
+<p>Q2 - which author has written the most books (or has most books
+listed on goodreads)?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9idXN0X2Jvb2tzX2RhdGEgJT4lIFxuc2VsZWN0KGF1dGhvcnMpICU+JSBcbiAgZ3JvdXBfYnkoYXV0aG9ycykgJT4lIFxuc3VtbWFyaXNlKGJvb2tfY291bnQgPSBuKCkpICU+JSBcbmFycmFuZ2UoZGVzYyhib29rX2NvdW50KSkgJT4lIFxuaGVhZCgxMClcbmBgYCJ9 -->
+<pre class="r"><code>robust_books_data %&gt;% 
+select(authors) %&gt;% 
+  group_by(authors) %&gt;% 
+summarise(book_count = n()) %&gt;% 
+arrange(desc(book_count)) %&gt;% 
+head(10)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgw5cgMiJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVN6MHZETUJUT091dFljVHJ3NEVVbElvaVg5YUFnWHVmR0JIL2dtSXE3eVZzYTE5QXRHVW1LN3VaZjdYSHpSUk9SRnI3MjVldjczcytNK3VQelpKd1FRdXBrSTRwSVBVYVR4TTlQZzg0bFFRWVBOYkpCbXU3N2dVNjdhRGl5alVqOGorMWhlcDNTRjVYeFhKV0dlM2JyMGZKRnppVzlGWExxdWZhb25JdEMwU2NvSUFlVGk4QS9hS01rZldUS1d0b0RuWGwrcHpzRm13UHQ1Vm9ZSzBMbzFsQndiV2hYMmx6SlpmQzk1NXJ4akJ0NkI2emd5Nzh5UUdZYTZKVlc3ekp3ZmNFS090QWdtVEJCZmdOejFBN0JXdTZLY1dsK2VpVGsxT01FY1l3NFFod2lEanoyRVh1VlljWFNoZk9EaWp6WmdCSXIxaUZsTWxHcWVHV3FsTGFpYm1LeGFZamd5b2crOGJWZXI3K3FhZGdNVEVnVHlDUURDK21iUmoyZVZoVkpReTJzVUJKRmtWdG1YQkhYZElWb2w5SlZrblZZWHNxaWMzYmhwMUlqdjAvTDI4ay9PL3JOR2ExOXJOakgydVJ5S21SWVl6eURDWitGUytUMjR6cE9GMXJnUUh3cnlKclVLZ3ZCTDJGcUZwaWY1c2pxRysyU3VTWEVBZ0FBIn0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["authors"],"name":[1],"type":["chr"],"align":["left"]},{"label":["book_count"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"P.G. Wodehouse","2":"40"},{"1":"Stephen King","2":"40"},{"1":"Rumiko Takahashi","2":"38"},{"1":"Orson Scott Card","2":"35"},{"1":"Agatha Christie","2":"33"},{"1":"Piers Anthony","2":"30"},{"1":"Mercedes Lackey","2":"29"},{"1":"Sandra Brown","2":"29"},{"1":"Dick Francis","2":"28"},{"1":"James Patterson","2":"23"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Q3 which authors have the most ratings?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9idXN0X2Jvb2tzX2RhdGEgJT4lIFxuc2VsZWN0KGF1dGhvcnMsIHRpdGxlLCByYXRpbmdzX2NvdW50KSAlPiUgXG5hcnJhbmdlKGRlc2MocmF0aW5nc19jb3VudCkpICU+JSAgIFxuaGVhZCgxMClcbmBgYCJ9 -->
+<pre class="r"><code>robust_books_data %&gt;% 
+select(authors, title, ratings_count) %&gt;% 
+arrange(desc(ratings_count)) %&gt;%   
+head(10)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjMsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgw5cgMyJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE2MVV6VzRUTVJCMms0YXFRWUZLU0lBRUIwdEZrQjZ5RmEwb3Y0SnVHcVZWYUpXUUJLazM1TjExZHEwNGR1UjFsSlpUSkU2OEJWZWVnZ1BpSVhnRG5vQURoNGJ4N3JwS2t4dzQ0TlZxeHQvTWZKNFovN1JycDd2RjB5SkNLSTlXY3ptVUw0Q0tDdSs3OWNvekJBaE1WdEFxV2pmeURKeHVKWjRJYmNCZnpBdzNPNW9PSXlvWXhTZjBuS29NdnRGdzJ2RGhydVI5UmtXR2xocE96Y0Vkd3BrSUwxM1hhMFRncXBKamdkREVBUGNhemxzSHQrWFl1RzJmRUhXT0R4VVJRVXQ5Ly9xZlhKWW5tUWFXRDZsVUljVk5OYWFjYjFlbFlyRUo5UVJSMnkycXFjSS92dlNwNHYrVXk1Vm0zZW1PR1dkaHBISDVVc09iajdjeTgyWTNvdmhJZWg0RFdDb01VMFV4VU9FcThmdllEUW16bmJ4dFhBK0k5c0VGTTRFMVROdm5OTE0rY0tHL1BNWVBjWTBPcEloeHVTMDlxalErSmlJTXBKaGQ5T1VSVVpCeVMycFRtVm5NY0xXZ2FDa0FrRDNzZnV3VEQvYW9mTVVUYis1YWloZExLUTRpTXZCU2hnNzFGZFh4QXNPT1pYaTFsS0dwZ2pRK3lTaVNjTXJPRmppZVdJNDkwNUk2YkprY3h4RWIycmcyN0FxMEc3UmpxWUpaTko1dHczVlhzQUhodUU3VUlJT2VMMDNxaVBCZXBjcWxERXlUaEU4WE10cmJNbWZMYkx2Nzd2T3ZDU2p1UWZPUnVWcHU5VnN1bGZwdUl0MmZrOFR1VG1naTl3ZGhLbCtuOXYzN254TDU1azhESmVQS3BTd0lNcUJ4ZHNieUdiaEdSanFTS3JZK21tbHV6MFZKRVcwSy8rRExrZEJ6Yk90d0JSM0xXSUkvWjFLWlRxZS81NWYxT1ludHNoWXNCa1FUcDZjZ0htWVhjeUZyY3FnWkhFUWdOWTlJWVM1NFJjMEJHeU5oTWdrcWZqUVMvY3JPMCtRU0dYczZTcGxlbk5IejZacTVhY1pWeUxpdVVSRXlZVnRRNE1TajNENEE1dFV4RlR0RDJFcHRTd0UwZHJUVXhQb1ZmY2t0a2hTSEx2NENSdjhXWmp3RkFBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["authors"],"name":[1],"type":["chr"],"align":["left"]},{"label":["title"],"name":[2],"type":["chr"],"align":["left"]},{"label":["ratings_count"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Stephenie Meyer","2":"Twilight (Twilight  #1)","3":"4597666"},{"1":"J.R.R. Tolkien","2":"The Hobbit  or There and Back Again","3":"2530894"},{"1":"J.D. Salinger","2":"The Catcher in the Rye","3":"2457092"},{"1":"Dan Brown","2":"Angels & Demons (Robert Langdon  #1)","3":"2418736"},{"1":"J.K. Rowling/Mary GrandPré","2":"Harry Potter and the Prisoner of Azkaban (Harry Potter  #3)","3":"2339585"},{"1":"J.K. Rowling/Mary GrandPré","2":"Harry Potter and the Chamber of Secrets (Harry Potter  #2)","3":"2293963"},{"1":"J.K. Rowling/Mary GrandPré","2":"Harry Potter and the Order of the Phoenix (Harry Potter  #5)","3":"2153167"},{"1":"J.R.R. Tolkien","2":"The Fellowship of the Ring (The Lord of the Rings  #1)","3":"2128944"},{"1":"George Orwell/Boris Grabnar/Peter Škerl","2":"Animal Farm","3":"2111750"},{"1":"J.K. Rowling/Mary GrandPré","2":"Harry Potter and the Half-Blood Prince (Harry Potter  #6)","3":"2095690"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Urgh - these are crazy popular books I have very little interest in,
+or have already read</p>
+<p>Q4. which authors have the least ratings</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9idXN0X2Jvb2tzX2RhdGEgJT4lIFxuc2VsZWN0KGF1dGhvcnMsIHRpdGxlLCByYXRpbmdzX2NvdW50KSAlPiUgXG5hcnJhbmdlKGRlc2MocmF0aW5nc19jb3VudCkpICU+JSAgIFxudGFpbCgxMClcbmBgYCJ9 -->
+<pre class="r"><code>robust_books_data %&gt;% 
+select(authors, title, ratings_count) %&gt;% 
+arrange(desc(ratings_count)) %&gt;%   
+tail(10)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjMsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgw5cgMyJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE2MVVYVThUUVJSZENwWFFpSkpvWW9neHVZa1BvRW5ib0pnQUw2YTA0VU1va0xaWTRvdTU3TjUyaDg3TzFKblpZbjNpOS9nMy9FTSsrUWplS2J1Z2ZUTnhrNTJaUFhQbTNNL1pWdVBzYmVtc0ZBVEJiREJYS0FTelJWNEd4ZFBPVG5rallJUS9ab0s1WU1IUFg1bjBaTUlNZ2lWK1M5bkc4eTVLUndaMnRQVlQzUkE2TVNMb0VDWVpaZkdBaEl1aG9aV09VOHJBRnkwUkRxQkI0WUJNdGUxU05BNzJoTEZ4VDVDTU10TGpRMkVSMmhXQUhVTXFqSFBCZW94R2tvV2FsS1F5OEdFVGllMXVDK2FOTTJ6cEJKM3hkbHI2WENpcmMrNnpsbzZpTVhzMGxsVGROZ0lWMUM1WU05dGVQa0EyQjU5SUtES3Uya1F6aHFaZ1d6bmg5ZTJaYllNYzJDVVBWRDNTeEFUZ2JOaTR1aXZIQ2hvNEVtU24wdlcwaVNwQ3lVSHhERFVPK2tDNGJLL2NpUW4yamJBeDFCUTZuUWpydHFBR25CMTJWdmRnUjZKU2NMekMxdS9DN2cyTjdodE1FcUg2bFFzY0laOVFzSytjMFZFYU9xRVZPQTBuOXlRNHRYNzg4Ry9VekZxakJvZWFvUzZPb1dkMEF2VlloTmpYc05yR0tKSjBqdUZneFhJemhLa0YxbXNSUmw3aU5vVGRWRVJrWDJWYTZ6N2NObXYzZmRxTWhlTWVuQkNHdEFWdExTTkJ4cTdBUnkxQ0x2VGE1dnE3OHRybXhtWVFYRTBLZUtRdG1CL2ZSN3dYRWRTUm0wK2VZMTczMVNPUkNQY042aEt0aGRWYWxBaURrdE90V0JpYTJ2UzVldkJ5TFhkbHVhVkgzTHlHbkNNSFhSS3h3akIycENvWm9lTjk1WEp6ZzNWMXdyM0IxWEFNN2FheU4zRitDNDZIWkhDU3hBWlpiaHVPV1pzRWZKbnZ0L1lOZmhHK21TblMrZlY0NUxYM1dKVnhyWnhIZk1POC94bE1udjgxVDEzb29zTGtyanRuTTNBZVV4ZHJZM09PRTA3bUYzYlJoNkQ2OW5Pb1UrL2xYMm9MUmw5V2NzVkZmZ3RYUE56YzNQeWFOaHY2a21SbWM3QVVvY05Lajd1TytPdDY2c2k4SHZyYzhhR0Mvd0VWcHc3UG1DbGdLVlhlazZnY3hxa2FsTjlzVEs2ZjM3OTlGck4xNlkvMTdLM053azJtVmN5MEhwRHE4MDhnZDE3aU9jbThiQnp5Sk9MSzBBaVYzK0VTbzdiaXRNT2NWd3ExekpGSmNNSDFienJDaU1SNEJRQUEifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["authors"],"name":[1],"type":["chr"],"align":["left"]},{"label":["title"],"name":[2],"type":["chr"],"align":["left"]},{"label":["ratings_count"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Walter Foster Creative Team","2":"Mandala Sand Art Kit","3":"1"},{"1":"Keith Donohue","2":"The Irish Anatomist: A Study of Flann O'Brien","3":"1"},{"1":"Rick Decker/Stuart Hirshfield","2":"programming.java: An Introduction to Programming Using Java: An Introduction to Programming Using Java","3":"1"},{"1":"Lisa S.  French","2":"A Long Way from Chicago (Saddleback's Focus on Reading Study Guides)","3":"1"},{"1":"Charles Allen","2":"The Savage Wars Of Peace: Soldiers' Voices 1945-1989","3":"1"},{"1":"Maeve Binchy","2":"Nos rêves de Castelbay","3":"1"},{"1":"Patrick Robinson","2":"Nimitz Class (Admiral Arnold Morgan  #1)","3":"1"},{"1":"Roddy Doyle/Brian Ajhar","2":"Rover rettet Weihnachten.","3":"1"},{"1":"Karen Zeinert/Mary Miller","2":"The Brave Women of the Gulf Wars: Operation Desert Storm and Operation Iraqi Freedom","3":"1"},{"1":"Brian Braithwaite/Noelle Walsh/Glyn Davies","2":"The Home Front","3":"1"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Some pretty niche books here :). Also again, ratings count of 1 is
+not particularly reliable</p>
+<p>Q5 which authors have highest average rating? and does it relate to
+number of books?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9idXN0X2Jvb2tzX2RhdGEgJT4lIFxuc2VsZWN0KGF1dGhvcnMsYXZlcmFnZV9yYXRpbmcscmF0aW5nc19jb3VudCkgJT4lICNhdmVyYWdlX3JhdGluZyBpcyBhdmVyYWdlIHJhdGluZyBwZXIgYm9va1xuICBncm91cF9ieShhdXRob3JzKSAlPiUgXG5zdW1tYXJpc2UoYm9va19jb3VudCA9IG4oKSxhdXRoX2F2Z19yYXRpbmc9bWVkaWFuKGF2ZXJhZ2VfcmF0aW5nKSkgJT4lICNhdXRoX2F2Z19yYXRpbmcgaXMgYXZlcmFnZSByYXRpbmcgZm9yIGFsbCBib29rcyBieSBvbmUgYXV0aG9yXG5hcnJhbmdlKGRlc2MoYXV0aF9hdmdfcmF0aW5nKSkgJT4lIFxuaGVhZCgxMCkgIFxuYGBgIn0= -->
+<pre class="r"><code>robust_books_data %&gt;% 
+select(authors,average_rating,ratings_count) %&gt;% #average_rating is average rating per book
+  group_by(authors) %&gt;% 
+summarise(book_count = n(),auth_avg_rating=median(average_rating)) %&gt;% #auth_avg_rating is average rating for all books by one author
+arrange(desc(auth_avg_rating)) %&gt;% 
+head(10)  </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjMsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMTAgw5cgMyJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE2MVN6Mi9UTUJSMjA0VnBrZGdtd1lIYmZPRGFCQUVIdUxFdHBXTmRKMVJBM2ExNlMweHMxYkVuMituV0czLzFqaXN2bWMxUVRoeDRVbUsvejkvNy9lYjUxYnZrS2lHRURNbE9GSkZoakZjUy8vaitlZlNCSUlMS2dPeVF2ZmE4UTlLTGprbklJWDZKZjNoenlvMndGR1ZpR0ZQWm83b3dvdUl1K3dxTnBMbHVLZ21XVHNDVWlobHY5eXBuU2lIenVKVE1aUFAwSXFVTElhMVcvdjFnTEprQ2VwblNHWENwYnoxODlBVVU5VElENDRUS3B1QUVvMk1waFhiTzA1NmZhNDY4WEVDdFZSbHN6eHVKekc4YnVXYldZZFFjMXFKODBvUHRsQW5ITVcybGVjTTgrUDRDR2dNMHgrSUtMV1YyTElVRk9wV3dxVUdOSmthWGRyWEp4a1lVWFdvTEpwNUtmVDBUSlZacDJSMDkwUWE3d2VrWk04SkJ4ZWlwcm12aEhBdHhqaTVGd1hYYkxwVHhHcFRONWh4TEFLKzErWFhkYjBmemI5OSt5Ly8wa25UeXY4N2Vlc1FLYW1iOWFndzl1QXVONDlwWXJ5YlhXcStXaFc1VW1OSkJTMWpDdWxvYW5LR3Flazczakw1TmcrTzI2dWdYL3JiYjdYMC9lb0VOQzlFRG1KVGdJUDFwMEI2MWg1N0pycjV4UXJmOWpOcXRqbnZHQTlNRERodlZabEtPQ3Q2bzFlanR4NytHUUh4NkE0K0YrL0F4WnJUMXZtTHY2eGxURmE1SFNGN0NOWk5lMmNlU3U0clRHeVArOUNsQjFLWk9Pd2k4Qkpjd0lGMXg1T0UzdkZ5WG1NMERBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["authors"],"name":[1],"type":["chr"],"align":["left"]},{"label":["book_count"],"name":[2],"type":["int"],"align":["right"]},{"label":["auth_avg_rating"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"Chris    Green/Chris Wright/Paul Douglas Gardner","2":"1","3":"5"},{"1":"Dennis Adler/R.L. Wilson","2":"1","3":"5"},{"1":"Elena N. Mahlow","2":"1","3":"5"},{"1":"Ian        Martin/Katie Elliott","2":"1","3":"5"},{"1":"John  Diamond","2":"1","3":"5"},{"1":"Julie Sylvester/David Sylvester","2":"1","3":"5"},{"1":"Keith Donohue","2":"1","3":"5"},{"1":"Laura Driscoll/Alisa Klayman-Grodsky/Eric     Weiner","2":"1","3":"5"},{"1":"Middlesex Borough Heritage Committee","2":"1","3":"5"},{"1":"Nicholas    Evans/Rhonda  Evans","2":"1","3":"5"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Hmm, Ive never heard of these books. I wonder how reliable these 5*
+ratings are? A 5 star rating is more meaningful with more reviews Check
+how many reviews did these books get? Some got 0 ratings amd others got
+1 or 2 - I think they could be the authors Mum!</p>
+<p>Q6 are the ratings an integer number? can check that by looking at
+ratings of all books with only one rating. Ans. No - ratings can be a
+fractional number Data also shows how ratings are often around 4</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9idXN0X2Jvb2tzX2RhdGEgJT4lIFxuc2VsZWN0KGF1dGhvcnMsYXZlcmFnZV9yYXRpbmcscmF0aW5nc19jb3VudCkgJT4lIFxuZmlsdGVyKHJhdGluZ3NfY291bnQ9PTEpICU+JSBcbmRpc3RpbmN0KGF2ZXJhZ2VfcmF0aW5nKSAlPiUgXG5hcnJhbmdlKGRlc2MoYXZlcmFnZV9yYXRpbmcpKVxuYGBgIn0= -->
+<pre class="r"><code>robust_books_data %&gt;% 
+select(authors,average_rating,ratings_count) %&gt;% 
+filter(ratings_count==1) %&gt;% 
+distinct(average_rating) %&gt;% 
+arrange(desc(average_rating))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MzksIm5jb2wiOjEsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMzkgw5cgMSJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVNzVTRDUVJCZERrNjlnMXMyU0cwTEZoQVRHaHZpRkVadElacFFrSmdWRGlUaUhoNkhHbXhzclBrSXJLbXQ4U09JSmJVV05scHk3aTV6Q2Q0a3V6ZnpkdDZibWQyckh6Y3Fkc01taENSSnlqQkkwcFF1TVMvT1QwcUhSQ0l5U0pBVXNkVDNVU2J0YW9BUUtsY0I4a1FiNUdiNThmSjBCam1NMmVmTDNsdnRDOWpDcmc2bUMyRHpTYlA0OHc1c3FvQlhZQ3FjVDRBcFZ2NEoyRUFkM0FIcmFBT0dPbG5rWjFFL3EybE5vR292L2dKVjlQRVNLT3BTNU5PYWFxQU9WS2Z2QTlYMFBGRFVkYkFmQjNVZHJPK2dmZ2IxTXRobnBxb1RJSzNMblVHNm9nMXN4QzNVc2ZCOEIrdHNvYzQ2SkVmZjZQeS9XRlB3VzNjb0hiWUJVbjd2K3J6clh2bzg2SWx1akdMNTNrTTVvamx5R2M5eUM4UHdJNjdkNnZOaFhOdHU4NENYTzc3a3kyZ1ZvMng3ZzZEbkNVa3kxR3ViTVhMQ2p3RnNKRlFuN1ZMcmVpUnVTcFVEVlFGL0U0THRLYit3NFNmV05ZMFF0VXpVMm5KRnR5ZmNxUGsrdjNMNzBZWElrZlhFNVlIZkUwRTBpa1NINWNBTGVKUm50N3graE9qaHlPb1BKUkR4NXVVQ0FBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["average_rating"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"5.00"},{"1":"4.67"},{"1":"4.50"},{"1":"4.23"},{"1":"4.21"},{"1":"4.19"},{"1":"4.16"},{"1":"4.14"},{"1":"4.12"},{"1":"4.11"},{"1":"4.10"},{"1":"4.00"},{"1":"3.98"},{"1":"3.96"},{"1":"3.92"},{"1":"3.87"},{"1":"3.86"},{"1":"3.83"},{"1":"3.80"},{"1":"3.79"},{"1":"3.77"},{"1":"3.76"},{"1":"3.75"},{"1":"3.72"},{"1":"3.71"},{"1":"3.68"},{"1":"3.67"},{"1":"3.58"},{"1":"3.57"},{"1":"3.53"},{"1":"3.41"},{"1":"3.40"},{"1":"3.28"},{"1":"3.21"},{"1":"3.16"},{"1":"3.00"},{"1":"2.83"},{"1":"2.00"},{"1":"1.00"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[39]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Q7 How objective are the ratings on goodreads? ratings are not spread
+across 1-5?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm9idXN0X2Jvb2tzX2RhdGEgJT4lIFxuZmlsdGVyKGF2ZXJhZ2VfcmF0aW5nIDw9MykgJT4lIFxuc3VtbWFyaXNlKGNvdW50ID0gbigpKVxuYGBgIn0= -->
+<pre class="r"><code>robust_books_data %&gt;% 
+filter(average_rating &lt;=3) %&gt;% 
+summarise(count = n())</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6MSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDEiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMTFRMFFxQ01CUzlUbGM0S0lTK1F5Rjg2UVBDRDRnQ1g1ZGFTYmJKbk5Salg2N2R5UVRiSHJaN0QrZWNlODlPeHp4bE9RTUFId0pDd0tkWUFyMmNzL2dBaUdEalFRQ2hlVDlJMmswQXdNYSttVU9pZ3IrcURvdG9DUmF5RjlwaGhrcStrNWx0N01nWHJ4R1BhMWswdkhNdFdjazFUMjRLOWRnTmptUXRXMTFMZ1NKaUZxYU8yRk1PRVBYQ2JGTEd4YU1YenpqZG13azJJU3pTZXYrMW1VbEc2MFd0MTZvUzkxcFU4L0lOdjFhTmJiWVllVXFjdEtyR0Q3RlJFTzBTTFRXZmVheVF6WXhNNFdENEFaUnQzWjZvQVFBQSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["count"],"name":[1],"type":["int"],"align":["right"]}],"data":[{"1":"70"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>It looks like there are very few ratings of 3 or lower ans. 70 books
+out of more than 11,000</p>
+<p>The summary stats show mean rating is 3.9 and there are very few
+ratings lower than 3. How are ratings distributed? I would normally
+create a histogram for this but can look at stats in skimr</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2tpbShyb2J1c3RfYm9va3NfZGF0YSlcbmBgYCJ9 -->
+<pre class="r"><code>skim(robust_books_data)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoi4pSA4pSAIERhdGEgU3VtbWFyeSDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgIFZhbHVlcyAgICAgICAgICAgXG5OYW1lICAgICAgICAgICAgICAgICAgICAgICByb2J1c3RfYm9va3NfZGF0YVxuTnVtYmVyIG9mIHJvd3MgICAgICAgICAgICAgMTA5NjYgICAgICAgICAgICBcbk51bWJlciBvZiBjb2x1bW5zICAgICAgICAgIDEyICAgICAgICAgICAgICAgXG5fX19fX19fX19fX19fX19fX19fX19fXyAgICAgICAgICAgICAgICAgICAgIFxuQ29sdW1uIHR5cGUgZnJlcXVlbmN5OiAgICAgICAgICAgICAgICAgICAgICBcbiAgY2hhcmFjdGVyICAgICAgICAgICAgICAgIDcgICAgICAgICAgICAgICAgXG4gIG51bWVyaWMgICAgICAgICAgICAgICAgICA1ICAgICAgICAgICAgICAgIFxuX19fX19fX19fX19fX19fX19fX19fX19fICAgICAgICAgICAgICAgICAgICBcbkdyb3VwIHZhcmlhYmxlcyAgICAgICAgICAgIE5vbmUgICAgICAgICAgICAgXG4ifQ== -->
+<pre><code>── Data Summary ────────────────────────
+                           Values           
+Name                       robust_books_data
+Number of rows             10966            
+Number of columns          12               
+_______________________                     
+Column type frequency:                      
+  character                7                
+  numeric                  5                
+________________________                    
+Group variables            None             </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbIm9uZV9za2ltX2RmIiwidGJsX2RmIiwidGJsIiwiZGF0YS5mcmFtZSJdLCJucm93Ijo3LCJuY29sIjo4LCJzdW1tYXJ5Ijp7IkEgdGliYmxlIjpbIjcgw5cgOCJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE2MVV3VzRUTVJCMU5ydlp6WXBXa1hLQ0gwQkNTdFEycXVER0FjUUhWQ0QxNW5wMzNheVZYWHV4dmJTNTlSUDRMTDZBT3o5UWNlV1NZTzk2MHRSVUtFaEVjand6ZWVPeDM1dkp4ZnZMUlhxWklvU0dLQXdDTkl5TWlhSlBIei9NM2lBVE1jNEFoV2hzOTFzRG1ob2pNV3RpVnV4K2lEVFRGWFZPVEZwZENxbWNHektWY1dlUHJIMjZjTjVSUmZpeUpVdUtjMUZBOXFScHM0cmxSRFBCY1VFMHhNZGRYSlZVMnN5dTl0OC94eGJ6OW1mdi9PdStWeVBvbUVIOWpaMmZ1QjB3RytQZW16MTFzY2paN3c2OHE4TzgvSUhRODY4SXZmcmVML1RDUE1PSWtIdzc3SnhIWWtXYzFGU2hYcWdFS0ZjclZ1TXZSREtTN1FRYmMxd3pwUmhmQWlvWGRWTlJUYkY4RUdCWU03NHp5UzFVb1hXajE4NUpPRzQ1Kzl4Q1NucFRNazFWUTNMcVhXNHN4YzBjTHRpeGVtZSt0dHZ0THg5b1dvQmdnd2Jnb0tmbUNWQXVxajBRZXVhQjR1SWEyNHFPRVFoUHI2VElXcVZ4SnNSSzJZNGpWMTdtcU5CNFJkZE8wOEhkbjF5UGxsSzBqYTArZlVLSm80d29paTN6TlpXZ1NIQWcrZDVSY0FwdUZTM01LVlBVZCtLK3lHRk5DVWdWcUFLczVnVGthODdPZCtiNVEvUTFSTVBtOUFUQ1ljbVVkZ1dpLzlnS3dkWWpJdWF0ZVJqTGdaZThKSkxrdXB2M2pTOTQxOFo2M2ZocTdtYzlub2E4SWtwNTZOU3FQYitXZlZmNFJXTFIyRDhoNVZpT3ZPU0I5QUtUbHR2K0ttWjUyZkxWYkhFR0RlTVdOR2E4WnljZUdjRHdpUElsNDBCZVZKR01WczQ1TnNQUVRjNjhrWXhyZUlvZGtia1dtZ0F1dGZQZ0l0M2owT1kzT3RtMDVlc0ZBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["skim_variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n_missing"],"name":[2],"type":["int"],"align":["right"]},{"label":["complete_rate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["min"],"name":[4],"type":["int"],"align":["right"]},{"label":["max"],"name":[5],"type":["int"],"align":["right"]},{"label":["empty"],"name":[6],"type":["int"],"align":["right"]},{"label":["n_unique"],"name":[7],"type":["int"],"align":["right"]},{"label":["whitespace"],"name":[8],"type":["int"],"align":["right"]}],"data":[{"1":"title","2":"0","3":"1","4":"2","5":"254","6":"0","7":"10209","8":"0","_rn_":"1"},{"1":"authors","2":"0","3":"1","4":"3","5":"750","6":"0","7":"6544","8":"0","_rn_":"2"},{"1":"isbn","2":"0","3":"1","4":"9","5":"10","6":"0","7":"10966","8":"0","_rn_":"3"},{"1":"isbn13","2":"0","3":"1","4":"13","5":"13","6":"0","7":"10966","8":"0","_rn_":"4"},{"1":"language_code","2":"0","3":"1","4":"2","5":"5","6":"0","7":"26","8":"0","_rn_":"5"},{"1":"publication_date","2":"0","3":"1","4":"8","5":"10","6":"0","7":"3640","8":"0","_rn_":"6"},{"1":"publisher","2":"0","3":"1","4":"2","5":"67","6":"0","7":"2248","8":"0","_rn_":"7"}],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[7]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbIm9uZV9za2ltX2RmIiwidGJsX2RmIiwidGJsIiwiZGF0YS5mcmFtZSJdLCJucm93Ijo1LCJuY29sIjoxMSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI1IMOXIDExIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQTdWVlMyalVRQmllZmJmcFl4ZTNQUXFDRlVUWXBRK0tIaXlOVUt6MVZFV2hTQ0dkelU1M3cyNGVaaVo5SGFUMTRJTWVLb0xhWTZFaUhxUjRFTVdERjR0UXdVT3RSUkVSYXcvaVRSRkVzTmgxSnNtazNiRmdQYmdrTy8vLy9WLyttZnovTjVQVFBRTWQwb0FFQUlpQWFEZ01JakZxZ3RqWk04Y3pSd0JGcUJNQ1VWREx4akZLU2xPamp0NHB4dklEOFp4cGx2cDZmSzhSamlBYkZwQmlRNklaQlIrdE5SeGRzU2lNZmFEQkMyTkZOUjJEK09BZWdzYUlZcU1SRFkzeUNLVzZjKzM4YTJTeDdxK2U4N2VSOCtYVkYzdmYzVnRQeThucGFYVGcxaFBaYVcrYWx6UlZmdm1zTi80K2taU25NbmRXcnJjY0RmalBaMjg4WEo3LzFyMnkya1pPcWw5a0kvWjIvNFg0bkx4eHQvbm4wdEt5ZkxzbjMxLy9xTHpiOVlqcmx4ZC9yVEZIYnV5eTV0OUlYWEp4emczS2cvM2UyQ0x3WHkwT3VYaHlvV25pWSsrQ2JLOTV2Q3VXTjU0UStCL090YnA0YW1idzRQZW5NL0tFRjVRZk5IdWpNVnZOLzlTM3o4V2JmTjdqKys1NDdOVFZ6NVBNL3hHNTV2TlR3TzNOSk90ZWN2M21aZmU2NVAxdndWUDhvdkRGS25ZUW1mcFh1RXFiTVFQcVZGcmVldXE0eEhCSjA1VVJhR3N3VjBhQkVCVmR3M2hMbVEycXFWdGxSRnpCY2xaVVI5RHc3VERPYzh0cTlhMkkxZDRabUoxYjZHR09ScTIyVmc1SGl4b213b0pyYlhNMHl4Zk5CQjVtaGExVUtoc2lNUThKVkNpYkUwTUFISHE5STBrMXk5dElvRjRnSmZMRENwdlJyeEtIMDBPMm1YTXdVZGd1eGdyTE5DUThHYzhUcFlUR3FjVU9pdENrMi9scVJzRTJIWXZObmdaL1JodHlFQ09GZFVOSE51OVNlSmNORVZMeExJcURVWjVtU2J1cHZKUTEvN0Y3VlNkZVJOZU13SVJqWElSSXQ4aTQ3OVFZaW1ObzV4MnVLR20wcUJHRUxhajZyeFN1Q0lWSTBDTVMyWnJLNjZJV29RMVZnbXpxYklvTmQ2Vk54aTJ4bTBFU1lYK29aWWl4d0pWWXI3UER0cWNKY1lxRWFSSE5OTEJmNDVqd2NNZ1dnSlJqTUhYbE0yclJNVXFaam5ZdUYvL21zb3h0cyt1RVVnUmZGR1FVTklPWExsYUdPVlRtbnhlNkZkeDlrN1ZzTGZod1NHeURaSWxKSU9kSmJEZjRpUHR5WVBNM3lDbjZOdXdHQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["skim_variable"],"name":[1],"type":["chr"],"align":["left"]},{"label":["n_missing"],"name":[2],"type":["int"],"align":["right"]},{"label":["complete_rate"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["mean"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["p0"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["p25"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["p50"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["p75"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["p100"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["hist"],"name":[11],"type":["chr"],"align":["left"]}],"data":[{"1":"bookID","2":"0","3":"1","4":"21296.466533","5":"1.310517e+04","6":"1","7":"10235.75","8":"20237.50","9":"32104.75","10":"45641","11":"▇▇▆▇▆","_rn_":"1"},{"1":"average_rating","2":"0","3":"1","4":"3.943137","5":"2.942012e-01","6":"1","7":"3.78","8":"3.96","9":"4.14","10":"5","11":"▁▁▁▇▂","_rn_":"2"},{"1":"num_pages","2":"0","3":"1","4":"339.130038","5":"2.401828e+02","6":"1","7":"197.00","8":"302.00","9":"416.00","10":"6576","11":"▇▁▁▁▁","_rn_":"3"},{"1":"ratings_count","2":"0","3":"1","4":"18197.109794","5":"1.132814e+05","6":"1","7":"113.25","8":"782.00","9":"5141.00","10":"4597666","11":"▇▁▁▁▁","_rn_":"4"},{"1":"text_reviews_count","2":"0","3":"1","4":"549.706456","5":"2.594196e+03","6":"0","7":"10.00","8":"48.00","9":"244.75","10":"94265","11":"▇▁▁▁▁","_rn_":"5"}],"options":{"columns":{"min":{},"max":[10],"total":[11]},"rows":{"min":[10],"max":[10],"total":[5]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Q8 Can I create a more readable rating score?</p>
+<p>First limit analysis to only english language books Calculating some
+stats for the ratings limit these stats to english language books</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmV3X2Jvb2tzX2RhdGEgPC0gcm9idXN0X2Jvb2tzX2RhdGEgJT4lIFxuICAgbXV0YXRlKGVuZ19sYW5nID0gcmVjb2RlKGxhbmd1YWdlX2NvZGUsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiZW5nXCIgPSBcIlllc1wiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcImVuLVVTXCIgPSBcIlllc1wiLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcImVuLUdCXCIgPSBcIlllc1wiLFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFwiZW4tQ0FcIiA9IFwiWWVzXCIsXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAuZGVmYXVsdCA9IFwiTm9cIikpXG5gYGAifQ== -->
+<pre class="r"><code>new_books_data &lt;- robust_books_data %&gt;% 
+   mutate(eng_lang = recode(language_code, 
+                               &quot;eng&quot; = &quot;Yes&quot;, 
+                               &quot;en-US&quot; = &quot;Yes&quot;, 
+                               &quot;en-GB&quot; = &quot;Yes&quot;,
+                               &quot;en-CA&quot; = &quot;Yes&quot;,
+                              .default = &quot;No&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmV3X2Jvb2tzX2RhdGEgJT4lIFxuZ3JvdXBfYnkobGFuZ3VhZ2VfY29kZSxlbmdfbGFuZykgJT4lICAgXG5zdW1tYXJpc2UoY291bnRfbGFuZyA9IG4oKSkgJT4lIFxuYXJyYW5nZShkZXNjKGVuZ19sYW5nKSlcbmBgYCJ9 -->
+<pre class="r"><code>new_books_data %&gt;% 
+group_by(language_code,eng_lang) %&gt;%   
+summarise(count_lang = n()) %&gt;% 
+arrange(desc(eng_lang))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCBoYXMgZ3JvdXBlZCBvdXRwdXQgYnkgJ2xhbmd1YWdlX2NvZGUnLiBZb3UgY2FuIG92ZXJyaWRlIHVzaW5nIHRoZSBgLmdyb3Vwc2AgYXJndW1lbnQuXG4ifQ== -->
+<pre><code>`summarise()` has grouped output by &#39;language_code&#39;. You can override using the `.groups` argument.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImdyb3VwZWRfZGYiLCJ0YmxfZGYiLCJ0YmwiLCJkYXRhLmZyYW1lIl0sIm5yb3ciOjI2LCJuY29sIjozLCJzdW1tYXJ5Ijp7IkEgdGliYmxlIjpbIjI2IMOXIDMiXSwiR3JvdXBzIjpbImxhbmd1YWdlX2NvZGUgWzI2XSJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE5MVRQVS9ETUJDOU9nMmxrVnBWNnNiSW5pd1ZFaXNmZ2cySmowcGxxa3pxcGdISGpteEhSVXpzL0R6K0F6K2p3VWxzSjhyRXpIRHB1K2VuNTd2citlRjZ0UWhXQVFCNE1FUUlQRjlEOEpkUE4rRTVhRVluQXhqQ3VQcDkxNko1clFTWTZUZ3hCejVoNGRWRko3bTk3Q1RMUjVONGhDVVdZa29jRkxnVlpCWnVoUk1rUkRoSWNRdWRXU0ppQzFQbEJLODVzNUJpWldFbW5TQXJxSUdJV2VReDdpN0xXeWdLYWFITW5ZSGN1eHBWNGJSNzRzdytkcnczS3UrWnlMOUNkTWYvSVFLWTFQTUFHT240MWp0U0FKemUxM3ZXUkxWZVh6cldIYTVlSmgyaE9hKzRlZWU4V21EVStBSHE4TlBlRHZzeHhWS2FQOFdTd1FZckhHMEZ6a2hQUGhaOEh6SE5TMU0zK3RTZnNpeC8rcjVXTkd0ZVVrMU9LR1pKZ1JPeWp2bkdyc3F4ZmdYcjZzQmVIdk9DcVlZQk9QUjhSenhYS1dmYUdjM05DTHFWRDBTUG1CV3NxbVFUeHJ1Q3ZZV0xNek9iYWhaZ2VoaVkrVnZzTlhjT1MrUGxHNjhqWFduS2JOMCt4Uzl1czZkNkxuWEhVUzVTWmg5WG9Ga1pLYTR3Ylp1amxxbWJnOE12aUdNTnozRUVBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["language_code"],"name":[1],"type":["chr"],"align":["left"]},{"label":["eng_lang"],"name":[2],"type":["chr"],"align":["left"]},{"label":["count_lang"],"name":[3],"type":["int"],"align":["right"]}],"data":[{"1":"en-CA","2":"Yes","3":"7"},{"1":"en-GB","2":"Yes","3":"211"},{"1":"en-US","2":"Yes","3":"1397"},{"1":"eng","2":"Yes","3":"8785"},{"1":"ale","2":"No","3":"1"},{"1":"ara","2":"No","3":"1"},{"1":"enm","2":"No","3":"3"},{"1":"fre","2":"No","3":"139"},{"1":"ger","2":"No","3":"95"},{"1":"gla","2":"No","3":"1"},{"1":"glg","2":"No","3":"1"},{"1":"grc","2":"No","3":"9"},{"1":"ita","2":"No","3":"5"},{"1":"jpn","2":"No","3":"45"},{"1":"lat","2":"No","3":"3"},{"1":"msa","2":"No","3":"1"},{"1":"mul","2":"No","3":"19"},{"1":"nl","2":"No","3":"1"},{"1":"nor","2":"No","3":"1"},{"1":"por","2":"No","3":"10"},{"1":"rus","2":"No","3":"2"},{"1":"spa","2":"No","3":"211"},{"1":"swe","2":"No","3":"2"},{"1":"tur","2":"No","3":"1"},{"1":"wel","2":"No","3":"1"},{"1":"zho","2":"No","3":"14"}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[26]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmV3X2Jvb2tzX2RhdGEgJT4lIFxuYXJyYW5nZShkZXNjKHJhdGluZ3NfY291bnQpKSAlPiUgXG5zZWxlY3QoYXV0aG9ycyxyYXRpbmdzX2NvdW50KSAlPiUgXG5oZWFkKDIwKVxuYGBgIn0= -->
+<pre class="r"><code>new_books_data %&gt;% 
+arrange(desc(ratings_count)) %&gt;% 
+select(authors,ratings_count) %&gt;% 
+head(20)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MjAsIm5jb2wiOjIsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiMjAgw5cgMiJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE2MVR2MnNVUVJUZWJIS0dITVpFa2tKUWNVQlFFYktMQm1NVTBleGROSERKa1hpSkpxYVJkM3ZqN2JCek04ZnNMT2RablZpSXZWZ2JPN0ZKWTJWaGNScjlGeXhGRUF2Yk5CWTVaMlozZ3g0S0ZzNnlmRysrOTJ2ZXpIdVYrWTNwL0ViZXNxeEJhOGkycmNHY0VxM2NyYlViVTdPV1l0Um13QnF5UmpUZVYwWVRTdERrdVBvblU4WFlxc1ROQURPQ1VSbTNzVWpwUXlXbm9qNjB4bWxJTUV2WjBaSXo3NkJWb0lUVjkwMUg1b0doZ3VBdFpsa2RUUnd0T1lzT3F2Q1dOblBMSU5wb1FRQ3JyWWp1eS85azh1ZERKbzVuRmpBWGRZeVdSUXRUNmhhNElKRjJyVElRN2dxV1dLRDN6ME1zNkw4bkdsc25sQkpvb0FWT2E4b3FwYzluOUdvQUlZNmFHQVIyVnlDbWFCMkxTQktHM1FLSUtnaEFub1BLdkFVeTlUeFlJWDZJS29TTEdyRDlhbmpBa0hvT3dxcllELzkydTJkMUFvNktITk9BdXg1VmFuVUZSUW9peEc3MzJZTWFiaENCM20wekg2Y2g4a3RjM2NBU2I0bDJHdU9VcWpLTUk3UVpSeEM2UmVCb0krNitZT2cyK2Z6bXNVU0x3YzcyenRaK21ZZVhlRXdpUUdWb0k0LzZYTW8weklsaUFJS3FQZFluWkxMN3lpMFRQd0JNbFczRW1TNUt0NXAzODhtM2poSzg0dkpwM2FGZTRhMmRvRHhpMFB2VU1YcXZndzNPTmVvSlhrMzBjOGNlR2J6Mm81VGd4QWVEVjc0ZU4zaDU5M3FDSDJPRGw3WTJEYzUrMlUzdzNHdURGMDh1RzV4NTZocTg4UENPWmRadnM1SmowTUJST2lkMlNnNURMQU11b213U0JLajNyVWQzZlI0ejJSZGdSRDJYa3dVWjFVRjBOYjFlNzN0L0pwOUNsR1hLeUh3TkpEajNoUEpYdTcwK2wySGVsSVF6NVdUcmNjNzFPUStJUG1JOFp2b2t0U2svaUZrNE5UMmpNeGg5c2taVGVmSVgyVTV5MnIwMFZpNk5kUUN6dW1ycTdQQVVxcGhtemFzN1ZGZnNOQVZoV1p2bkZSczVra3ZJN1BJK3B4bGppclAyZmdKcXpaQWl4Z1FBQUE9PSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["authors"],"name":[1],"type":["chr"],"align":["left"]},{"label":["ratings_count"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Stephenie Meyer","2":"4597666"},{"1":"J.R.R. Tolkien","2":"2530894"},{"1":"J.D. Salinger","2":"2457092"},{"1":"Dan Brown","2":"2418736"},{"1":"J.K. Rowling/Mary GrandPré","2":"2339585"},{"1":"J.K. Rowling/Mary GrandPré","2":"2293963"},{"1":"J.K. Rowling/Mary GrandPré","2":"2153167"},{"1":"J.R.R. Tolkien","2":"2128944"},{"1":"George Orwell/Boris Grabnar/Peter Škerl","2":"2111750"},{"1":"J.K. Rowling/Mary GrandPré","2":"2095690"},{"1":"William Golding","2":"2036679"},{"1":"William Shakespeare/Paul Werstine/Barbara A. Mowat","2":"1893917"},{"1":"Rick Riordan","2":"1766725"},{"1":"John Steinbeck","2":"1755253"},{"1":"Dan Brown","2":"1679706"},{"1":"Paulo Coelho/Alan R. Clarke/Özdemir İnce","2":"1631221"},{"1":"Lois Lowry","2":"1585589"},{"1":"Markus Zusak/Cao Xuân Việt Khương","2":"1516367"},{"1":"Louisa May Alcott","2":"1479727"},{"1":"Charlotte Brontë/Michael Mason","2":"1409369"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[20]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Next get rid of objectionable authors and books that are
+super-popular (top 10%) or totally niche (bottom 10%)</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmFubmVkbGlzdD1jKFwiSi5LLiBSb3dsaW5nXCIsXCJUb2xraWVuXCIpXG5gYGAifQ== -->
+<pre class="r"><code>bannedlist=c(&quot;J.K. Rowling&quot;,&quot;Tolkien&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmV3X2Jvb2tzX2RhdGEgJT4lIFxuICBzZWxlY3QoYXV0aG9ycykgJT4lIFxuICBmaWx0ZXIoZ3JlcGwoXCJSb3dsaW5nfFRvbGtpZW5cIixhdXRob3JzKSkgXG5gYGAifQ== -->
+<pre class="r"><code>new_books_data %&gt;% 
+  select(authors) %&gt;% 
+  filter(grepl(&quot;Rowling|Tolkien&quot;,authors)) </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NzksIm5jb2wiOjEsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNzkgw5cgMSJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUE3VlhTMi9UUUJCMlV3S2lBb1RFZ1VjRldqaHdvdllCSWNHeEQ3VnBvUTFLeXVPNnRZZDRsZlZ1dExhYjVsWWthT0VFSEhnS0VEZmdVQkJDUElTZ0YvNEtTY3Fmb0l3YnAyMVdhZXNVcXNpeGQvek43TXp1ekxmajNORDFzejNYZXd6RDZEWjJwVkpHZHhvZmpmU1Z5ZUcrOHdaS2NOQmw3REwyUnZjWkJCMWFFUmpHUWJ5eWhqRWJ2ZWdkTXkrYUpDZkxuSW1DTlU1VmhZd29LcHpMNnVmYkpKQ0crWDNySVR0b3VTRTdNR2JtOEVjbUpTOHlFTnVRSG1tVld2MmNDa0l1QVd3eWF6dlpPYzFPSnZSS3JvSUtHYVNxQkNJQVpRMjZpdm1CTExtZ05DZE9hY29iSTN0elllQ1N2RWttSkhDcmd6aXR0bE13UVVuZURqbTNydEdLQURKaWtnejFQQ21jRHNQdlpNbjFhSWRrV09EVUovMG02UmNPS0Y5dVp5TjFhU092c2kxNUZRM3FpN2ZyOXo5YTlXZnoxYmxYOVM5dmxoYmUxei9kc3FyZlAxWGZQYXQvL21aVmZ5eFVaOS9XSHMxYlM1K2YvdnI2c0hiN3RWVjcrZmozaStkTDk5N0haazl1WkhaVk9mYnFoQmJyQUdXY005QjhON2ZlZjJzU0hESkJmWThGN2dhMkx3Tm1XWlFiQTBBTEhEck9yZE1EaW1IeTU5a1VoNG8xSmwwc2hJd3NRL3MwUzI0M09iTDl6aDdWOUhOeWlveUtBbWQrUnd2UlBrSE9hTHExdTAvcWR4Wi96ejlZWXdLcjl2eERkZUZyN2ViY2Y3ZlUyN3JrLzBwbXlWZjZ1SVljUnJLMW1ZOU9PaktjaVVHTGV2S3VkM2FjMlM0RlRnWm9FY3FBREpJUEFDZkNRTE9jVFNQZGpTSTJJN20zaXN4SWhkVzlzbitnQWhMai9VYW1YUUl5RG42b0dHbzI5dSthbEU3Z1NtUlBhd1FVVlE0aDQ2RXF1UlhrMW9KTGhwaGRSS2FJd1ZjcHltaHpGR1V0NTl0WVFOSlMxeVBnZVJSSDAweFJrbFVCRk9nbUZIaXNSYmZoeUFTQTQxSXYrU0czbVpGTzkxaW5mSjNpOVROZ0J3dDdKNUJieHRPK252UXliY2UxZWhQd3J3eTJ6Y04zSjFZdFVlRnYxUlJ0eWNoSi9FbGNFNzBUVUVhNnNLbEhvL2JBU3RpU0hHNnhuQXR2aEQ0ZUNIWnhMY1oxci9Nd3pRVEpGaXUwMG1Ibm96VzhMYjEyV2xBUC9MalBiZ3IzMERDaU5WL0Q3bFd5YkRieCsvRkt6ZUxmOHZMeUI5Mm9qYzJTYnJUSG9RRTFieWpVeDlFZlRXV1BMQVZNQ2xSS1JaMS9XbFB1VXByZ1lDZ2lUNXcrMncxRnNlL3NoV2lHK0pQQmlOM3Jhbnc2ckQ1M05lWk1MY2UyMHJHdDNTQUtURFF6SjgzcEZLd3lNNGE4RXJGWlVrd0V6VkJRNnB1QkRHZ1QxMk5MM3BTc0JHZjgrUXZWSm56aDhRd0FBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["authors"],"name":[1],"type":["chr"],"align":["left"]}],"data":[{"1":"J.K. Rowling/Mary GrandPré"},{"1":"J.K. Rowling/Mary GrandPré"},{"1":"J.K. Rowling"},{"1":"J.K. Rowling/Mary GrandPré"},{"1":"J.K. Rowling/Mary GrandPré"},{"1":"J.K. Rowling"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien/Alan  Lee"},{"1":"J.K. Rowling"},{"1":"J.K. Rowling"},{"1":"J.R.R. Tolkien/Humphrey Carpenter/Christopher Tolkien"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"Ruth S. Noel/J.R.R. Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien/Christina Scull/Wayne G. Hammond"},{"1":"J.K. Rowling"},{"1":"J.K. Rowling"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien/Douglas A. Anderson"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.K. Rowling/J.K.羅琳/皇冠編譯組/張定綺/彭倩文/趙丕慧/林靜華"},{"1":"J.K. Rowling/J.K.羅琳/彭倩文"},{"1":"J.R.R. Tolkien/Baillie Tolkien"},{"1":"J.R.R. Tolkien/Christopher Tolkien/Ted Nasmith"},{"1":"J.R.R. Tolkien/Peter S. Beagle"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"Brian Sibley/John  Howe/J.R.R. Tolkien"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien/Rob Inglis"},{"1":"J.R.R. Tolkien/Peter S. Beagle"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien/托爾金/Alan  Lee/朱學恆"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien/托爾金/Alan  Lee/朱學恆"},{"1":"Brian Sibley/J.R.R. Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.R.R. Tolkien/Francis Ledoux"},{"1":"J.R.R. Tolkien/Brian Sibley/Michael Bakewell/Stephen  Oliver/Ian Holm/Michael Hordern/Robert Stephens/John Le Mesurier/Peter Woodthorpe/Gerard  Murphy/Hugh Dickson/Peter Vaughan/Peter Howell"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.K. Rowling/Gemma Rovira Ortega"},{"1":"J.K. Rowling"},{"1":"J.K. Rowling/Peter Needham"},{"1":"J.K. Rowling/Mary GrandPré"},{"1":"J.K. Rowling/Peter Needham"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.R.R. Tolkien/Wayne G. Hammond/Christina Scull"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"Wayne G. Hammond/Christina Scull/J.R.R. Tolkien"},{"1":"J.R.R. Tolkien/Christopher Tolkien/Alan  Lee"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.R.R. Tolkien"},{"1":"J.R.R. Tolkien/Christina Scull/Wayne G. Hammond"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.R.R. Tolkien/Francis Ledoux"},{"1":"J.R.R. Tolkien/Alan  Lee"},{"1":"J.R.R. Tolkien/Rob Inglis"},{"1":"J.R.R. Tolkien/Christopher Tolkien"},{"1":"J.K. Rowling/Mary GrandPré"},{"1":"Newt Scamander/J.K. Rowling"},{"1":"J.K. Rowling"},{"1":"J.K. Rowling/Rufus Beck"},{"1":"J.K. Rowling/Sevin Okyay"},{"1":"J.K. Rowling"},{"1":"J.K. Rowling"},{"1":"J.K. Rowling"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[79]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucG9wdWxhcl9ib29rX2lkIDwtIG5ld19ib29rc19kYXRhICU+JSBcbiAgZmlsdGVyKGVuZ19sYW5nID09IFwiWWVzXCIpICU+JVxuICBncm91cF9ieShhdXRob3JzKSAlPiUgXG4gIG11dGF0ZShhdXRoX21yY291bnQ9bWVhbihyYXRpbmdzX2NvdW50KSkgJT4lIFxuICB1bmdyb3VwKCkgJT4lIFxuICBzbGljZV9tYXgoYXV0aF9tcmNvdW50LCBwcm9wPTAuMTApICU+JSBcbiAgc2VsZWN0KGJvb2tJRCkgJT4lIFxuICBwdWxsKClcbmBgYCJ9 -->
+<pre class="r"><code>popular_book_id &lt;- new_books_data %&gt;% 
+  filter(eng_lang == &quot;Yes&quot;) %&gt;%
+  group_by(authors) %&gt;% 
+  mutate(auth_mrcount=mean(ratings_count)) %&gt;% 
+  ungroup() %&gt;% 
+  slice_max(auth_mrcount, prop=0.10) %&gt;% 
+  select(bookID) %&gt;% 
+  pull()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmljaGVfYm9va19pZCA8LSBuZXdfYm9va3NfZGF0YSAlPiUgXG4gIGZpbHRlcihlbmdfbGFuZyA9PSBcIlllc1wiKSAlPiVcbiAgZ3JvdXBfYnkoYXV0aG9ycykgJT4lIFxuICBtdXRhdGUoYXV0aF9tcmNvdW50PW1lYW4ocmF0aW5nc19jb3VudCkpICU+JSBcbiAgdW5ncm91cCgpICU+JSBcbiAgc2xpY2VfbWluKGF1dGhfbXJjb3VudCwgcHJvcD0wLjUpICU+JSBcbiAgc2VsZWN0KGJvb2tJRCkgJT4lIFxuICBwdWxsKClcbmBgYCJ9 -->
+<pre class="r"><code>niche_book_id &lt;- new_books_data %&gt;% 
+  filter(eng_lang == &quot;Yes&quot;) %&gt;%
+  group_by(authors) %&gt;% 
+  mutate(auth_mrcount=mean(ratings_count)) %&gt;% 
+  ungroup() %&gt;% 
+  slice_min(auth_mrcount, prop=0.5) %&gt;% 
+  select(bookID) %&gt;% 
+  pull()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>now we can select a dataset that doesnt have these popular or niche
+books in them.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VsX2Jvb2tzX2RhdGEgPC0gbmV3X2Jvb2tzX2RhdGEgJT4lIFxuICAgIGZpbHRlcihlbmdfbGFuZyA9PSBcIlllc1wiKSAlPiVcbiAgICBmaWx0ZXIoIWdyZXBsKFwiUm93bGluZ3xUb2xraWVuXCIsYXV0aG9ycykpICU+JSBcbiAgICBmaWx0ZXIoIWdyZXBsKFwiQmlibGV8TG9yZCBvZiB0aGUgUmluZ3NcIix0aXRsZSkpICU+JVxuICAgIGZpbHRlcighYm9va0lEICVpbiUgIChjKHBvcHVsYXJfYm9va19pZCxuaWNoZV9ib29rX2lkKSkgKVxuYGBgIn0= -->
+<pre class="r"><code>sel_books_data &lt;- new_books_data %&gt;% 
+    filter(eng_lang == &quot;Yes&quot;) %&gt;%
+    filter(!grepl(&quot;Rowling|Tolkien&quot;,authors)) %&gt;% 
+    filter(!grepl(&quot;Bible|Lord of the Rings&quot;,title)) %&gt;%
+    filter(!bookID %in%  (c(popular_book_id,niche_book_id)) )</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucnRuZ19zdGF0cyA8LSBzZWxfYm9va3NfZGF0YSAlPiUgXG4gIGZpbHRlcihyYXRpbmdzX2NvdW50ID4gbWVhbihyYXRpbmdzX2NvdW50KSkgJT4lICBcbiAgc2VsZWN0KGF2ZXJhZ2VfcmF0aW5nLCByYXRpbmdzX2NvdW50KSAlPiUgXG4gIHN1bW1hcmlzZShtZWFuX3J0bmcgPSBtZWFuKGF2ZXJhZ2VfcmF0aW5nLCBuYS5ybSA9IFRSVUUpLFxuICAgICAgICAgICAgc2RfcnRuZyAgPSBzZChhdmVyYWdlX3JhdGluZywgbmEucm0gPSBUUlVFKSxcbiAgICAgICAgICAgIG1lYW5fcnRuZ19jb3VudCA9IG1lYW4ocmF0aW5nc19jb3VudCwgbmEucm09IFRSVUUpKSBcbmBgYCJ9 -->
+<pre class="r"><code>rtng_stats &lt;- sel_books_data %&gt;% 
+  filter(ratings_count &gt; mean(ratings_count)) %&gt;%  
+  select(average_rating, ratings_count) %&gt;% 
+  summarise(mean_rtng = mean(average_rating, na.rm = TRUE),
+            sd_rtng  = sd(average_rating, na.rm = TRUE),
+            mean_rtng_count = mean(ratings_count, na.rm= TRUE)) </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVhbl9ydG5nIDwtIHJ0bmdfc3RhdHMgJT4lIFxuICBwdWxsKG1lYW5fcnRuZylcbnNkX3J0bmcgPC0gcnRuZ19zdGF0cyAlPiUgXG4gIHB1bGwoc2RfcnRuZylcbmBgYCJ9 -->
+<pre class="r"><code>mean_rtng &lt;- rtng_stats %&gt;% 
+  pull(mean_rtng)
+sd_rtng &lt;- rtng_stats %&gt;% 
+  pull(sd_rtng)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VsX2Jvb2tzX2RhdGEgPC0gc2VsX2Jvb2tzX2RhdGEgJT4lXG4gICAgZmlsdGVyKGVuZ19sYW5nID09IFwiWWVzXCIpICU+JVxuICAgIGZpbHRlcihyYXRpbmdzX2NvdW50ID4gbWVhbihyYXRpbmdzX2NvdW50KSkgJT4lIFxuICAgIG11dGF0ZShvYmpfcmF0aW5ncyA9IGNhc2Vfd2hlbihcbiAgICAgICBhdmVyYWdlX3JhdGluZyA+IChtZWFuX3J0bmcgKyAxLjUqc2RfcnRuZykgfiBcIjUgLSBFeGNlcHRpb25hbFwiLFxuICAgICAgIGF2ZXJhZ2VfcmF0aW5nIDwgKG1lYW5fcnRuZyAtIDEuNSpzZF9ydG5nKSB+IFwiMSAtIERlYWQgRG9ua2V5XCIsICAgICAgIFxuICAgICAgIGF2ZXJhZ2VfcmF0aW5nID4gKG1lYW5fcnRuZyArIDAuNSpzZF9ydG5nKSB+IFwiNCAtIEdyZWF0XCIsXG4gICAgICAgYXZlcmFnZV9yYXRpbmcgPCAobWVhbl9ydG5nIC0gMC41KnNkX3J0bmcpIH5cIjIgLSBQb29yXCIsXG4gICAgICAgVFJVRSB+IFwiMyAtIEF2ZXJhZ2VcIikpXG5gYGAifQ== -->
+<pre class="r"><code>sel_books_data &lt;- sel_books_data %&gt;%
+    filter(eng_lang == &quot;Yes&quot;) %&gt;%
+    filter(ratings_count &gt; mean(ratings_count)) %&gt;% 
+    mutate(obj_ratings = case_when(
+       average_rating &gt; (mean_rtng + 1.5*sd_rtng) ~ &quot;5 - Exceptional&quot;,
+       average_rating &lt; (mean_rtng - 1.5*sd_rtng) ~ &quot;1 - Dead Donkey&quot;,       
+       average_rating &gt; (mean_rtng + 0.5*sd_rtng) ~ &quot;4 - Great&quot;,
+       average_rating &lt; (mean_rtng - 0.5*sd_rtng) ~&quot;2 - Poor&quot;,
+       TRUE ~ &quot;3 - Average&quot;))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VsX2Jvb2tzX2RhdGEgJT4lXG4gIGdyb3VwX2J5KG9ial9yYXRpbmdzKSAlPiUgXG4gIHN1bW1hcmlzZShsZXZlbHM9IG4oKSlcbmBgYCJ9 -->
+<pre class="r"><code>sel_books_data %&gt;%
+  group_by(obj_ratings) %&gt;% 
+  summarise(levels= n())</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NSwibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI1IMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFBMTJSUVU3RE1CQkZwMjVUU0ZBcFVpK1FDeVFTRkJBTE5rZ0JOaXdRQXRRZGNoSVRRbzFkT1c1cGQ1eUFDeU0xakZOYnFweUZQZjk1eG44bWZzcG0wMmdXQVVBZkJvUkFQOEFRZ3BmbnUrUUtrS0Rvd1FCQ3M2OHhhWUtCZ1NjbXl4Nk1UK01remhndDQweUtPZHRZZkhpRytGRktaZlhSRlBYTmlpbGFNWXZDYzBUM2lsSHRycnBBY0xzdTJFTFhVbENPYU5RNUFlVFl3VFdhditMK2kvckJheThROUlzMXRqWGlQR1grK2Fhb3JrWFZXRFRrYk1WNDQxV0hTbjZuN2daalNYNXdhZHYyejdjcE9HMmNqWU5SU1RWTjN4WFdvOXA2SlFleW13YUx5TVFPczEvY1V4NFlMNFhwcEV5S2o2V1lKNWZHb0R2ZWZTTWJCM3N4MlZtUzFudWFJUk5WTGR6dkRqak5HYmZpR0NmdUJrNFhxaGJ1QVNLa1RhcWxwaTR2S2lSM3BKc050djlNSzVqM05RSUFBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["obj_ratings"],"name":[1],"type":["chr"],"align":["left"]},{"label":["levels"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"1 - Dead Donkey","2":"98"},{"1":"2 - Poor","2":"316"},{"1":"3 - Average","2":"598"},{"1":"4 - Great","2":"398"},{"1":"5 - Exceptional","2":"76"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[5]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>What are the my recommended books?</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc2VsX2Jvb2tzX2RhdGEgJT4lIFxuICBzZWxlY3QoYXV0aG9ycyx0aXRsZSxyYXRpbmdzX2NvdW50LG9ial9yYXRpbmdzKSAlPiUgXG4gIGZpbHRlcihvYmpfcmF0aW5ncyA9PSAoXCI1IC0gRXhjZXB0aW9uYWxcIikpICBcbmBgYCJ9 -->
+<pre class="r"><code>sel_books_data %&gt;% 
+  select(authors,title,ratings_count,obj_ratings) %&gt;% 
+  filter(obj_ratings == (&quot;5 - Exceptional&quot;))  </code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NzYsIm5jb2wiOjQsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNzYgw5cgNCJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUErMWFUWXdjeDNWZTAyUnNyU3lLb2V6WVZtU3JIRHJpeVBCT2Ewa3FNaGNDb3ZuWm5mMmI1V1JteENWOXNXdTZhNmRMMDFNMXFlN2U0ZkNrQkFpQ0FEa0dPZVFRd0NjcnRvVElqbUlIc1JNN29nTVlBWUxBQVlKYzhuTkxEcm5sWlBoZytYdjEwenU3bGhRRXlDVUFDVkExWFZYOTZ0VjczM3Z2ZTAzMTIzZXVyOTVaWFZsWitlREsrWFBuVmo1NEFUOVhMcnc4M0ZyN3dncG04UENCbGZNcmo5QjRENXVld0kveitIc0pmL2Y5d3FPN09sV3NHL2RTSWZ6VTA0MlI0U21mc24ycFlwMnBxQ3ZqbElzTXUxcWxTUlorMnk4T0NuRXNGT3Naa2VkSFVtU0pYMmowUlZMR0ltR0RsRTlFUGhQY0NOYlMweGxYaTZpUmtHQ3R4bEdiSzd6RUJsS05oWWwySVlRZFNyVXNxRFlvQld0S1U4eGxYbVFpb3NlV1ZwTk1LdnpPWmZVVU5Ob1d5a2kyVysvVzJZRXU1eUlzWEc3cExCTkMyUnRrbVM3SGFWaHBtQ0l0RFFuaWlyWDFJaFAvNDhyRkF6NHU1WWgxZVhxa3kvdCs5Zzk3ZkpScGRpQk1tZkNveTgyRWJjcGM0V3I3Zkc2RWlnWGJFZ2JLamxOUkZETHE2NUV3QmR2bWVSN0Jrck9VMUpORm5Jb3NpeG9aendzdURlc0xtVVJiMnNER0JldHdsWkNwZUR4aDI5TGtjVHJscW5wNUR4Yk1hSmtjdWlXeXZKQTQzV3UzMmpOeXF0bStPSlorNXFsRG1SMFplT2tXN0JTMVJDd3oxdWFMdFgwQmEvczlIK255QldjTk9BZzJXMWw1RlhQblB0WExlS0hkS2JCelMrc1pEbTBLOVFxZlNzVjI5UnpYaTlyYTZDSVZuRzNoQ0lIN2lIdFdlZGdIeU9KNTFPTmx4ZzYxVGt4NWRCUTFWSkZxdGNBZEZERFMxem1mYXBYUVk4RUdNd043aStnQUtOU3dDMnZYMldBcWl6VGFBN0FVYTVMQjJ2VkJuVzJYTUo5VXVWWTRYL0VzQVJUWUY4VWlpN1lNVjdITVkwMHpIYTN1UC9oS0p1NUhiWmxQb0hNcjR3dDRMQVBZcDJ5QVV5d0lvMDRHYlZpL3pycXd2NTdqeW9vWEtjRFE1RWFKUE9vQVp3MklNK1ZJUkUzREU3YWo1cmlSYy82dVh2RE0rZ3I2c0I2MEV5WlBSNlNzQmVobVFsZk1vMWE5WFcvVjRXZ0VVOVFGeW5MV0xJMWFDRjZjWEJtdkg2YXlFQ1I2Z2ZBcFpTNVlSMEpXcTQ0YjlXRjA0SUNyVE5EcWRNUk5vaEZneHpJQmFBRDRHZUxyQ041ZUVNU0FHd2ZFcUUrQmJSS3lhRGZlay9pTjIrMmFPdnlSR0RGbnNHbFR4QlA0MTE2cEw4cUNmdE9SUUJMNTJiclIvK2t2ZUFpNHg1MXI5bkJJUGlwTlNCbVhOak9aODVFb1VyYVpaVklYQVdkOXZtQmt3YVc5RjYzb0hrWEVrVFloSlh4a1YwN1owSWhNOEZ5OC8ySC9KOU9YZlpnU0N1SVduOEpuZnVYRHBITVgrY2MvUCtsM2JobWRGNVNleUpRd09yd2UwdGx5TkVWSXJnbG5nMUxsZ0t3QUZNVllzNzQ4Rm9hSHV4SnFKK3lRSS9yVis4dzkxZVgza0d1QVZpZ3dqdXdCbkVCcTRDRVh0U3VYYjh1NDBJYmRCbVpndVFmZjBDRXpQTm9uK0NISWRKbFZOWUVyd1JwbFhsUm5YT3pWTzhDZ1RrU3F5OHJ5MXdHTEdEbThoNWR4NlZacWtLZzFzcEdocWtEeFBrWWVjN2xpVUpTSW9qaVk2ekdIenMwa0lZdi9yeWMvNFNZSFNHb3Eya3ptaEdJS203QisyYTN2OGluaXFWMnF1SUxtWmVTOVRLSUlkWkVTVXFUVktrZGUzREhIeUFZSWhyczgwOU9BMlg0NWxSUE5obnlDb2dobitmbmZRbWpyRWFKZlRxY1JaQ0p2VC8wVHJDSTVYaWk0aVJxVW1Kb0xqbGpwQ0czR3FGbW1sSk1jZVdUaW9tZGJMS0pEbmtFUExNSHdlREJ6aVJUZjBTTVV2VDNBN0FENUtFZVc5aVdwajZTQ0xPb1YrZmcyTnhxNXJwbHBQWTN3Z0h5TThLeWlvOGNMUStKdVhXMUNMZlgrMDNjN3J2UzNVajZqNHJLSlBXd25nUjVEWVpCNk9zNTR6cVV0MU5ROHJDQTdJaWNHcXREalZLVDdHcVVkVlQyYmxpSFViK3lvTVdwMGNyVlJaaWh3QXM0YmM4QUZKbE5MczBFTzlCaFZJZGU0TFNjRTRzMDZzMkdRUlRzd0M5dm55R2lSdHdLc3ZWZm1LZFhkNEdoa0t4Q0xQT05Kc01rcXBXR1dhajJwUUdZVEswQXFBS1dpbXZSYTJFTGxKNitkeHJ4REdQeE82ZnM5QXNDLytjaVFTdHh1bVZScGIwK25CYWRTenBYMmM1OE1kZWhPd0V2VENGbE1LdzlkM0ZFYzJJVXJPQld2TTNrS2hXWEFaenJMSnlHRFBUbEE0VjJ3bmdEQUNFUDdDeFExYTVwdzkwdmtRQW44VUswcWxrTFUzYTJKUWpxdkRucWFvTXJheEd3V0o2UU8xRUZNWjB1eDlJeDdkNXNrNnlMcWwwajVUUlJSRlZsRnF1emtkbi82OUc2ZnE1QndHdE9SS1lPZVR4M0l5VVFDZ3ZxWUt5VlJjbEZ3R0ZFN1daMTdDVkg1bTZVQStCQm95T2hWTmZHaEE1NmlUczVsQVNKTFREV0NRRUN4U2RscUhoS2lSY2V0akxKejhKT05BTUtGc0JUc1dGQ3lrWGtGMWdESUJyQkdqS1NEeEU2TUJKNURjY2dwdUhaTGFCNmVmS0orMmxkdE1aMFNWZmpidnhMWks4ZytzSnJSeC9JSHZ4dWdNMEMrR1MzWWx0WkZGZWtJRmtQOEFadnY0K2d6VFAvSmhnSW55cGsrWW1CbWVOTk1LVGkxcWZqMkx3MHgzNEY1RmxRQ3g2eVJKTVR0QXh3NnZCRDI5UzFFcUovOFBMMUNNRUJCTGtqWXhPNDR6SWhKcFpOOFpsaU5qNHhNeGlKNTFyL3pHWHFueXdIZU1lMEZNMDBFQTBncFpGNHBFeGtINFRkM2xGWDFBT2lnbmVnUnlud0ROT1FvRTNFaHRjSlpBSUFOT3FRd0pEMkVPRWlXbkFYRXRMaklrVjFRZVFtYlZyVytoakIyNWZtZ3pjYUEySkFtU28yd0U1Qi9jcVVDWit0aitNK3FOd0FvSlN6QWJ1dXNoSkNkNWZzMEV2UkNLSEhPUW1ka2h1UnFKU08vb1pvWW1lbnhZb01TSlVkcmdLaWFzQ2c4UVVKYjVMQXlwZ1lsNWNkQllZUW9XTzNuSkxBcjYydlh3MTArUzh1Yk9jSWM5c2g4TDdMQkJvTHNCYXJmMDJJYWxQa2s3VzFUU0dLQnJrZVdIdkJqRWRCd3hka2hXMzdYK25hcGJ3aDJQbVd5TSsvNFBSK3pmY1BHeVRZTEZyLzRxdzAybERCcG9ka21RcDVzVUtPSmpMckNmYmdBSHJzV2J2a2lvalhSOHdEa1JqYVY0N1JZT01mdHl5TUhwaUZLTzNDREJvS1FBOVo0aW5GZUMyd3plSFdEclQvM0hHM2RsamxvSGJxdEZrNkhLblNQSWM4cUovNzZ0cURhTm9ZZGtOTU93YzhwbG5RQ0NZMmNVRGlFWk9uUVNYcDBrU0dNWWdjbHlpM05ocXBOeXZZQjJMVUcyR0NDUGxBbEl4U2tFSXBiU0NiWmd0VVFhM2t4MHBEQXJ0d0lGdmpZbGk0aCt0UmlCWUtQSTdLUmpzenA1UXJ2bjhEeVdGTGpmbXE5c3U1cVV5K3U1dGFPZnVicWZva0NZQzljaklWQ0pFbmxqTjB1aXdYWnJDT1VyTkwwWjJIUjJZd3NoUHhFQ2RKR0thaXUwdk1GMjhUSldBdnB1bUhqQ2xtWTdZRDhWc1R5cVM0Y0kyS1VDRmdWTU1vTDk4U2FKeWE2UVJyNDZYMWN5SUt6aTN1UjFROFI1ZXE5My8xb1UzRFNQZUFlai9sU000TDhUN2ZTVldiY2JLVTZwMTRUWlZjbkcyd1BkNkZmVnluWm1pT2duUUhlaXFGVHNRRHFaTm80NmZUVVNtV1duUEQxSjk0bHdZUTRzUEMxeU5xbGhqQm5OVCt5SzcvRzJEWEdubUVWQ3FLQlR2VFVudExSVS9Tb1BHVTFwTXdCeWxpYzBnMzJDY2Myc0piQWMyZG9MNXlOaWFVbU5wdlYyWEJPb2NucE00dUw4ZnRnMUxoQ3hEYkJrcm1pN0hrVnY2bWZuQXFYaDVaa1hMbXhWZ0ZNdS9TT3J0TUlPTjdKWDk5Z25SSWlFU0JWQlRxa2J4cVJiYm5DVkJkbFIrZVlCSjNBdS90by9HaHBqeHBUZEV1MU02S1hjOStkZHp2MkdwS2ZCbDJqTW1hektxZnljTXh4Z2tOUHRiSkhqUERuNUM5ZDYwWG5OWFQraG5CMUYwWm0wdFVuNnpUSUFBQjJRQy9NV2tzQ1d3Y0NhUW5SbFo1d3g0dldiUGJMQ0lyUm5wOXQyN3dGMjBPUUJtaUpyQlk0ZmpDanIwYm9Da0JjWWtBbzIwRDdscnV5ZCtRaHR2NkZGMjZzcmQrOGZpMWs5YzE3a3RvMm0vOTcrU0pPN1dGOEZvalE5UjFWM2tVYlE0Mm9YRU1QTk9iQlJRU2VjbkYyN2NyNnM4dFpIaVJDRnpZcFZ2ZXdUVThRZjlKL0lEYUdHdDZGWFVGWVVRemg1NUdFUTJ1MlU4RnlwMFRsejRQNHF5Uit1NlF2RHdsOWlRTDJHK1dJdmxrOEE1K2d0TUxhVjladmh1MjJQQTBOdUI2VmgzZmJXcm11ZVNyZzBMUERPNzBGZlhHQ0VsdlpnZ0RZa2lZbWN0R0F1aGFjZ0I0ZWZhbGZEK3kzSFRvVVJBUGxFL0xFZ1FheFpsMElyTHBUMkE2aWZTQlNVdWdLdnBUMlhod0tUbCtxeGxUd1VDOVVQaVljYnFESkxXTk9WWUx4M0tyUlF5MHNwS01FVzZBQVNkV1gzckNjMURjc09LeHJ2K2xVdEtEbUNDOFZwQUYzZnFSWWNTVHpoUTV4TWpReEhTajQ0QTI0NThGWERHanovUTEyUzUwNGdURHU2QXdvY1ZGVzdWUEw4N0tUT253WDlXZ01abTVBbGFERVZxYm5WSURlTXhsVjFlWXE1V2ZjZ0VKcW0zb25Zd3ZLWm1uMFROQzNZVng5L2VhTjV3TmgzMGFZNW1RNGg5bm5yclBheWRSSkRieFdkVkVVUlh5U0w1RWdUQWhxL0QybkE1YUpKUVRYUFRHWVNSVHFFdUhUbFNoN1I2TDZGclRmSUs0NnhRdlczRk10cmRvSEFzcm1zYVNneThrVEw2dFlLMktEa2o1Q3V1elFRRG9idTFLRGhsWlgzeWx1dHBCdDZNWXRlQ3RMeXcwd1JqUWU2UEhCSzJZWnQ5aXNuZG5FK3IxT3VDazVISWRRSzBCOHNYWWc1ak10a2EvWnpmWDFaY3JRMFI1dlhTS1NOdGxXUFdWOXFhbXpKWTFhdEI2Z1UydEEvWUtLQWhWREtvREFmQkE1T2RXMVViZ2JsRkhpVklUNFVQUTI2R09WcTFLN2VuRlVabzVOa2NhV3ZhRXp4RzVjamlLdkJRbU9SSGZvbDNQUkZMZjNSLzd5MlNQYmVod1luTjl5bnI0ZWU1elg2Rk1BY0k2TmpXUDZITU5xdmZUQmExRExhdXNpWlFrMkxVb1V0M0djc0NoMDJaWjg3Q2t0QlNaMUxJaXJndE8vZlBBRkpVRFNzaTJPdFNWOW9hVTlsWE1HbXRwT3QzT1pGUC9DTUNVTzVwODZycDJrQXdrMGhYUnR6NjFSTHN3eFA2R1V5dzNRTGNkM2JoMjVBdHJTWmZYNUlrYlRVTVprVHJ0bGg0cjRERVNJaDN1UWVxVjF0ZEZqdzBIdmE5MmRJWWd5aEJzWkExYWJhb3hPV2hpQ0RzbW8zaGdRM21OUmxZWUJtZG5XNm1GYTJnLzl0YUhSaStWUWY4NWFSQjdMakJCeHdndkFSd3QwT1ZNU1cxQ25hOHdDbTZwL2JqbmZnbEdvZUZJSXZ2VGE3Ulg2ODlKYmN6ZiswK1JWTzM3djM5M3ptMy9neHU5ZmR1TzN4Mjc4NTkvNXZudjI4MTk3eHN2NWxCdS8vcm9iWC90ak4zNHZjdVBiditMR041Z2J2K09mMzNyV2pWLzlzQnUvY2NHZmU5ZU5mL095bC9OdmJuemd6L3ZSWjl6NCtsLzdmVDl4K3I5eHlUMS82Ny9kK09lZjl2dCs0T2QvN01hLy9IdC9iL2FTMC9kdDkvd24zaTdmK2JvYnYvbWZYczV2ZVAxdXVQR0gvK0RPZS90ZjNmajZQM3I1LytIdmY4Ky9mOHZmMDUvMzdkL3o2ei8wOXRydzkvZjJldXR6Ym56em10ZTc1dWYveTl2QjYvRk43NmMvK3lPL1h2ZlBiM3I5WTMrZkw3dnhUek92bi9mVEEzLyt0MTcwZXYzSWpmL3lGODRlYi8rMnY3ZGVPWFcvci8yZGYvNTlOMzczdTE3ZUpYLytDeXYrRDAyRWJ5YVBQOC9XMk9hOVdNeGNNbjg0L1hENjRmVEQ2WWZURDZmLy8wMmYvbCtDTGlqaTByN2duZmVUSCtLV2p3ZCtlcUdRUlVYRUhqTmdqbXFjZnlsR3R4ZEk1cU42OU1xWC9NS1pBeDR4ZWw0UGh6eUd2K2RleFgvZWVlZWR0ODVxRW1jOEQ1cUV5ZFVFaEwxK0JGcEs1TytuWjE3NWtKNDV0cjF5anY2dnBndG5YdjZBT1RQeGVLbElrMlF0QmoyZHJGR3hYN1hMN3M5ai92ZiswdS96N3NoejczaFJGd0puRjVZVUI5MHpQaExCNGhmcGN6cGR1RDREWlE0bVdzVnNYaTkwVVhsbUZiMXBtTEYzVy9ucHp3QkJyUWJyekNVQUFBPT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["authors"],"name":[1],"type":["chr"],"align":["left"]},{"label":["title"],"name":[2],"type":["chr"],"align":["left"]},{"label":["ratings_count"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["obj_ratings"],"name":[4],"type":["chr"],"align":["left"]}],"data":[{"1":"John McPhee","2":"Annals of the Former World","3":"3115","4":"5 - Exceptional"},{"1":"Abraham Lincoln/Michael McCurdy","2":"The Gettysburg Address","3":"5239","4":"5 - Exceptional"},{"1":"Steven Pressfield","2":"Gates of Fire","3":"21934","4":"5 - Exceptional"},{"1":"Reduced Shakespeare Company/Adam Long/Daniel Singer/Jess Winfield","2":"The Compleat Works of Wllm Shkspr (abridged)","3":"8159","4":"5 - Exceptional"},{"1":"Sue Birtwistle/Sue Conklin/Susie Conklin","2":"The Making of Pride and Prejudice","3":"4244","4":"5 - Exceptional"},{"1":"Henri J.M. Nouwen","2":"In the Name of Jesus: Reflections on Christian Leadership","3":"8228","4":"5 - Exceptional"},{"1":"Colleen McCullough","2":"Caesar (Masters of Rome  #5)","3":"5991","4":"5 - Exceptional"},{"1":"Arthur Conan Doyle","2":"Sherlock Holmes: The Complete Novels and Stories  Volume I","3":"24087","4":"5 - Exceptional"},{"1":"Arthur Conan Doyle","2":"The Adventures of Sherlock Holmes","3":"5906","4":"5 - Exceptional"},{"1":"Naguib Mahfouz","2":"The Cairo Trilogy: Palace Walk / Palace of Desire / Sugar Street (The Cairo Trilogy #1-3)","3":"3347","4":"5 - Exceptional"},{"1":"Pablo Neruda/Mark Eisner/Lawrence Ferlinghetti/Robert Hass/Stephen Mitchell/Alastair Reid/Forrest Gander/Jack Hirschman/Stephen Kessler/John Felstiner","2":"The Essential Neruda: Selected Poems","3":"5149","4":"5 - Exceptional"},{"1":"Primo Levi","2":"The Drowned and the Saved","3":"3542","4":"5 - Exceptional"},{"1":"Wilfred Owen/Cecil Day-Lewis","2":"The Collected Poems of Wilfred Owen","3":"3151","4":"5 - Exceptional"},{"1":"Maya Angelou","2":"The Complete Collected Poems","3":"7983","4":"5 - Exceptional"},{"1":"Plato/John M. Cooper/Benjamin Jowett/Dorothea Frede/Alexander Nehamas/Paul Woodruff/Anthony Kenny/Rosamond Kent Sprague/Nicholas D. Smith/Karen Bell/D.S. Hutchinson/Donald J. Zeyl/Francisco J. González/Diskin Clay/Malcolm Schofield/Glenn R. Morrow/Jonathan Barnes/G.M.A. Grube/Brad Inwood/Mark Joyal/Jackson P. Hershbell/J.M. Edmonds/C.D.C. Reeve/Myles Burnyeat/Nicholas P. White/Mary Louise Gill/C.J. Rowe/Stanley Lombardo/David Gallop/Jeffrey Mitscherling/Richard D. McKiharan Jr./Andrew S. Becker/Mark Reuter/M.J. Levett/Paul        Ryan","2":"Plato: Complete Works","3":"9284","4":"5 - Exceptional"},{"1":"Karen Kingsbury","2":"A Time to Embrace (Timeless Love  #2)","3":"3728","4":"5 - Exceptional"},{"1":"Elisabeth Elliot","2":"Shadow of the Almighty: The Life and Testament of Jim Elliot","3":"6946","4":"5 - Exceptional"},{"1":"Ray Bradbury","2":"Bradbury Stories: 100 of His Most Celebrated Tales","3":"5161","4":"5 - Exceptional"},{"1":"Paul Pitchford","2":"Healing With Whole Foods: Asian Traditions and Modern Nutrition","3":"2948","4":"5 - Exceptional"},{"1":"Jim Trelease","2":"The Read-Aloud Handbook","3":"4357","4":"5 - Exceptional"},{"1":"Karen Kingsbury","2":"Family (Firstborn  #4)","3":"8370","4":"5 - Exceptional"},{"1":"Karen Kingsbury","2":"Found (Firstborn  #3)","3":"8874","4":"5 - Exceptional"},{"1":"Karen Kingsbury","2":"Forever (Firstborn  #5)","3":"8158","4":"5 - Exceptional"},{"1":"Karen Kingsbury","2":"Forgiven (Firstborn  #2)","3":"9804","4":"5 - Exceptional"},{"1":"Robert R. McCammon","2":"Boy's Life","3":"17540","4":"5 - Exceptional"},{"1":"Ray Monk","2":"Ludwig Wittgenstein: The Duty of Genius","3":"3679","4":"5 - Exceptional"},{"1":"Robert Frost/Susan Jeffers","2":"Stopping by Woods on a Snowy Evening","3":"9205","4":"5 - Exceptional"},{"1":"Maya Angelou/Linda Sunshine/Diego Rivera","2":"And Still I Rise","3":"3720","4":"5 - Exceptional"},{"1":"Frank Warren","2":"My Secret: A PostSecret Book","3":"5874","4":"5 - Exceptional"},{"1":"Frank Warren","2":"The Secret Lives of Men and Women: A PostSecret Book","3":"5406","4":"5 - Exceptional"},{"1":"Max Eilenberg/Angela Barrett","2":"Beauty and the Beast","3":"3682","4":"5 - Exceptional"},{"1":"Victor Villaseñor","2":"Rain of Gold","3":"5880","4":"5 - Exceptional"},{"1":"R.C. Sproul","2":"Chosen By God: Know God's Perfect Plan for His Glory and His Children","3":"6861","4":"5 - Exceptional"},{"1":"Jane Austen","2":"The Complete Novels","3":"21633","4":"5 - Exceptional"},{"1":"P.G. Wodehouse","2":"Life With Jeeves (Jeeves  #6  2  & 4)","3":"3169","4":"5 - Exceptional"},{"1":"Marcel Proust/Christopher Prendergast/John Sturrock","2":"Sodom and Gomorrah (In Search of Lost Time  #4)","3":"3243","4":"5 - Exceptional"},{"1":"David Eddings","2":"The Belgariad  Vol. Two: Castle of Wizardry / Enchanters' End Game (The Belgariad  #4-5)","3":"7083","4":"5 - Exceptional"},{"1":"David Eddings","2":"The Malloreon  Vol. 1: Guardians of the West / King of the Murgos / Demon Lord of Karanda (The Malloreon  #1-3)","3":"4839","4":"5 - Exceptional"},{"1":"David Eddings","2":"The Malloreon  Vol. 2: Sorceress of Darshiva / The Seeress of Kell (The Malloreon  #4-5)","3":"5457","4":"5 - Exceptional"},{"1":"David Simon/Edward Burns","2":"The Corner: A Year in the Life of an Inner-City Neighborhood","3":"4404","4":"5 - Exceptional"},{"1":"David James Duncan","2":"The Brothers K","3":"12703","4":"5 - Exceptional"},{"1":"William Manchester","2":"The Last Lion: Winston Spencer Churchill: Visions of Glory 1874-1932","3":"9659","4":"5 - Exceptional"},{"1":"Irvin D. Yalom","2":"Existential Psychotherapy","3":"3689","4":"5 - Exceptional"},{"1":"Rumiko Takahashi","2":"InuYasha Ani-Manga  Vol. 1 (Inuyasha Ani-Manga  #1)","3":"5862","4":"5 - Exceptional"},{"1":"Jacob Grimm/Wilhelm Grimm/Maria Tatar/A.S. Byatt/George Cruikshank/Paul Hey/Walter Crane/Warwick Goble/Kay Nielsen/Arthur Rackham","2":"The Annotated Brothers Grimm","3":"3132","4":"5 - Exceptional"},{"1":"Harold Bloom/Harper Lee","2":"Harper Lee's To Kill a Mockingbird (Bloom's Guides)","3":"4687","4":"5 - Exceptional"},{"1":"Patrick O'Brian","2":"The Hundred Days (Aubrey & Maturin #19)","3":"5325","4":"5 - Exceptional"},{"1":"Patrick O'Brian","2":"The Truelove (Aubrey & Maturin #15)","3":"6025","4":"5 - Exceptional"},{"1":"Graham Chapman/Eric Idle/Terry Gilliam/John Cleese/Terry Jones/Michael Palin/Roger Wilmut","2":"The Complete Monty Python's Flying Circus: All the Words: Volume 1","3":"3172","4":"5 - Exceptional"},{"1":"Ingri d'Aulaire/Edgar Parin d'Aulaire/Michael Chabon","2":"D'Aulaires' Book of Norse Myths","3":"3485","4":"5 - Exceptional"},{"1":"Viktor E. Frankl/Ilse Lasch/Harold S. Kushner/William J. Winslade","2":"Man's Search for Meaning","3":"3023","4":"5 - Exceptional"},{"1":"bell hooks","2":"Teaching to Transgress: Education as the Practice of Freedom","3":"5162","4":"5 - Exceptional"},{"1":"Mary  Stewart","2":"Mary Stewart's Merlin Trilogy (Arthurian Saga  #1-3)","3":"4146","4":"5 - Exceptional"},{"1":"Michael  Wood","2":"Gabriel García Márquez: One Hundred Years of Solitude","3":"3604","4":"5 - Exceptional"},{"1":"Marcel Proust/James Grieve/Christopher Prendergast","2":"In the Shadow of Young Girls in Flower (In Search of Lost Time  #2)","3":"5355","4":"5 - Exceptional"},{"1":"Tony Judt","2":"Postwar: A History of Europe Since 1945","3":"8017","4":"5 - Exceptional"},{"1":"Kohta Hirano","2":"Hellsing  Vol. 03 (Hellsing  #3)","3":"4831","4":"5 - Exceptional"},{"1":"Malcolm X/George Breitman","2":"Malcolm X Speaks: Selected Speeches and Statements","3":"5018","4":"5 - Exceptional"},{"1":"Ina May Gaskin","2":"Spiritual Midwifery","3":"5166","4":"5 - Exceptional"},{"1":"Robert M. Sapolsky","2":"A Primate's Memoir: A Neuroscientist's Unconventional Life Among the Baboons","3":"5040","4":"5 - Exceptional"},{"1":"Sandy Petersen/Lynn Willis","2":"Call of Cthulhu: Horror Roleplaying (Call of Cthulhu RPG)","3":"7011","4":"5 - Exceptional"},{"1":"Terri Blackstock","2":"Trial by Fire (Newpointe 911 #4)","3":"3248","4":"5 - Exceptional"},{"1":"James Baldwin","2":"Going to Meet the Man","3":"4022","4":"5 - Exceptional"},{"1":"Walt Disney Company/Al Dempster","2":"Walt Disney's Peter Pan (A Little Golden Book)","3":"5661","4":"5 - Exceptional"},{"1":"James Herriot/Ruth Brown/Peter Barrett","2":"James Herriot's Treasury for Children: Warm and Joyful Tales by the Author of All Creatures Great and Small","3":"10128","4":"5 - Exceptional"},{"1":"James Herriot/Victor G. Ambrus","2":"James Herriot's Dog Stories","3":"5692","4":"5 - Exceptional"},{"1":"Nikki Giovanni/Bryan Collier","2":"Rosa","3":"6097","4":"5 - Exceptional"},{"1":"Jacqueline Carey","2":"Kushiel's Avatar (Phèdre's Trilogy  #3)","3":"29409","4":"5 - Exceptional"},{"1":"Arthur Bennett","2":"The Valley of Vision: A Collection of Puritan Prayers and Devotions","3":"9476","4":"5 - Exceptional"},{"1":"William Shakespeare/Colin Burrow","2":"The Complete Sonnets and Poems","3":"5487","4":"5 - Exceptional"},{"1":"Mary Oliver","2":"Thirst","3":"3689","4":"5 - Exceptional"},{"1":"John Wooden/Steve Jamison","2":"Wooden: A Lifetime of Observations and Reflections On and Off the Court","3":"3429","4":"5 - Exceptional"},{"1":"Harold Abelson/Gerald Jay Sussman/Julie Sussman","2":"Structure and Interpretation of Computer Programs (MIT Electrical Engineering and Computer Science)","3":"3654","4":"5 - Exceptional"},{"1":"David Gemmell/Željko Petrović","2":"Shield of Thunder (Troy  #2)","3":"7356","4":"5 - Exceptional"},{"1":"Shelby Foote","2":"The Civil War  Vol. 1: Fort Sumter to Perryville","3":"9760","4":"5 - Exceptional"},{"1":"Charles Petzold","2":"Code","3":"4919","4":"5 - Exceptional"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[76]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>FFS!</p>
+<!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KHNraW1yKQpgYGAKYGBge3J9Cm1vdmllc19kYXRhIDwtIHJlYWRfY3N2KCJkYXRhL21vdmllcy5jc3YiKQpgYGAKYGBge3J9CmhlYWQobW92aWVzX2RhdGEsMTApCmBgYApub3RpY2VkIHRoZXJlIGlzIGEgY29sdW1uIGZvciBkYXRlIGFuZCB0aGlzIGlzIGJlaW5nIHJlYWQgaW4gYXMgYSBjaGFyYWN0ZXIgc3RyaW5nIHNvIG1heSBuZWVkIGNvbnZlcnRpbmcgaWYgd2Ugd2FudCB0byBhbmFseXNlIGJ5IGRhdGUKCmBgYHtyfQpza2ltKG1vdmllc19kYXRhKQpgYGAKc2hvd3MgdGhlcmUgYXJlIGxvdHMgb2YgbWlzc2luZyBkYXRhIGluIGhvbWVwYWdlIGFuZCB0YWdsaW5lCmFuZCBhIGZldyBpbiBvdmVydmlldyBhbmQgcmVsZWFzZSBkYXRlIGFuZCBydW50aW1lCgpjaGVjayBjb2x1bW4gbmFtZXMgLSB0aGV5IGFsbCBzZWVtIE9LCgpgYGB7cn0KbmFtZXMobW92aWVzX2RhdGEpCmBgYApub3RlcyBvbiBob3cgdG8gY2hlY2sgZGlmZmVyZW5jZXMuIGZpbHRlciBmb3Igd2hlbiB0aGV5IGFyZSBub3QgdGhlIHNhbWUKb3JpZ2luYWxfdGl0bGUgc2VlbXMgdG8gYmUgbGlua2VkIHRvIG9yaWdpbmFsX2xhbmd1YWdlCmBgYHtyfQptb3ZpZXNfZGF0YSAlPiUgCiAgc2VsZWN0KHRpdGxlLCBvcmlnaW5hbF90aXRsZSwgb3JpZ2luYWxfbGFuZ3VhZ2UpICU+JSAKICBmaWx0ZXIodGl0bGUgIT0gb3JpZ2luYWxfdGl0bGUpICU+JSAKICBhcnJhbmdlKHRpdGxlKSAgCmBgYAoKCgpRMgpgYGB7cn0KbW92aWVzX3NlbGVjdGVkIDwtIG1vdmllc19kYXRhICU+JSAKICBzZWxlY3Qob3JpZ2luYWxfdGl0bGUsIHJ1bnRpbWUsIGJ1ZGdldCkKbW92aWVzX3NlbGVjdGVkCmBgYAoKUTMKCmBgYHtyfQptb3ZpZXNfc2VsZWN0ZWQgJT4lIAogIHN1bW1hcmlzZSh0aXRsZV9uYSA9IHN1bShpcy5uYShvcmlnaW5hbF90aXRsZSkpLAogICAgICAgICAgICBydW50aW1lX25hID0gc3VtKGlzLm5hKHJ1bnRpbWUpKSwKICAgICAgICAgICAgYnVkZ2V0X25hID0gc3VtKGlzLm5hKGJ1ZGdldCkpCiAgICAgICAgICAgICkKYGBgCiMgc3VtbWFyeShtb3ZpZXNfc2VsZWN0ZWQpIGdpZXMgdGhlIHNhbWUgYW5zd2VyCiMgbWFwKG1vdmllc19zZWxlY3RlZCwgfnN1bShpcy5uYSguKSkpCiMgb3IgdXNlIHRoZSBsYW1iZGEgZnVuY3Rpb24gCgpgYGB7cn0KbW92aWVzX3NlbGVjdGVkICU+JSAKICBzdW1tYXJpc2UoYWNyb3NzKGV2ZXJ5dGhpbmcoKSwgfnN1bShpcy5uYSgueCkpKSkKYGBgCgp0aGVyZSBhcmUganVzdCAyIG1pc3NpbmcgdmFsdWVzIGluIHJ1bnRpbWUKClE0CgpyZW1vdmluZyBjYXNlcyB3aGVyZSBydW50aW1lPTAKZmlyc3QgY2hlY2tpbmcgaXQgd29ya3MKYGBge3J9Cm1vdmllc19zZWxlY3RlZCAlPiUKICBtdXRhdGUocnVudGltZSA9IG5hX2lmKHJ1bnRpbWUsMCkpICU+JSAKICBhcnJhbmdlKHJ1bnRpbWUpIApgYGAKYGBge3J9Cm1vdmllc19zZWxlY3RlZCA8LSBtb3ZpZXNfc2VsZWN0ZWQgJT4lCiAgc2VsZWN0KG9yaWdpbmFsX3RpdGxlLHJ1bnRpbWUsYnVkZ2V0KSAlPiUgCiAgbXV0YXRlKHJ1bnRpbWUgPSBuYV9pZihydW50aW1lLDApKQpgYGAKCmBgYHtyfQpzdW1tYXJ5KG1vdmllc19zZWxlY3RlZFsicnVudGltZSJdKQpgYGAKCmFuc3dlciAtIDM3IG1pc3NpbmcgdmFsdWVzCgpRNQpgYGB7cn0KbW92aWVzX2ltcHV0ZWQgPC0gbW92aWVzX3NlbGVjdGVkICU+JQogIG11dGF0ZShydW50aW1lPSBjb2FsZXNjZShydW50aW1lLCBtZWFuKHJ1bnRpbWUsIG5hLnJtID1UUlVFKSkpIApgYGAKCmBgYHtyfQpzdW1tYXJ5KG1vdmllc19kYXRhWyJydW50aW1lIl0pCmBgYAoKYGBge3J9CnN1bW1hcnkobW92aWVzX3NlbGVjdGVkWyJydW50aW1lIl0pCmBgYAoKYGBge3J9CnN1bW1hcnkobW92aWVzX2ltcHV0ZWRbInJ1bnRpbWUiXSkKYGBgCmp1c3QgY2hlY2tpbmcgaW1wYWN0IG9mIG15IGNvcnJlY3Rpb25zLiBNYWtlcyBzZW5zZSBhcyBydW50aW1lIG5vdyByYW5nZXMgZnJvbSAxNCB0byAzMzggd2l0aCBubyBOQSdzICAgICAgIAoKUTYKYGBge3J9Cm1vdmllc19pbXB1dGVkICU+JSAKICBhcnJhbmdlKHJ1bnRpbWUpICU+JSAKICBoZWFkKDEwKQpgYGAKYGBge3J9Cm1vdmllc19pbXB1dGVkICU+JSAKICBhcnJhbmdlKGRlc2MocnVudGltZSkpICU+JSAKICBoZWFkKDEwKQpgYGAKIAojIGFuc3dlciB1c2luZyBzbGljZQpzbGljZSBpcyBzdWJzZXR0aW5nIGRhdGEgIGJ5IGluZGV4IC0gZ29vZCBmb3IgZGVjaW1hdGluZywgc2VsZWN0aW5nIGFsbCBvZGQuIGFsbCBldmVuLCBmb3IgZXhhbXBsZQoKYGBge3J9Cm1vdmllc19zZWxlY3RlZCAlPiUgCnNsaWNlX21heChydW50aW1lLCBuPTEwKQpgYGAKYGBge3J9Cm1vdmllc19zZWxlY3RlZCAlPiUgCnNsaWNlX21pbihydW50aW1lLCBuPTEwKQpgYGAKICAgICAgIAogICAgICAgCmBgYHtyfQptb3ZpZXNfaW1wdXRlZCA8LSBtb3ZpZXNfaW1wdXRlZCAlPiUgCiAgbXV0YXRlKGJ1ZGdldCA9IGlmX2Vsc2UoYnVkZ2V0PDEwMCxtZWRpYW4oYnVkZ2V0KSwgYnVkZ2V0KSkgJT4lIAogIGFycmFuZ2UoYnVkZ2V0KQpgYGAKICAgICAgIApjaGVjayByZXN1bHRzIG9mIGFib3ZlCmBgYHtyfQpzdW1tYXJ5KG1vdmllc19pbXB1dGVkKQpgYGAKCiMjIEV4dGVuc2lvbgoKUTEKYGBge3J9Cm1vdmllc19idWRnZXRzIDwtIG1vdmllc19pbXB1dGVkICU+JSAKICBtdXRhdGUoYnVkZ2V0X3R5cGUgPSBjYXNlX3doZW4oCiAgICAgICAgIGJ1ZGdldCA+PSA0MGU2IH4gIkJpZyBidWRnZXQiLAogICAgICAgICBidWRnZXQgPj0gMTJlNiB+ICJNZWRpdW0gYnVkZ2V0IiwKICAgICAgICAgVFJVRSB+ICJTbWFsbCBidWRnZXQiCiAgKSkgJT4lIAogIGFycmFuZ2UoZGVzYyhidWRnZXQpKQpgYGAKZG91YmxlIGNoZWNrIHJlc3VsdHMgb2YgYWJvdmUKYGBge3J9Cm1vdmllc19idWRnZXRzICU+JSAKICBncm91cF9ieShidWRnZXRfdHlwZSkgJT4lIAogIHN1bW1hcmlzZShjb3VudD1uKCksIG1pbl9idWRnZXQ9bWluKGJ1ZGdldCksIG1heF9idWRnZXQ9bWF4KGJ1ZGdldCkpCmBgYApRMgoKYGBge3J9Cm15X2lzbmFfZnVuIDwtIGZ1bmN0aW9uKHgpIHsKICBzdW0oaXMubmEoeCkpCn0KYGBgCgoKYGBge3J9Cm1vdmllc19kYXRhICU+JQogICAgc2VsZWN0KHdoZXJlKGlzLm51bWVyaWMpKSAlPiUgCiAgICBzdW1tYXJpc2UoCiAgICBhY3Jvc3MoLmNvbHMgPSB3aGVyZShpcy5udW1lcmljKSwKICAgICAgICAgICAgICAgIC5mbnMgPSBteV9pc25hX2Z1bikKICAgICAgICAgICAgICAgICkKYGBgCgpgYGB7cn0KbW92aWVzX2RhdGEgJT4lCiAgICBzZWxlY3Qod2hlcmUoaXMuY2hhcmFjdGVyKSkgJT4lIAogICAgc3VtbWFyaXNlKAogICAgYWNyb3NzKC5jb2xzID0gd2hlcmUoaXMuY2hhcmFjdGVyKSwKICAgICAgICAgICAgICAgIC5mbnMgPSBteV9pc25hX2Z1bikKICAgICAgICAgICAgICAgICkKYGBgCgpgYGB7cn0KbW92aWVzX2RhdGEgJT4lCiAgICBzZWxlY3Qod2hlcmUoaXMubnVtZXJpYykpICU+JSAKICAgIHN1bW1hcmlzZSgKICAgIGFjcm9zcyguY29scyA9IHdoZXJlKGlzLm51bWVyaWMpLAogICAgICAgICAgICAgICAgLmZucyA9IH5zdW0oaXMubmEoLngpKSkKICAgICAgICAgICAgICAgICkKYGBgCgpgYGB7cn0KbW92aWVzX2RhdGEgJT4lCiAgICBzZWxlY3Qod2hlcmUoaXMuY2hhcmFjdGVyKSkgJT4lIAogICAgc3VtbWFyaXNlKAogICAgYWNyb3NzKC5jb2xzID0gd2hlcmUoaXMuY2hhcmFjdGVyKSwKICAgICAgICAgICAgICAgIC5mbnMgPSB+c3VtKGlzLm5hKC54KSkpCiAgICAgICAgICAgICAgICApCmBgYA==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiV2VlazEtV2Vla2VuZEhvbWVXb3JrLVNhcmFoSCIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoqKk5vdGVzKioKdGhpcyBzY3JpcHQgdXNlcyB0aGUgZ29vZHJlYWRzIGJvb2sgZGF0YXNldApkb3dubG9hZCBmcm9tIGh0dHBzOi8vd3d3LmthZ2dsZS5jb20vamVhbG91c2xlb3BhcmQvZ29vZHJlYWRzYm9va3MgCmFuZCBzYXZlIHRvIGEgZGF0YSBmb2xkZXIKCm5leHQgdGltZSBpbGwgbWF5YmUgYWRkIHRoaXMgZnVuY3Rpb24KZG93bmxvYWQuZmlsZSh1cmwsIGRlc3RmaWxlLCBtZXRob2QsIHF1aWV0ID0gRkFMU0UsIG1vZGUgPSAidyIsCiAgICAgICAgICAgICAgY2FjaGVPSyA9IFRSVUUsCiAgICAgICAgICAgICAgZXh0cmEgPSBnZXRPcHRpb24oImRvd25sb2FkLmZpbGUuZXh0cmEiKSwKICAgICAgICAgICAgICBoZWFkZXJzID0gTlVMTCwg4oCmKQogICAgICAgICAgICAgIAoqKklkZWFzKioKRmluZCBteSBwZXJmZWN0IGJvb2sgbGlzdApmaWx0ZXIgb24gYSByb2J1c3QgYW5kIG9iamVjdGl2ZSByYXRpbmcKcmVjZW50bHkgd3JpdHRlbiAtIGJ1dCBjYW50IHdvcmsgb3V0IGRhdGVzIHlldCA6KApub3QgdG9sa2llbiBvciBoYXJyeSBwb3R0ZXIhCmxvb2tzIGxrZSBpIG5lZWQgYSBiaXQgb2YgZGF0YSB3cmFuZ2xpbmcgLSBzb21lIHplcm9zIHRoYXQgZG9uJ3QgbWFrZSBzZW5zZSBhbmQgTkEncy4gSSBvbmx5IHdhbnQgZGF0YSBJIGNhbiByZWx5IG9uLgogICAgICAgICAgICAgIAoKYGBge3J9CmxpYnJhcnkodGlkeXZlcnNlKQpsaWJyYXJ5KHNraW1yKQpgYGAKCmBgYHtyfQpib29rc19kYXRhIDwtIHJlYWRfY3N2KCJkYXRhL2Jvb2tzLmNzdiIpIApgYGAKYGBge3J9CnNraW0oYm9va3NfZGF0YSkKYGBgCgoqKiBOb3RlcyoqIApGaXJzdCBzdGVwcyBubmVkIHRvIGJlIGRhdGEgJ2NsZWFuaW5nJwpJbml0aWFsbHkgb25seSA0IHJlY29yZHMgd2l0aCByYXRpbmdzX2NvdW50IGFzIE5BClJlbW92ZSBlcnJvbmVvdXMgb3IgaW5jb21wbGV0ZSByZWNvcmRzCldlIGFyZSBsb29raW5nIGZvciByb2J1c3QgcmF0aW5ncyBzby4uLgpTb21lIGRhdGEgaGFzIGEgcmF0aW5nIGJ1dCB0aGUgcmF0aW5nIGNvdW50IGlzIHplcm8gKDgwKSAtIHJlbW92ZSB0aGVzZSBkYXRhIGFzIHdlIGNhbm5vdCB0cnVzdCB0aGVtLiBTb21lIGJvb2tzIGhhdmUgemVybyBwYWdlcyAoNzYpIC0gcmVtb3ZlIHRoZXNlIGRhdGEgYXMgcmVjb3JkIGlzIG5vdCB0cnVzdHdvcnRoeS4gCkluIHNvbWUgcmVjb3JkcyB0aGUgYXV0aG9yIGlzICJOT1QgQSBCT09LIiAoNSkKClRvdGFsIDE2MSByZWNvcmRzIHJlbW92ZWQuIEltIGtlZXBpbmcgdGhlbSBpbiBiYWRfYm9va3NfZGF0YSAoanVzdCBmb3IgZnVuLCBvciBtYXliZSBnb29kIHByYWN0aWNlKQoKYGBge3J9CihiYWRfYm9va3NfZGF0YSA8LSBib29rc19kYXRhICU+JSAKbXV0YXRlKHJhdGluZ3NfY291bnQgPSBuYV9pZihyYXRpbmdzX2NvdW50LCAwKSkgJT4lICAgCm11dGF0ZShhdXRob3JzID0gbmFfaWYoYXV0aG9ycywgIk5PVCBBIEJPT0siKSkgJT4lICAKbXV0YXRlKG51bV9wYWdlcyA9IG5hX2lmKG51bV9wYWdlcywgMCkpICU+JSAKZmlsdGVyKGlmX2FueShldmVyeXRoaW5nKCksIH5pcy5uYSgueCkpKSAlPiUgCnNlbGVjdChhdXRob3JzLCB0aXRsZSwgYXZlcmFnZV9yYXRpbmcsIAogICAgICAgcmF0aW5nc19jb3VudCwgbnVtX3BhZ2VzKSkKYGBgCmBgYHtyfQpyb2J1c3RfYm9va3NfZGF0YSA8LSBib29rc19kYXRhICU+JSAKbXV0YXRlKHJhdGluZ3NfY291bnQgPSBuYV9pZihyYXRpbmdzX2NvdW50LCAwKSkgJT4lICAgCm11dGF0ZShhdXRob3JzID0gbmFfaWYoYXV0aG9ycywgIk5PVCBBIEJPT0siKSkgJT4lICAKbXV0YXRlKG51bV9wYWdlcyA9IG5hX2lmKG51bV9wYWdlcywgMCkpICU+JSAKZHJvcF9uYSgpCmBgYAoKCmBgYHtyfQpza2ltKHJvYnVzdF9ib29rc19kYXRhKQpgYGAKClExIC0gV2hhdCBsYW5ndWFnZXMgYXJlIHRoZXNlIGJvb2tzIHdyaXR0ZW4gaW4/CmBgYHtyfQpyb2J1c3RfYm9va3NfZGF0YSAlPiUgCmdyb3VwX2J5KGxhbmd1YWdlX2NvZGUpICU+JSAKc3VtbWFyaXNlKGxhbl9jb3VudCA9IG4oKSkgJT4lIAphcnJhbmdlKGRlc2MobGFuX2NvdW50KSkKYGBgCkFucy4yNiBsYW5ndWFnZSBjb2Rlcy4gRW5nbGlzaCBsYW5ndWFnZSBpbmNsdWRlZCBlbmcgZW4tVVNBIGFuZCBlbi1DQSBlbi1HQi4gPz8gSW52ZXN0aWdhdGUgd2hhdCBtdWwgYW5kIGVubSBhcmUuCgpgYGB7cn0Kcm9idXN0X2Jvb2tzX2RhdGEgJT4lIAogIGZpbHRlcihsYW5ndWFnZV9jb2RlICVpbiUgYygibXVsIiwgImVubSIpKSAlPiUgCiAgc2VsZWN0KGF1dGhvcnMsIHRpdGxlLCBsYW5ndWFnZV9jb2RlKQpgYGAKcXVpY2sgZ29vZ2xlIG9mIGV4YW1wbGUgYm9vayBvbiBnb29kcmVhZHMgc2hvd3MgbWUgdGhhdCAKJ2VubScgaXMgbWVkaWV2YWwgZW5nbGlzaCBhbmQgJ211bCcgaXMgbXVsdGlwbGUgbGFuZ3VhZ2VzCgpRMiAtIHdoaWNoIGF1dGhvciBoYXMgd3JpdHRlbiB0aGUgbW9zdCBib29rcyAob3IgaGFzIG1vc3QgYm9va3MgbGlzdGVkIG9uIGdvb2RyZWFkcyk/CmBgYHtyfQpyb2J1c3RfYm9va3NfZGF0YSAlPiUgCnNlbGVjdChhdXRob3JzKSAlPiUgCiAgZ3JvdXBfYnkoYXV0aG9ycykgJT4lIApzdW1tYXJpc2UoYm9va19jb3VudCA9IG4oKSkgJT4lIAphcnJhbmdlKGRlc2MoYm9va19jb3VudCkpICU+JSAKaGVhZCgxMCkKYGBgCgpRMyB3aGljaCBhdXRob3JzIGhhdmUgdGhlIG1vc3QgcmF0aW5ncz8KYGBge3J9CnJvYnVzdF9ib29rc19kYXRhICU+JSAKc2VsZWN0KGF1dGhvcnMsIHRpdGxlLCByYXRpbmdzX2NvdW50KSAlPiUgCmFycmFuZ2UoZGVzYyhyYXRpbmdzX2NvdW50KSkgJT4lICAgCmhlYWQoMTApCmBgYApVcmdoIC0gdGhlc2UgYXJlIGNyYXp5IHBvcHVsYXIgYm9va3MgSSBoYXZlIHZlcnkgbGl0dGxlIGludGVyZXN0IGluLCBvciBoYXZlIGFscmVhZHkgcmVhZAoKUTQuIHdoaWNoIGF1dGhvcnMgaGF2ZSB0aGUgbGVhc3QgcmF0aW5ncwpgYGB7cn0Kcm9idXN0X2Jvb2tzX2RhdGEgJT4lIApzZWxlY3QoYXV0aG9ycywgdGl0bGUsIHJhdGluZ3NfY291bnQpICU+JSAKYXJyYW5nZShkZXNjKHJhdGluZ3NfY291bnQpKSAlPiUgICAKdGFpbCgxMCkKYGBgClNvbWUgcHJldHR5IG5pY2hlIGJvb2tzIGhlcmUgOikuIEFsc28gYWdhaW4sIHJhdGluZ3MgY291bnQgb2YgMSBpcyBub3QgcGFydGljdWxhcmx5IHJlbGlhYmxlCgpRNSB3aGljaCBhdXRob3JzIGhhdmUgaGlnaGVzdCBhdmVyYWdlIHJhdGluZz8gYW5kIGRvZXMgaXQgcmVsYXRlIHRvIG51bWJlciBvZiBib29rcz8KYGBge3J9CnJvYnVzdF9ib29rc19kYXRhICU+JSAKc2VsZWN0KGF1dGhvcnMsYXZlcmFnZV9yYXRpbmcscmF0aW5nc19jb3VudCkgJT4lICNhdmVyYWdlX3JhdGluZyBpcyBhdmVyYWdlIHJhdGluZyBwZXIgYm9vawogIGdyb3VwX2J5KGF1dGhvcnMpICU+JSAKc3VtbWFyaXNlKGJvb2tfY291bnQgPSBuKCksYXV0aF9hdmdfcmF0aW5nPW1lZGlhbihhdmVyYWdlX3JhdGluZykpICU+JSAjYXV0aF9hdmdfcmF0aW5nIGlzIGF2ZXJhZ2UgcmF0aW5nIGZvciBhbGwgYm9va3MgYnkgb25lIGF1dGhvcgphcnJhbmdlKGRlc2MoYXV0aF9hdmdfcmF0aW5nKSkgJT4lIApoZWFkKDEwKSAgCmBgYApIbW0sIEl2ZSBuZXZlciBoZWFyZCBvZiB0aGVzZSBib29rcy4gSSB3b25kZXIgaG93IHJlbGlhYmxlIHRoZXNlIDUqIHJhdGluZ3MgYXJlPyBBIDUgc3RhciByYXRpbmcgaXMgbW9yZSBtZWFuaW5nZnVsIHdpdGggbW9yZSByZXZpZXdzCkNoZWNrIGhvdyBtYW55IHJldmlld3MgZGlkIHRoZXNlIGJvb2tzIGdldD8KU29tZSBnb3QgMCByYXRpbmdzIGFtZCBvdGhlcnMgZ290IDEgb3IgMiAtIEkgdGhpbmsgdGhleSBjb3VsZCBiZSB0aGUgYXV0aG9ycyBNdW0hCgpRNiBhcmUgdGhlIHJhdGluZ3MgYW4gaW50ZWdlciBudW1iZXI/CmNhbiBjaGVjayB0aGF0IGJ5IGxvb2tpbmcgYXQgcmF0aW5ncyBvZiBhbGwgYm9va3Mgd2l0aCBvbmx5IG9uZSByYXRpbmcuIApBbnMuIE5vIC0gcmF0aW5ncyBjYW4gYmUgYSBmcmFjdGlvbmFsIG51bWJlcgpEYXRhIGFsc28gc2hvd3MgaG93IHJhdGluZ3MgYXJlIG9mdGVuIGFyb3VuZCA0CgpgYGB7cn0Kcm9idXN0X2Jvb2tzX2RhdGEgJT4lIApzZWxlY3QoYXV0aG9ycyxhdmVyYWdlX3JhdGluZyxyYXRpbmdzX2NvdW50KSAlPiUgCmZpbHRlcihyYXRpbmdzX2NvdW50PT0xKSAlPiUgCmRpc3RpbmN0KGF2ZXJhZ2VfcmF0aW5nKSAlPiUgCmFycmFuZ2UoZGVzYyhhdmVyYWdlX3JhdGluZykpCmBgYCAgICAgICAgICAKUTcgSG93IG9iamVjdGl2ZSBhcmUgdGhlIHJhdGluZ3Mgb24gZ29vZHJlYWRzPwpyYXRpbmdzIGFyZSBub3Qgc3ByZWFkIGFjcm9zcyAxLTU/CmBgYHtyfQpyb2J1c3RfYm9va3NfZGF0YSAlPiUgCmZpbHRlcihhdmVyYWdlX3JhdGluZyA8PTMpICU+JSAKc3VtbWFyaXNlKGNvdW50ID0gbigpKQpgYGAKSXQgbG9va3MgbGlrZSB0aGVyZSBhcmUgdmVyeSBmZXcgcmF0aW5ncyBvZiAzIG9yIGxvd2VyCmFucy4gNzAgYm9va3Mgb3V0IG9mIG1vcmUgdGhhbiAxMSwwMDAKClRoZSBzdW1tYXJ5IHN0YXRzIHNob3cgbWVhbiByYXRpbmcgaXMgMy45IGFuZCB0aGVyZSBhcmUgdmVyeSBmZXcgcmF0aW5ncyBsb3dlciB0aGFuIDMuIEhvdyBhcmUgcmF0aW5ncyBkaXN0cmlidXRlZD8gSSB3b3VsZCBub3JtYWxseSBjcmVhdGUgYSBoaXN0b2dyYW0gZm9yIHRoaXMgYnV0IGNhbiBsb29rIGF0IHN0YXRzIGluIHNraW1yCgpgYGB7cn0Kc2tpbShyb2J1c3RfYm9va3NfZGF0YSkKYGBgCgoKUTggQ2FuIEkgY3JlYXRlIGEgbW9yZSByZWFkYWJsZSByYXRpbmcgc2NvcmU/CgpGaXJzdCBsaW1pdCBhbmFseXNpcyB0byBvbmx5IGVuZ2xpc2ggbGFuZ3VhZ2UgYm9va3MKQ2FsY3VsYXRpbmcgc29tZSBzdGF0cyBmb3IgdGhlIHJhdGluZ3MKbGltaXQgdGhlc2Ugc3RhdHMgdG8gZW5nbGlzaCBsYW5ndWFnZSBib29rcwoKCmBgYHtyfQpuZXdfYm9va3NfZGF0YSA8LSByb2J1c3RfYm9va3NfZGF0YSAlPiUgCiAgIG11dGF0ZShlbmdfbGFuZyA9IHJlY29kZShsYW5ndWFnZV9jb2RlLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJlbmciID0gIlllcyIsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgImVuLVVTIiA9ICJZZXMiLCAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJlbi1HQiIgPSAiWWVzIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICJlbi1DQSIgPSAiWWVzIiwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLmRlZmF1bHQgPSAiTm8iKSkKYGBgCgpgYGB7cn0KbmV3X2Jvb2tzX2RhdGEgJT4lIApncm91cF9ieShsYW5ndWFnZV9jb2RlLGVuZ19sYW5nKSAlPiUgICAKc3VtbWFyaXNlKGNvdW50X2xhbmcgPSBuKCkpICU+JSAKYXJyYW5nZShkZXNjKGVuZ19sYW5nKSkKYGBgCmBgYHtyfQpuZXdfYm9va3NfZGF0YSAlPiUgCmFycmFuZ2UoZGVzYyhyYXRpbmdzX2NvdW50KSkgJT4lIApzZWxlY3QoYXV0aG9ycyxyYXRpbmdzX2NvdW50KSAlPiUgCmhlYWQoMjApCmBgYAoKCk5leHQgZ2V0IHJpZCBvZiBvYmplY3Rpb25hYmxlIGF1dGhvcnMgYW5kIGJvb2tzIHRoYXQgYXJlIHN1cGVyLXBvcHVsYXIgKHRvcCAxMCUpIG9yIHRvdGFsbHkgbmljaGUgKGJvdHRvbSAxMCUpCgpgYGB7cn0KYmFubmVkbGlzdD1jKCJKLksuIFJvd2xpbmciLCJUb2xraWVuIikKYGBgCmBgYHtyfQpuZXdfYm9va3NfZGF0YSAlPiUgCiAgc2VsZWN0KGF1dGhvcnMpICU+JSAKICBmaWx0ZXIoZ3JlcGwoIlJvd2xpbmd8VG9sa2llbiIsYXV0aG9ycykpIApgYGAKCgpgYGB7cn0KcG9wdWxhcl9ib29rX2lkIDwtIG5ld19ib29rc19kYXRhICU+JSAKICBmaWx0ZXIoZW5nX2xhbmcgPT0gIlllcyIpICU+JQogIGdyb3VwX2J5KGF1dGhvcnMpICU+JSAKICBtdXRhdGUoYXV0aF9tcmNvdW50PW1lYW4ocmF0aW5nc19jb3VudCkpICU+JSAKICB1bmdyb3VwKCkgJT4lIAogIHNsaWNlX21heChhdXRoX21yY291bnQsIHByb3A9MC4xMCkgJT4lIAogIHNlbGVjdChib29rSUQpICU+JSAKICBwdWxsKCkKYGBgCmBgYHtyfQpuaWNoZV9ib29rX2lkIDwtIG5ld19ib29rc19kYXRhICU+JSAKICBmaWx0ZXIoZW5nX2xhbmcgPT0gIlllcyIpICU+JQogIGdyb3VwX2J5KGF1dGhvcnMpICU+JSAKICBtdXRhdGUoYXV0aF9tcmNvdW50PW1lYW4ocmF0aW5nc19jb3VudCkpICU+JSAKICB1bmdyb3VwKCkgJT4lIAogIHNsaWNlX21pbihhdXRoX21yY291bnQsIHByb3A9MC41KSAlPiUgCiAgc2VsZWN0KGJvb2tJRCkgJT4lIAogIHB1bGwoKQpgYGAKCgpub3cgd2UgY2FuIHNlbGVjdCBhIGRhdGFzZXQgdGhhdCBkb2VzbnQgaGF2ZSB0aGVzZSBwb3B1bGFyIG9yIG5pY2hlIGJvb2tzIGluIHRoZW0uIApgYGB7cn0Kc2VsX2Jvb2tzX2RhdGEgPC0gbmV3X2Jvb2tzX2RhdGEgJT4lIAogICAgZmlsdGVyKGVuZ19sYW5nID09ICJZZXMiKSAlPiUKICAgIGZpbHRlcighZ3JlcGwoIlJvd2xpbmd8VG9sa2llbiIsYXV0aG9ycykpICU+JSAKICAgIGZpbHRlcighZ3JlcGwoIkJpYmxlfExvcmQgb2YgdGhlIFJpbmdzIix0aXRsZSkpICU+JQogICAgZmlsdGVyKCFib29rSUQgJWluJSAgKGMocG9wdWxhcl9ib29rX2lkLG5pY2hlX2Jvb2tfaWQpKSApCmBgYAoKYGBge3J9CnJ0bmdfc3RhdHMgPC0gc2VsX2Jvb2tzX2RhdGEgJT4lIAogIGZpbHRlcihyYXRpbmdzX2NvdW50ID4gbWVhbihyYXRpbmdzX2NvdW50KSkgJT4lICAKICBzZWxlY3QoYXZlcmFnZV9yYXRpbmcsIHJhdGluZ3NfY291bnQpICU+JSAKICBzdW1tYXJpc2UoCiAgICBtZWFuX3J0bmcgPSBtZWFuKGF2ZXJhZ2VfcmF0aW5nLCBuYS5ybSA9IFRSVUUpLAogICAgc2RfcnRuZyAgPSBzZChhdmVyYWdlX3JhdGluZywgbmEucm0gPSBUUlVFKSwKICAgIG1lYW5fcnRuZ19jb3VudCA9IG1lYW4ocmF0aW5nc19jb3VudCwgbmEucm09IFRSVUUpKSAKYGBgCgpgYGB7cn0KbWVhbl9ydG5nIDwtIHJ0bmdfc3RhdHMgJT4lIAogIHB1bGwobWVhbl9ydG5nKQpzZF9ydG5nIDwtIHJ0bmdfc3RhdHMgJT4lIAogIHB1bGwoc2RfcnRuZykKYGBgCgpgYGB7cn0Kc2VsX2Jvb2tzX2RhdGEgPC0gc2VsX2Jvb2tzX2RhdGEgJT4lCiAgICBmaWx0ZXIoZW5nX2xhbmcgPT0gIlllcyIpICU+JQogICAgZmlsdGVyKHJhdGluZ3NfY291bnQgPiBtZWFuKHJhdGluZ3NfY291bnQpKSAlPiUgCiAgICBtdXRhdGUob2JqX3JhdGluZ3MgPSBjYXNlX3doZW4oCiAgICAgICBhdmVyYWdlX3JhdGluZyA+IChtZWFuX3J0bmcgKyAxLjUqc2RfcnRuZykgfiAiNSAtIEV4Y2VwdGlvbmFsIiwKICAgICAgIGF2ZXJhZ2VfcmF0aW5nIDwgKG1lYW5fcnRuZyAtIDEuNSpzZF9ydG5nKSB+ICIxIC0gRGVhZCBEb25rZXkiLCAgICAgICAKICAgICAgIGF2ZXJhZ2VfcmF0aW5nID4gKG1lYW5fcnRuZyArIDAuNSpzZF9ydG5nKSB+ICI0IC0gR3JlYXQiLAogICAgICAgYXZlcmFnZV9yYXRpbmcgPCAobWVhbl9ydG5nIC0gMC41KnNkX3J0bmcpIH4iMiAtIFBvb3IiLAogICAgICAgVFJVRSB+ICIzIC0gQXZlcmFnZSIpKQpgYGAKCmBgYHtyfQpzZWxfYm9va3NfZGF0YSAlPiUKICBncm91cF9ieShvYmpfcmF0aW5ncykgJT4lIAogIHN1bW1hcmlzZShsZXZlbHM9IG4oKSkKYGBgCldoYXQgYXJlIHRoZSBteSByZWNvbW1lbmRlZCBib29rcz8KYGBge3J9CnNlbF9ib29rc19kYXRhICU+JSAKICBzZWxlY3QoYXV0aG9ycyx0aXRsZSxyYXRpbmdzX2NvdW50LG9ial9yYXRpbmdzKSAlPiUgCiAgZmlsdGVyKG9ial9yYXRpbmdzID09ICgiNSAtIEV4Y2VwdGlvbmFsIikpICAKYGBgCkZGUyEKCg==</div>
 
 
 
@@ -2085,7 +2327,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("Cleaning&DLYR+_homework.Rmd");
+  window.initializeSourceEmbed("week_01_weekend_homework.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>

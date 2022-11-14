@@ -26,11 +26,21 @@ check column names - they all seem OK
 ```{r}
 names(movies_data)
 ```
+notes on how to check differences. filter for when they are not the same
+original_title seems to be linked to original_language
+```{r}
+movies_data %>% 
+  select(title, original_title, original_language) %>% 
+  filter(title != original_title) %>% 
+  arrange(title)  
+```
+
+
 
 Q2
 ```{r}
 movies_selected <- movies_data %>% 
-  select(original_title,runtime,budget)
+  select(original_title, runtime, budget)
 movies_selected
 ```
 
@@ -43,6 +53,15 @@ movies_selected %>%
             budget_na = sum(is.na(budget))
             )
 ```
+# summary(movies_selected) gies the same answer
+# map(movies_selected, ~sum(is.na(.)))
+# or use the lambda function 
+
+```{r}
+movies_selected %>% 
+  summarise(across(everything(), ~sum(is.na(.x))))
+```
+
 there are just 2 missing values in runtime
 
 Q4
@@ -96,6 +115,18 @@ movies_imputed %>%
   arrange(desc(runtime)) %>% 
   head(10)
 ```
+ 
+# answer using slice
+slice is subsetting data  by index - good for decimating, selecting all odd. all even, for example
+
+```{r}
+movies_selected %>% 
+slice_max(runtime, n=10)
+```
+```{r}
+movies_selected %>% 
+slice_min(runtime, n=10)
+```
        
        
 ```{r}
@@ -115,8 +146,8 @@ Q1
 ```{r}
 movies_budgets <- movies_imputed %>% 
   mutate(budget_type = case_when(
-         budget >= 40*1e6 ~ "Big budget",
-         budget >= 12*1e6 ~ "Medium budget",
+         budget >= 40e6 ~ "Big budget",
+         budget >= 12e6 ~ "Medium budget",
          TRUE ~ "Small budget"
   )) %>% 
   arrange(desc(budget))
@@ -151,5 +182,23 @@ movies_data %>%
     summarise(
     across(.cols = where(is.character),
                 .fns = my_isna_fun)
+                )
+```
+
+```{r}
+movies_data %>%
+    select(where(is.numeric)) %>% 
+    summarise(
+    across(.cols = where(is.numeric),
+                .fns = ~sum(is.na(.x)))
+                )
+```
+
+```{r}
+movies_data %>%
+    select(where(is.character)) %>% 
+    summarise(
+    across(.cols = where(is.character),
+                .fns = ~sum(is.na(.x)))
                 )
 ```
