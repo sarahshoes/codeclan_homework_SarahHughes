@@ -1,0 +1,116 @@
+---
+title: "Week1, Day1 Homework Joins and Tidyr"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(skimr)
+```
+
+1.1 Joins
+
+Q1
+```{r}
+card_base <- read_csv("data/CardBase.csv")
+card_base <- clean_names(card_base)
+
+customer_base <- read_csv("data/CustomerBase.csv")
+customer_base <- clean_names(customer_base)
+
+fraud_base <- read_csv("data/FraudBase.csv")
+fraud_base <- clean_names(fraud_base)
+
+transaction_base <- read_csv("data/TransactionBase.csv")
+transaction_base <- clean_names(transaction_base)
+```
+
+Q2
+```{r}
+left_join(card_base, customer_base, by="cust_id")
+```
+Q3    
+```{r}
+fraud_base
+transaction_base
+full_join(transaction_base, fraud_base,  by = "transaction_id")
+```
+Final row count shows that there were no frauds that didnt have a matching a transaction
+
+Q4
+```{r}
+skim(transaction_base) 
+```
+```{r}
+skim(card_base) 
+```
+```{r}
+transaction_base %>% 
+  select(credit_card_id)
+```
+#check above shows "credit_card_id" does exist ??
+
+```{r}
+  semi_join(card_base, transaction_base, by = c("card_number", "credit_card_id"))
+  #semi_join(transaction_base,card_base, by=c("credit_card_id", "card_number"))
+```
+
+1.2 tidyr
+
+Q5
+
+```{r}
+hat_obs <- read_csv("data/hat_observations.csv")
+hat_obs
+```
+
+```{r}
+new_hat_obs <- hat_obs %>% 
+ separate(observation, c("hat_colour","hat_type"), sep = ",")
+```
+
+Q6
+```{r}
+final_hat_obs <- new_hat_obs %>% 
+  unite(date, c("year", "month", "day"), sep="-") 
+```
+
+```{r}
+final_hat_obs %>% 
+    filter(hat_type == "beret") %>% 
+    filter(observation_count == max(observation_count))
+```
+2. Extension
+
+Q2.1
+```{r}
+card_base
+customer_base
+transaction_base
+fraud_base
+```
+```{r}
+left_join(card_base, customer_base, by="cust_id") %>% 
+  semi_join(transaction_base, by = c("card_number", "credit_card_id"))
+```
+?? same problem as earlier?
+
+Q2.2
+```{r}
+exam_scores <- read_csv("data/exam_scores.csv")
+exam_scores
+```
+
+```{r}
+exam_scores_longer <- exam_scores %>% 
+ pivot_longer(cols = contains("Q"), names_to = "exam_question", values_to = "score")
+```
+
+```{r}
+exam_scores_longer %>% 
+  separate(exam_question, c("prefix", "question_num"), sep ="Q") %>% 
+  select(-prefix)
+```
+
+
