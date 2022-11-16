@@ -1,0 +1,179 @@
+---
+title: "Tweet Tweet"
+output: html_notebook
+---
+
+*** Tidyverse consolidation homework ***
+
+```{r}
+library(tidyverse)
+library(skimr)
+cc_tweets <- read_csv("data/code_clan_tweets.csv")
+```
+```{r}
+skim(cc_tweets)
+```
+
+
+
+```{r}
+  nrow(cc_tweets) 
+  ncol(cc_tweets)
+  names(cc_tweets)
+```
+```{r}
+cc_tweets %>% 
+  select(is_quote,favorite_count) %>% 
+  filter(is_quote == FALSE) %>% 
+  summarise(total_favourites = sum(favorite_count, na.rm = TRUE))
+```
+```{r}
+cc_tweets %>% 
+  group_by(source) %>% 
+  filter(is_quote == FALSE) %>% 
+  summarise(avg_retweets = mean(retweet_count, na.rm = TRUE))
+```
+```{r}
+cc_tweets %>% 
+    mutate(media_type = coalesce(media_type, "text")) %>% 
+    group_by(media_type) %>% 
+    summarise(total_likes= mean(favorite_count, na.rm = TRUE)) %>% 
+    arrange(desc(total_likes))
+```
+
+try on a single tweet
+
+```{r}
+tweet_text <- cc_tweets %>% 
+  select(text) %>% 
+  head(5) %>% 
+  pull()
+```
+
+```{r}
+text <- tweet_text
+str_count(text, ".") 
+```
+
+
+```{r}
+(
+cc_tweets %>% 
+  mutate(tweet_length = (str_count(text, "."))) %>% 
+  summarise(avg_tweet_length = mean(tweet_length, na.rm = TRUE))
+)
+```
+```{r}
+cc_tweets  %>% 
+  mutate(tweet_length = str_count(text, ".")) %>% 
+  mutate(add_text = str_count(text, "^@[:graph:]+")) %>% 
+  #select(tweet_length, add_text, display_text_width, text) %>% 
+  arrange(display_text_width)
+  #mutate(tweet_length = str_count(text, ".")) %>% 
+  #select(tweet_length, text) %>% 
+  #summarise(avg_tweet_length = mean(tweet_length, na.rm = TRUE))
+```
+
+```{r}
+cc_tweets %>% 
+  select(display_text_width) %>% 
+  summarise(avg_tweet_length2 = mean(display_text_width, na.rm = TRUE))
+```
+
+Q6. 
+
+```{r}
+cc_info <- read_csv("data/code_clan_info.csv")
+```
+
+```{r}
+  nrow(cc_info) 
+  ncol(cc_info)  
+  names(cc_info)
+  
+  names(cc_tweets)
+```
+
+```{r}
+code_clan_hashtags <-  left_join(cc_tweets,cc_info, by = "tweet_id")
+code_clan_hashtags
+```
+
+```{r}
+code_clan_hashtags %>% 
+ select(tweet_id, hashtags) %>% 
+ mutate(hashtags = str_to_lower(hashtags)) %>%   
+ drop_na()
+```
+
+Extension...
+Q8
+
+```{r}
+code_clan_hashtags %>% 
+  mutate(multi_hashtags = (str_detect(hashtags, "c\\("))) %>% 
+  select(hashtags, multi_hashtags) %>% 
+  filter(multi_hashtags == TRUE)
+```
+
+Q9.
+
+```{r}
+cc_tweets%>% 
+  mutate(edinburgh_mentions = (str_detect(text, "[Ee]dinburgh"))) %>% 
+  group_by(edinburgh_mentions) %>% 
+  summarise(count_edinburgh_mentions = n())
+```
+Q10.
+```{r}
+tweet_text <- cc_tweets %>% 
+  select(text) %>% 
+  pull()
+```
+
+identify links - https://t.co/Lpnom2WPAf
+```{r}
+  str_extract(tweet_text, "https://t.co/[:alnum:]+")
+```
+identify mentions @someone
+```{r}
+(
+extr_mentions <- str_extract_all(tweet_text, "@[A-z]+") %>% 
+  flatten_chr()
+)
+```
+
+```{r}
+all_mentions <- as.tibble(extr_mentions) 
+(all_mentions <- all_mentions %>% 
+ rename("mentions" = "value") %>%
+ mutate(mentions = str_to_lower(mentions)) %>%  
+ mutate(mentions_last= str_sub(mentions, start=-1)) %>% 
+ mutate(mentions_clean = 
+          case_when(
+            mentions_last == "_" ~ str_sub(mentions, start =1, end = -2),
+            TRUE ~ mentions)) %>% 
+mutate(self_mentions =  str_detect(mentions_clean, "codeclan")))
+```
+
+```{r}
+all_mentions %>% 
+filter(self_mentions == FALSE) %>% 
+group_by(mentions_clean) %>% 
+summarise(count= n()) %>% 
+arrange(desc(count))
+```
+
+```{r}
+all_mentions %>% 
+filter(self_mentions == TRUE) %>% 
+group_by(mentions_clean) %>% 
+summarise(count= n()) %>% 
+arrange(desc(mentions_clean))
+```
+
+
+
+
+
+
