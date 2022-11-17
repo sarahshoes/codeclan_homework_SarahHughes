@@ -67,7 +67,7 @@ cc_tweets %>%
 cc_tweets  %>% 
   mutate(tweet_length = str_count(text, ".")) %>% 
   mutate(add_text = str_count(text, "^@[:graph:]+")) %>% 
-  #select(tweet_length, add_text, display_text_width, text) %>% 
+  select(tweet_length, add_text, display_text_width, text) %>% 
   arrange(display_text_width)
   #mutate(tweet_length = str_count(text, ".")) %>% 
   #select(tweet_length, text) %>% 
