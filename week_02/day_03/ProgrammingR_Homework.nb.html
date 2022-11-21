@@ -1852,15 +1852,15 @@ weather_matrix</code></pre>
 <p>Q6</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZWxlbW50X2NoZWNrIDwtIGZ1bmN0aW9uKHgseSkge1xuICBpZiAoaXMudmVjdG9yKHgpICYgaXMudmVjdG9yKHkpKSBcbiAge1xuICAgICAgaWYgKGxlbmd0aCh4KT09bGVuZ3RoKHkpKSBcbiAgICAgIHtcbiAgICAgICAgICBpZiAoc3VtKGFicyh4LXkpKT09MCkgXG4gICAgICAgICAge1xuICAgICAgICAgICAgaWYgKHN1bShhYnMoc29ydCh4KS1zb3J0KHkpKT09MCkpIFxuICAgICAgICAgICAge1xuICAgICAgICAgICAgcHJpbnQoXCJUaGUgc2FtZVwiKSBcbiAgICAgICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgICBwcmludChcIkV4YWN0bHkgdGhlIHNhbWVcIil9IFxuICAgICAgICAgICAgfSBlbHNlIHtcbiAgICAgICAgICBwcmludChcIkRpZmZlcmVudCBFbGVtZW50c1wiKX1cbiAgICAgIH0gZWxzZSB7XG4gICAgICBwcmludCAoXCJEaWZmZXJlbnQgTGVuZ3RoXCIpfVxuICB9IGVsc2Uge1xuICBwcmludChcIkVycm9yOiB4IGFuZCB5IG11c3QgYmUgdmVjdG9yc1wiKX1cbn1cbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZWxlbW50X2NoZWNrIDwtIGZ1bmN0aW9uKHgseSkge1xuICBpZiAoaXMudmVjdG9yKHgpICYgaXMudmVjdG9yKHkpKSBcbiAge1xuICAgICAgaWYgKGxlbmd0aCh4KT09bGVuZ3RoKHkpKSBcbiAgICAgIHtcbiAgICAgICAgIGlmIChzdW0oYWJzKHNvcnQoeCktc29ydCh5KSk9PTApKSAgIFxuICAgICAgICAgIHtcbiAgICAgICAgICAgaWYgKHN1bShhYnMoeC15KSk9PTApICBcbiAgICAgICAgICAgIHtcbiAgICAgICAgICAgIHByaW50KFwiVGhlIHNhbWVcIikgXG4gICAgICAgICAgICB9IGVsc2Uge1xuICAgICAgICAgICAgcHJpbnQoXCJFeGFjdGx5IHRoZSBzYW1lXCIpfSBcbiAgICAgICAgICAgIH0gZWxzZSB7XG4gICAgICAgICAgcHJpbnQoXCJEaWZmZXJlbnQgRWxlbWVudHNcIil9XG4gICAgICB9IGVsc2Uge1xuICAgICAgcHJpbnQgKFwiRGlmZmVyZW50IExlbmd0aFwiKX1cbiAgfSBlbHNlIHtcbiAgcHJpbnQoXCJFcnJvcjogeCBhbmQgeSBtdXN0IGJlIHZlY3RvcnNcIil9XG59XG5gYGAifQ== -->
 <pre class="r"><code>elemnt_check &lt;- function(x,y) {
   if (is.vector(x) &amp; is.vector(y)) 
   {
       if (length(x)==length(y)) 
       {
-          if (sum(abs(x-y))==0) 
+         if (sum(abs(sort(x)-sort(y))==0))   
           {
-            if (sum(abs(sort(x)-sort(y))==0)) 
+           if (sum(abs(x-y))==0)  
             {
             print(&quot;The same&quot;) 
             } else {
@@ -1876,8 +1876,45 @@ weather_matrix</code></pre>
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZWxlbW50X2NoZWNrIDwtIGZ1bmN0aW9uKHgseSkge1xuICAgaWYgKGlzLnZlY3Rvcih4KSAmIGlzLnZlY3Rvcih5KSkgXG4gICB7XG4gICAgICBpZiAobGVuZ3RoKHgpPT1sZW5ndGgoeSkpIFxuICAgICAge1xuICAgICAgIFxuICAgICAgICBpZiAoc3VtKGFicyh4LXkpKT09MCkgICAgICAgIFxuICAgICAgICAgICAge3JldHVybihcIkV4YWN0bHkgdGhlIHNhbWVcIil9IFxuICAgICAgICBlbHNlIGlmIChzdW0oYWJzKHNvcnQoeCktc29ydCh5KSk9PTApKSAgIFxuICAgICAgICAgIHtyZXR1cm4oXCJUaGUgc2FtZVwiKX0gXG4gICAgICAgIGVsc2UgeyhcIkRpZmZlcmVudFwiKX1cbiAgICAgICAgXG4gICAgICAgIH0gZWxzZSB7XG4gICAgICBwcmludCAoXCJEaWZmZXJlbnQgbGVuZ3Roc1wiKX1cbiB9IGVsc2Uge1xuIHByaW50KFwiRXJyb3I6IHggYW5kIHkgbXVzdCBiZSB2ZWN0b3JzXCIpfVxufVxuYGBgIn0= -->
+<pre class="r"><code>elemnt_check &lt;- function(x,y) {
+   if (is.vector(x) &amp; is.vector(y)) 
+   {
+      if (length(x)==length(y)) 
+      {
+       
+        if (sum(abs(x-y))==0)        
+            {return(&quot;Exactly the same&quot;)} 
+        else if (sum(abs(sort(x)-sort(y))==0))   
+          {return(&quot;The same&quot;)} 
+        else {(&quot;Different&quot;)}
+        
+        } else {
+      print (&quot;Different lengths&quot;)}
+ } else {
+ print(&quot;Error: x and y must be vectors&quot;)}
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Q7</p>
+<p>write code to print a multiplication table</p>
+<ol style="list-style-type: decimal">
+<li>make an empty 12 x 12 matrix</li>
+<li>loop through matrix</li>
+</ol>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubSA8LSBtYXRyaXgobnJvdz0xMixuY29sPTEyKVxuYGBgIn0= -->
+<pre class="r"><code>m &lt;- matrix(nrow=12,ncol=12)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>for (i in 1:nrow(m)){ for `(j in 1:ncol(m){ m[i,j] = i*j} } ```</p>
+<!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKUTEKYGBge3J9CndlYXRoZXJfZm9yZWNhc3QgPC0gbGlzdCgKICAgICAgICAgICJUaHVyc2RheSIgID0gbGlzdCh0ZW1wID0gOSwgd2luZCA9IDQzLCBjaGFuY2VfcmFpbiA9IDU4KSwKICAgICAgICAgICJGcmlkYXkiICAgID0gbGlzdCh0ZW1wID0gOCwgd2luZCA9IDMzLCBjaGFuY2VfcmFpbiA9IDUzKSwKICAgICAgICAgICJTYXR1cmRheSIgICAgPSBsaXN0KHRlbXAgPSA4LCB3aW5kID0gMjcsIGNoYW5jZV9yYWluID0gNDcpCiAgICAgICAgICApCmBgYApRMgpgYGB7cn0KICAjY291bGQgdXNlIHdlYXRoZXJfZm9yZWNhc3RbWzFdXVtbM11dIGJ1dCBlYXNpZXIgYXMgbGlzdCBpcyBuYW1lZAogIHdlYXRoZXJfZm9yZWNhc3QkVGh1cnNkYXkkY2hhbmNlX3JhaW4KICB3ZWF0aGVyX2ZvcmVjYXN0JEZyaWRheSR3aW5kCiAgd2VhdGhlcl9mb3JlY2FzdCRUaHVyc2RheSR0ZW1wCmBgYAoKUTMuCgpgYGB7cn0Kd2VhdGhlcl9tYXRyaXggPC0gbWF0cml4KHJlcCgwLDE0KSwgbnJvdz0yLCBuY29sPTcpCndlYXRoZXJfbWF0cml4WzEsMTo3XSA8LSBjKDksOCw4LDYsNiw3LDgpCndlYXRoZXJfbWF0cml4WzIsMTo3XSA8LSBjKDgsNyw2LDcsOCw4LDkpCndlYXRoZXJfbWF0cml4CmBgYApRNApgYGB7cn0Kd2VhdGhlcl9tYXRyaXhbMiwzXQp3ZWF0aGVyX21hdHJpeFsyLF0Kd2VhdGhlcl9tYXRyaXhbYygxOjIpLGMoMSwzLDUpXQpgYGAKUTUKYGBge3J9CmFkZF9wcmVmaXggPC0gIGZ1bmN0aW9uKHgpewogIGlmKGlzLmNoYXJhY3Rlcih4KSl7CiAgICBwcmludChwYXN0ZSgiVGhlIGFuc3dlciBpcyIseCkpCiAgICB9IGVsc2UgeyAKICAgIGlmKGlzLm51bWVyaWMoeCkpIHsKICAgICAgaWYoeD4xMCkgewogICAgICAgIHByaW50KHgvMTApCiAgICAgICAgfSBlbHNlIHsKICAgICAgICBwcmludCh4KX0KICAgIH0gZWxzZSB7CiAgICBwcmludCgiaW52YWxpZCBpbnB1dCIpfQogICAgfQogIH0KYGBgCgpRNgpgYGB7cn0KZWxlbW50X2NoZWNrIDwtIGZ1bmN0aW9uKHgseSkgewogIGlmIChpcy52ZWN0b3IoeCkgJiBpcy52ZWN0b3IoeSkpIAogIHsKICAgICAgaWYgKGxlbmd0aCh4KT09bGVuZ3RoKHkpKSAKICAgICAgewogICAgICAgICAgaWYgKHN1bShhYnMoeC15KSk9PTApIAogICAgICAgICAgewogICAgICAgICAgICBpZiAoc3VtKGFicyhzb3J0KHgpLXNvcnQoeSkpPT0wKSkgCiAgICAgICAgICAgIHsKICAgICAgICAgICAgcHJpbnQoIlRoZSBzYW1lIikgCiAgICAgICAgICAgIH0gZWxzZSB7CiAgICAgICAgICAgIHByaW50KCJFeGFjdGx5IHRoZSBzYW1lIil9IAogICAgICAgICAgICB9IGVsc2UgewogICAgICAgICAgcHJpbnQoIkRpZmZlcmVudCBFbGVtZW50cyIpfQogICAgICB9IGVsc2UgewogICAgICBwcmludCAoIkRpZmZlcmVudCBMZW5ndGgiKX0KICB9IGVsc2UgewogIHByaW50KCJFcnJvcjogeCBhbmQgeSBtdXN0IGJlIHZlY3RvcnMiKX0KfQpgYGAKCgoKCg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKUTEKYGBge3J9CndlYXRoZXJfZm9yZWNhc3QgPC0gbGlzdCgKICAgICAgICAgICJUaHVyc2RheSIgID0gbGlzdCh0ZW1wID0gOSwgd2luZCA9IDQzLCBjaGFuY2VfcmFpbiA9IDU4KSwKICAgICAgICAgICJGcmlkYXkiICAgID0gbGlzdCh0ZW1wID0gOCwgd2luZCA9IDMzLCBjaGFuY2VfcmFpbiA9IDUzKSwKICAgICAgICAgICJTYXR1cmRheSIgICAgPSBsaXN0KHRlbXAgPSA4LCB3aW5kID0gMjcsIGNoYW5jZV9yYWluID0gNDcpCiAgICAgICAgICApCmBgYApRMgpgYGB7cn0KICAjY291bGQgdXNlIHdlYXRoZXJfZm9yZWNhc3RbWzFdXVtbM11dIGJ1dCBlYXNpZXIgYXMgbGlzdCBpcyBuYW1lZAogIHdlYXRoZXJfZm9yZWNhc3QkVGh1cnNkYXkkY2hhbmNlX3JhaW4KICB3ZWF0aGVyX2ZvcmVjYXN0JEZyaWRheSR3aW5kCiAgd2VhdGhlcl9mb3JlY2FzdCRUaHVyc2RheSR0ZW1wCmBgYAoKUTMuCgpgYGB7cn0Kd2VhdGhlcl9tYXRyaXggPC0gbWF0cml4KHJlcCgwLDE0KSwgbnJvdz0yLCBuY29sPTcpCndlYXRoZXJfbWF0cml4WzEsMTo3XSA8LSBjKDksOCw4LDYsNiw3LDgpCndlYXRoZXJfbWF0cml4WzIsMTo3XSA8LSBjKDgsNyw2LDcsOCw4LDkpCndlYXRoZXJfbWF0cml4CmBgYApRNApgYGB7cn0Kd2VhdGhlcl9tYXRyaXhbMiwzXQp3ZWF0aGVyX21hdHJpeFsyLF0Kd2VhdGhlcl9tYXRyaXhbYygxOjIpLGMoMSwzLDUpXQpgYGAKUTUKYGBge3J9CmFkZF9wcmVmaXggPC0gIGZ1bmN0aW9uKHgpewogIGlmKGlzLmNoYXJhY3Rlcih4KSl7CiAgICBwcmludChwYXN0ZSgiVGhlIGFuc3dlciBpcyIseCkpCiAgICB9IGVsc2UgeyAKICAgIGlmKGlzLm51bWVyaWMoeCkpIHsKICAgICAgaWYoeD4xMCkgewogICAgICAgIHByaW50KHgvMTApCiAgICAgICAgfSBlbHNlIHsKICAgICAgICBwcmludCh4KX0KICAgIH0gZWxzZSB7CiAgICBwcmludCgiaW52YWxpZCBpbnB1dCIpfQogICAgfQogIH0KYGBgCgpRNgpgYGB7cn0KZWxlbW50X2NoZWNrIDwtIGZ1bmN0aW9uKHgseSkgewogIGlmIChpcy52ZWN0b3IoeCkgJiBpcy52ZWN0b3IoeSkpIAogIHsKICAgICAgaWYgKGxlbmd0aCh4KT09bGVuZ3RoKHkpKSAKICAgICAgewogICAgICAgICBpZiAoc3VtKGFicyhzb3J0KHgpLXNvcnQoeSkpPT0wKSkgICAKICAgICAgICAgIHsKICAgICAgICAgICBpZiAoc3VtKGFicyh4LXkpKT09MCkgIAogICAgICAgICAgICB7CiAgICAgICAgICAgIHByaW50KCJUaGUgc2FtZSIpIAogICAgICAgICAgICB9IGVsc2UgewogICAgICAgICAgICBwcmludCgiRXhhY3RseSB0aGUgc2FtZSIpfSAKICAgICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgIHByaW50KCJEaWZmZXJlbnQgRWxlbWVudHMiKX0KICAgICAgfSBlbHNlIHsKICAgICAgcHJpbnQgKCJEaWZmZXJlbnQgTGVuZ3RoIil9CiAgfSBlbHNlIHsKICBwcmludCgiRXJyb3I6IHggYW5kIHkgbXVzdCBiZSB2ZWN0b3JzIil9Cn0KYGBgCgoKYGBge3J9CmVsZW1udF9jaGVjayA8LSBmdW5jdGlvbih4LHkpIHsKICAgaWYgKGlzLnZlY3Rvcih4KSAmIGlzLnZlY3Rvcih5KSkgCiAgIHsKICAgICAgaWYgKGxlbmd0aCh4KT09bGVuZ3RoKHkpKSAKICAgICAgewogICAgICAgCiAgICAgICAgaWYgKHN1bShhYnMoeC15KSk9PTApICAgICAgICAKICAgICAgICAgICAge3JldHVybigiRXhhY3RseSB0aGUgc2FtZSIpfSAKICAgICAgICBlbHNlIGlmIChzdW0oYWJzKHNvcnQoeCktc29ydCh5KSk9PTApKSAgIAogICAgICAgICAge3JldHVybigiVGhlIHNhbWUiKX0gCiAgICAgICAgZWxzZSB7KCJEaWZmZXJlbnQiKX0KICAgICAgICAKICAgICAgICB9IGVsc2UgewogICAgICBwcmludCAoIkRpZmZlcmVudCBsZW5ndGhzIil9CiB9IGVsc2UgewogcHJpbnQoIkVycm9yOiB4IGFuZCB5IG11c3QgYmUgdmVjdG9ycyIpfQp9CmBgYAoKClE3Cgp3cml0ZSBjb2RlIHRvIHByaW50IGEgbXVsdGlwbGljYXRpb24gdGFibGUgCgoKMS4gbWFrZSBhbiBlbXB0eSAxMiB4IDEyIG1hdHJpeAoyLiBsb29wIHRocm91Z2ggbWF0cml4CgpgYGB7cn0KbSA8LSBtYXRyaXgobnJvdz0xMixuY29sPTEyKQpgYGAKCiBmb3IgKGkgaW4gMTpucm93KG0pKXsKICAgZm9yIGAoaiBpbiAxOm5jb2wobSl7CiAgIG1baSxqXSA9ICBpKmp9CiB9CmBgYAoKCg==</div>
 
 
 

@@ -57,9 +57,9 @@ elemnt_check <- function(x,y) {
   {
       if (length(x)==length(y)) 
       {
-          if (sum(abs(x-y))==0) 
+         if (sum(abs(sort(x)-sort(y))==0))   
           {
-            if (sum(abs(sort(x)-sort(y))==0)) 
+           if (sum(abs(x-y))==0)  
             {
             print("The same") 
             } else {
@@ -74,5 +74,43 @@ elemnt_check <- function(x,y) {
 ```
 
 
+```{r}
+elemnt_check <- function(x,y) {
+   if (is.vector(x) & is.vector(y)) 
+   {
+      if (length(x)==length(y)) 
+      {
+       
+        if (sum(abs(x-y))==0)        
+            {return("Exactly the same")} 
+        else if (sum(abs(sort(x)-sort(y))==0))   
+          {return("The same")} 
+        else {("Different")}
+        
+        } else {
+      print ("Different lengths")}
+ } else {
+ print("Error: x and y must be vectors")}
+}
+```
+
+
+Q7
+
+write code to print a multiplication table 
+
+
+1. make an empty 12 x 12 matrix
+2. loop through matrix
+
+```{r}
+m <- matrix(nrow=12,ncol=12)
+```
+
+ for (i in 1:nrow(m)){
+   for `(j in 1:ncol(m){
+   m[i,j] =  i*j}
+ }
+```
 
 
