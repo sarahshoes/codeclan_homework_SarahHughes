@@ -1,0 +1,155 @@
+---
+title: "Advanced GGPlot2"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(CodeClanData)
+library(janitor)
+library(lubridate)
+library(scales)
+library(colorfindr)
+```
+
+```{r}
+qb_revenue_breakdown <- clean_names(qb_revenue_breakdown)
+qb_monthly_sales <- clean_names(qb_monthly_sales)
+qb_competitors <- clean_names(qb_competitors)
+qb_device_data <- clean_names(qb_device_data)
+```
+
+
+```{r}
+glimpse(qb_revenue_breakdown)
+glimpse(qb_monthly_sales)
+glimpse(qb_competitors)
+glimpse(qb_device_data)
+```
+```{r}
+# setup colour scheme
+col_scheme <- c("#E89FE9", "#50434F", "#B6A7B5", "#F9A472", "#BD7040")
+# trying out code to create palette from an image. dont need thes as colours already provided.
+qikpal <- get_colors("palette.JPG") %>%  make_palette(n = 7)
+qikpal <- qikpal[2:6]
+
+
+theme_set(theme_light(base_size = 12))
+```
+
+
+```{r}
+ggplot(qb_revenue_breakdown) +
+aes(x = year, y = revenue, fill = product) +
+geom_col(width = 0.5) +
+ylab("\n  Revenue (£'s)") +
+xlab("\n Financial Year") + 
+labs(title = "Revenue by Product Type for 2018 and 2019",
+     tag = "Q1",
+     fill = "Product Type") +
+scale_fill_manual(values = qikpal) 
+
+```
+```{r}
+monthly_flagship <- 
+  qb_monthly_sales %>% 
+  filter(cashflow == "Kwikbit Unit 1 Sales")
+#monthly_flagship
+```
+
+```{r}
+ggplot(monthly_flagship) +
+  aes(x = date, y = amount) +
+  geom_line(colour = qikpal[2]) +
+  scale_x_date(date_labels = "%b-%y", date_breaks = "month") +
+  labs(title = "Revenue from Kwikbit Unit 1",
+        tag = "Q2",
+        x = "Date",
+        y = "Sales(£)") +
+  scale_colour_manual(values = qikpal) +  
+  theme_light()
+```
+
+
+```{r}
+monthly_cashflow <- 
+  qb_monthly_sales %>% 
+  filter(cashflow != "Kwikbit Unit 1 Sales")
+#monthly_flagship
+```
+
+```{r}
+ggplot(monthly_cashflow) +
+  aes(x = date, y = amount, colour = cashflow) +
+  geom_line() +
+  scale_x_date(date_labels = "%b-%y", date_breaks = "month") +
+  scale_alpha_continuous(limits = c(1600,5000)) +
+  labs(x = "Date",
+  y = "£",
+  title = "Cost and Revenue Aug-18 to Jul-19",
+  tag ="Q3") +
+  scale_y_continuous(n.breaks=10) +
+  scale_colour_manual(values = qikpal) +  
+  theme_light()
+```
+
+```{r}
+qb_competitors <- 
+  qb_competitors %>% 
+  mutate(revenue2 = revenue/1000000)
+#monthly_flagship
+```
+
+```{r}
+ggplot(qb_competitors) +
+  aes(x = year, y = revenue2, fill = company) +
+  geom_area(alpha =0.8, colour="white") +
+  scale_fill_manual(values = qikpal) +  
+  labs(title = "Competitor Annual Sales 2015-2019",
+        tag = "Q4",
+        x = "Year",
+        y = "Sales (£ 000,000's)") +
+  theme_light()
+```
+```{r}
+ggplot(qb_competitors) +
+  aes(x = year, y = revenue2, colour = company) +
+  geom_line() +
+  geom_point() +
+  scale_colour_manual(values = qikpal) +  
+    labs(title = "Competitor Annual Sales 2015-2019",
+        tag = "Q5",
+        x = "Year",
+        y = "Sales (£ 000,000's)") +
+  theme_light()
+```
+```{r}
+qb_step_data <- mutate(qb_device_data, dechrs = hours+(mins/60)) %>% 
+mutate(device = recode(device,
+      "qikbit1" = "A. QikBit1 ",
+      "competitor1" = "B. Competitor 1", 
+      "competitor2" = "C. Competitor 2", 
+      "competitor3" = "D. Competitor 3")) %>% 
+mutate(counts = counts/1000) %>%   
+arrange(desc(device))
+```
+
+
+```{r}
+ggplot(qb_step_data) +
+  aes(x = dechrs, y = counts, group = id, colour =device) +
+  geom_line() +
+  facet_wrap(~id, ncol=1, scales = "free_y",
+              labeller = as_labeller(
+               c(person1 = "Person 1", person2 = "Person 2", person3 = "Person 3",person4 = "Person 4",person5 = "Person 5")), 
+             strip.position = "right") +
+  scale_colour_manual(values = qikpal) +  
+  
+  labs(title = "Comparison of step count data",
+       tag="Q6",
+     x = "Hours",
+     y = "Step Count (000's)",
+     fill = "Device Used") +
+  theme_light() 
+  
+```
