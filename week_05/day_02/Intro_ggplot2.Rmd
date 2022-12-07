@@ -1,0 +1,204 @@
+---
+title: "Homework"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(CodeClanData)
+library(skimr)
+library(GGally) # library for creating those insane correllelograms :)
+```
+
+```{r}
+glimpse(backpack)
+names(backpack)
+skim(backpack)
+```
+
+```{r}
+backpack_data <- backpack
+```
+
+```{r}
+backpack_data %>% 
+ggplot((aes( x= backpack_weight))) +
+ geom_histogram(binwidth=1, boundary = 0.5, colour = "white")
+```
+We can say the majority (12) of the students are carrying a bag weighing 10kg. A small number of students are carryng a very heavy bags, including one extremely heavy bag of 35kg. 
+
+
+```{r}
+backpack_data %>% 
+ggplot((aes( x= backpack_weight))) +
+ geom_histogram(binwidth=5, boundary = 0.5, colour = "white")
+```
+
+The majority of students are carrying a bage between 6-10 kg
+
+```{r}
+backpack_data %>% 
+ggplot((aes(x = sex, y = backpack_weight))) +
+ geom_boxplot() +
+ ylim(0, max(backpack_data$backpack_weight))
+```
+
+```{r}
+backpack_data %>% 
+ggplot((aes( x= backpack_weight, fill = sex))) +
+ geom_histogram(binwidth= 2, boundary = 0.5, colour = "white")
+```
+
+Male students on average, had slightly heavier bags. The range of backpack weights carried by male and female students was similar.
+
+```{r}
+backpack_data %>% 
+ggplot(aes(x = body_weight, y = backpack_weight)) +
+ geom_point() +
+ geom_smooth(method = "lm")  
+```
+
+```{r}
+backpack_data %>% 
+ggplot(aes(x = body_weight, y = backpack_weight)) +
+ geom_point() +
+ geom_smooth(method = "loess", span = 1)  
+```
+
+
+```{r}
+backpack_data %>% 
+ggplot(aes(x = body_weight, y = backpack_weight, colour = sex)) +
+ geom_point() +
+ geom_smooth(method = "loess", span = 1)  
+```
+There could be a number of reasons why backpack and body weight might vary. A larger person has larger clothes and therefore their backpack weight would be positively correlated with body weight. In most able-bodied people, strength could also be related to bodyweight, and in a group scenario stronger people may be required to carry more. At very high bodyweights fitness may have an impact and so the largest people may adjust by choosing to carry a lighter backpack.
+
+From the data, there does not appear to be a linear relationship between body weight and backpack weight. Fitting a more complex smoother could indicate that backpack weight initially increases with body weight but then decreases again. A similar pattern is observed when fitting to male and female groups separately. 
+
+However the confidence bands on both the linear fit and loess smoother are wide and many points lie outside of these bands. I dont think it's possible to have any confidence in these fitted trends. 
+
+
+```{r}
+backpack_data %>%  
+  select(back_problems) %>% 
+  group_by(back_problems) %>% 
+  summarise(count = n(), prop=100*(n()/nrow(backpack_data)), tot = nrow(backpack_data))
+```
+
+
+```{r}
+group_by(backpack_data,sex) %>% 
+          summarise(count = n())
+```
+
+```{r}
+backpack_data %>%  
+  select(back_problems, sex) %>% 
+  group_by(sex, back_problems) %>% 
+  summarise(count = n(), prop=100*(n()/nrow(backpack_data)), tot = nrow(backpack_data)) %>% 
+  arrange(desc(sex))
+```
+```{r}
+backpack_data <-  rowid_to_column(backpack_data)
+
+```
+
+
+```{r}
+backpack_data %>% 
+mutate(back_pain = ifelse(back_problems == 1, 
+                          "back_pain", "no_back_pain")) %>% 
+ggplot(aes(x = sex, fill = back_pain)) +
+geom_bar(position = "fill", colour = "black") +
+labs(y = "% with/without backpain", 
+     x = "Sex",
+     title = "Occurrence of back pain in male and female students") +
+scale_y_continuous(breaks=c(seq(0, 1, by = 0.1)),labels = scales::percent)
+```
+
+
+
+There are 100 records! So 32% of the students had back problems. There were proportionally more of the female students(31/55) with back problems than male students (8/45)
+
+```{r}
+select(backpack_data, backpack_weight, ratio, body_weight, sex, back_problems) %>% 
+ggpairs()
+```
+
+```{r}
+backpack_data %>% 
+ggplot(aes(x = body_weight, y = backpack_weight, colour = sex)) +
+ geom_point() +
+ facet_grid(~back_problems)
+```
+
+```{r}
+backpack_data %>% 
+ggplot(aes(x = body_weight, y = backpack_weight)) +
+ geom_point() +
+ geom_smooth(method="lm") +
+ facet_grid(sex ~ back_problems)
+```
+Im not sure I can see any meaningful relationship here? Maybe for males with backpain, there is an inverse relationship between backpack_weight and bodyweight. For higher body_weights there is a tendency for backpack_weight to be lower? 
+
+```{r}
+backpack_data %>% 
+  ggplot(aes(x = as.factor(back_problems), y = ratio)) +
+  geom_boxplot() +
+  facet_grid(~sex)
+```
+Looking at it like this it seems that those people with back problems had a higher overall body_weight:backpack_weight ratio. This was true of both sexes.
+
+
+```{r}
+backpack_data %>%
+filter(year >0) %>%   
+mutate(back_pain = ifelse(back_problems == 1, 
+                          "back_pain", "no_back_pain")) %>% 
+ggplot(aes(x = year, fill = back_pain)) +
+geom_bar(position = "stack" , colour = "black") +
+labs(y = "# with/without backpain", 
+     x = "Year",
+     title = "Back pain by year group") +
+scale_x_continuous(breaks=c(1:6))
+```
+
+
+```{r}
+backpack_data %>%
+filter(year >0) %>%   
+mutate(back_pain = ifelse(back_problems == 1, 
+                          "back_pain", "no_back_pain")) %>% 
+ggplot(aes(x = year, fill = back_pain)) +
+geom_bar(position = "fill", colour = "black") +
+labs(y = "% with/without backpain", 
+     x = "Year",
+     title = "Back pain by year group") +
+scale_x_continuous(breaks=c(1:6)) +
+scale_y_continuous(breaks=c(seq(0, 1, by = 0.1)),labels = scales::percent)
+```
+Year 6 had the lowest proportion of back pain amongst students with 0 incidents of back_problems. Year 3 had the highest with 
+
+
+```{r}
+backpack_data %>%
+filter(year > 0) %>%   
+ggplot(aes(x = as.factor(year), y = backpack_weight)) +
+geom_boxplot() +
+labs(y = "back_pack weight (kg?)", 
+     x = "Year of Study",
+     title = "Back_pack weight by year group") 
+```
+Back pack weight by year group? Possibly an increase in average backpack weight from year 1 - year 5 and then a decrease?
+
+```{r}
+backpack_data %>%
+filter(year > 0) %>%   
+ggplot(aes(x = as.factor(year), y = backpack_weight)) +
+geom_point() +
+labs(y = "back_pack weight (kg?)", 
+     x = "Year of Study",
+     title = "Back_pack weight by year group") 
+```
+Looking at it like this makes me think that the sample is small and the patterns seen in the boxplot may not be significant.
