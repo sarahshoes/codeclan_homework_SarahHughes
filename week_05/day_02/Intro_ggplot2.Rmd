@@ -34,7 +34,7 @@ ggplot((aes( x= backpack_weight))) +
  geom_histogram(binwidth=5, boundary = 0.5, colour = "white")
 ```
 
-The majority of students are carrying a bage between 6-10 kg
+The majority of students are carrying a bag between 6-10 kg
 
 ```{r}
 backpack_data %>% 
@@ -44,9 +44,17 @@ ggplot((aes(x = sex, y = backpack_weight))) +
 ```
 
 ```{r}
+ggplot(backpack_data) + 
+  aes(backpack_weight, fill = sex) + 
+  geom_bar(position = position_dodge2(width = 1, preserve = "single"))
+  # preserve = single fixes the situations where bar widths are not all the same size
+```
+
+
+```{r}
 backpack_data %>% 
 ggplot((aes( x= backpack_weight, fill = sex))) +
- geom_histogram(binwidth= 2, boundary = 0.5, colour = "white")
+ geom_histogram(binwidth= 1, boundary = 0.5, colour = "white")
 ```
 
 Male students on average, had slightly heavier bags. The range of backpack weights carried by male and female students was similar.

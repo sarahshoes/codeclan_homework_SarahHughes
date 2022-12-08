@@ -1,0 +1,153 @@
+---
+title: "Load data and test plots
+output: html_notebook
+---
+
+# two datasets
+# Note that I manually edited data to remove header lines and remove provisional data from year # 2022. I didnt want to spend time learning how to do this today.
+
+# the file structure is like this
+#   yyyy  mm   tmax    tmin      af    rain     sun
+#              degC    degC    days      mm   hours
+
+# also merrily ignoring data quality flags so removing * and #
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(colorfindr)
+```
+
+```{r}
+lerwick <- read.table(here::here("raw_data","lerwickdata2.txt"), header = TRUE)
+paisley <- read.table(here::here("raw_data","paisleydata2.txt"), header = TRUE)
+eastbourne <- read.table(here::here("raw_data","eastbournedata2.txt"), header = TRUE)
+```
+
+# cleaning script for met data
+
+```{r}
+lerwick <- clean_names(lerwick) 
+
+lerwick_clean <- lerwick %>% 
+  mutate(tmax = as.double(str_remove_all(tmax, "\\*|#"))) %>%   
+  mutate(tmin = as.double(str_remove_all(tmin, "\\*|#"))) %>%  
+  mutate(af = as.double(str_remove_all(af, "\\*|#"))) %>%  
+  mutate(rain = as.double(str_remove_all(rain, "\\*|#"))) %>% 
+  mutate(sun = as.double(str_remove_all(sun, "\\*|#")))  
+
+  
+paisley <- clean_names(paisley)
+paisley_clean <- paisley %>% 
+  mutate(tmax = as.double(str_remove_all(tmax, "\\*|#"))) %>%   
+  mutate(tmin = as.double(str_remove_all(tmin, "\\*|#"))) %>%  
+  mutate(af = as.double(str_remove_all(af, "\\*|#"))) %>%  
+  mutate(rain = as.double(str_remove_all(rain, "\\*|#"))) %>% 
+  mutate(sun = as.double(str_remove_all(sun, "\\*|#")))  
+
+
+eastbourne <- clean_names(eastbourne)
+eastbourne_clean <- eastbourne %>% 
+  mutate(tmax = as.double(str_remove_all(tmax, "\\*|#"))) %>%   
+  mutate(tmin = as.double(str_remove_all(tmin, "\\*|#"))) %>%  
+  mutate(af = as.double(str_remove_all(af, "\\*|#"))) %>%  
+  mutate(rain = as.double(str_remove_all(rain, "\\*|#"))) %>% 
+  mutate(sun = as.double(str_remove_all(sun, "\\*|#")))  
+
+names(eastbourne)  
+names(lerwick)
+names(paisley)
+```
+```{r}
+glimpse(lerwick_clean)
+glimpse(paisley_clean)
+glimpse(eastbourne_clean)
+```
+
+
+
+```{r}
+# calculate long term averages
+
+lerwick_avg <- lerwick_clean %>% 
+  filter(yyyy %in% c(1991:2020)) %>%
+  group_by (mm) %>% 
+  summarise(across(everything(),
+                     ~{mean(.x, na.rm = TRUE)})) %>%
+  select(-yyyy) %>% 
+  mutate(location = "lerwick") 
+```
+
+```{r}
+# calculate long term averages
+paisley_avg <- paisley_clean %>%
+  filter(yyyy %in% c(1991:2020)) %>%
+  group_by (mm) %>% 
+  summarise(across(everything(),
+                     ~{mean(.x, na.rm = TRUE)})) %>%
+  select(-yyyy) %>% 
+  mutate(location = "paisley") 
+```
+
+```{r}
+# calculate long term averages
+eastbourne_avg <- eastbourne_clean %>%
+  filter(yyyy %in% c(1991:2020)) %>%
+  group_by (mm) %>% 
+  summarise(across(everything(),
+                     ~{mean(.x, na.rm = TRUE)})) %>%
+  select(-yyyy) %>% 
+  mutate(location = "eastbourne") 
+```
+
+```{r}
+# merge them together
+met_data <-  full_join(lerwick_avg,paisley_avg)
+met_data <- full_join(met_data,eastbourne_avg)
+met_data = pivot_longer(met_data, c(tmax,tmin,af,rain,sun), 
+                        names_to = "param", 
+                        values_to = "data") %>% 
+  mutate(param = recode(param, "tmax" = "Mean Daily Max Temperature",
+                        "tmin" = "Mean Daily Min Temperature",
+                        "af"   = "Air Frost",
+                        "rain" = "Rainfall",
+                        "sun" = "Sunshine"))
+```
+```{r}
+write_csv(met_data,here::here(
+    "clean_data", "met_data.csv"))
+```
+
+
+
+```{r}
+#create example plot
+
+sel_param = "Sunshine"
+sel_location = c("lerwick","eastbourne")
+
+met_select <- met_data %>% 
+  filter(location %in% sel_location) %>% 
+  filter(param == sel_param)
+
+  ggplot(met_select) +
+    (aes(x = mm, y = data, colour = location)) +
+  geom_line() +
+  geom_point() +
+  ylab(sel_param) +
+  xlab("Month") +  
+  scale_x_continuous(n.breaks = 12)  
+```
+
+# create theme colours
+
+# extract palette from screenshot of minty theme
+```{r}
+# If you rerun this colour selection will change
+#metpal <- get_colors(here::here("minty_screenshot.png"))%>%  make_palette(n = 10)
+
+#colours <- metpal[c(7,8,9)]
+#metpal2 <- as.data.frame(colours)
+#write_csv(metpal2,here::here("met_palette.csv"))
+```
+
