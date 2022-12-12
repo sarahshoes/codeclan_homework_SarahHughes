@@ -1,0 +1,164 @@
+---
+title: "Probability Homework"
+output: html_notebook
+---
+
+```{r}
+library(gtools)
+library(tidyverse)
+source('prob.R')
+```
+#Recap
+
+probability is the numerical measure of the liklihood of an event occuring.
+It ranges between 0 (impossible) and 1 (certain) 
+
+sample space = collection of all possible outcomes
+
+event space = a subset of the sample space, the events we are interested in 
+
+
+```{r}
+titanic_data = read_csv("data/titanic.csv")
+```
+
+```{r}
+titanic_data %>% 
+  distinct(class)
+```
+
+```{r}
+titanic_data <- titanic_data %>% 
+  mutate(status = ifelse(class %in% c("1st","2nd","3rd"),"passenger","crew"))  
+```
+ 
+```{r}
+#just check mutate worked
+titanic_data %>% 
+  filter(status == "crew") %>% 
+  distinct(class)
+```
+ 
+
+
+## Calculate conditional probability of survived | crew and survived | passenger
+
+```{r}
+prob_survived_given_crew <- titanic_data %>% 
+  filter(status == "crew") %>% 
+  summarise(prob = sum(survived == "yes") /n())
+```
+
+```{r}
+prob_survived_given_passenger <- titanic_data %>% 
+  filter(status == "passenger") %>% 
+  summarise(prob = sum(survived == "yes") /n())
+```
+
+```{r}
+prob_survived_given_crew
+prob_survived_given_passenger
+```
+The probability of surviving was higher if you were a passenger (0.38) than if you were a crew member (0.24)
+
+# Probability questions
+# Q1 - what is the probability of getting a number less than 5 when rolling a 6 sided dice
+
+number of possible outcomes (sample_space) = 6  
+event = {1,2,3,4}
+prob is 4/6 or 2/3
+
+#Q2 - how many possible outcomes when we throw three dice
+each dice has 6 possible outcomes so possible outcomes from 3 dices is 6*6*6
+
+```{r}
+roll_3_dice <- rolldie(3)
+nrow(roll_3_dice) # sample space is 216
+```
+ #Q3 - in an experiment with 4 dice
+ sample space = total possible outcomes = 6^4 = 1296
+ 
+```{r}
+roll_4_dice <- rolldie(4) %>% 
+  mutate(die_tot = rowSums(.))
+```
+
+```{r}
+sum_bet_5_7 <- roll_4_dice %>% 
+  filter(die_tot %in% c(5,6,7))
+sum_bet_5_7
+```
+```{r}
+prob = nrow(sum_bet_5_7)/nrow(roll_4_dice)
+prob
+```
+# In answering part 2 we are assuming that order is not important?
+
+#Q4 
+Five chairs placed in a row, 5 people with different heights
+people sit down randomly - what is the possibility of they sit in decreasing height L to R
+peope are unique - we cant have repeats
+sample space is 5! (% factorial) or 5*4*3*2*1 = 120
+event space is 1 (only 1 way to sit in this specific order)
+prob = 1/120
+
+```{r}
+# create vector of choices contains 5 people of heights H1 to H5
+#H5 is the tallest and H1 is the smallest. n = 5
+person_height <- c("H1", "H2", "H3", "H4", "H5")
+
+# sit 5 at a time, r = 5
+# repeats.allowed = FALSE - only one person per chair
+chair_permutations <- as_tibble(permutations(n = 5, r = 5, v = person_height, repeats.allowed = FALSE)) 
+
+prob = 1/nrow(chair_permutations)
+prob
+```
+
+#Q5 I roll six dice: what is the probability I see the numbers 6, 5, 4, 3, 2 and 1 in order on the dice, left to right?
+dice are not unique so sample space is 6^6
+```{r}
+1/6^6
+```
+#Q5 - what is the probability I see one each of the numbers 6, 5, 4, 3, 2 and 1 on the dice regardless of order?
+
+```{r}
+# calculate sample space (6^6)
+roll_6_dice <- rolldie(6) 
+roll_6_dice
+```
+
+```{r}
+# alternatively calculate event space (6!)
+dice_permutations <- as_tibble(permutations(n = 6, r = 6, v = (c(1:6)), repeats.allowed = FALSE)) 
+dice_permutations
+```
+
+```{r}
+prob <- factorial(6)/6^6
+prob
+prob <- nrow(dice_permutations)/nrow(roll_6_dice)
+prob
+```
+
+```{r}
+# could also use isin function
+rolldie(6) %>% 
+ mutate(check = isin(., c(6,5,4,3,2,1), ordered = FALSE)) %>% 
+ filter(check) %>% 
+ summarise(prob = n()/nrow(roll_6_dice))  
+```
+
+#Q6 If I draw a single card from a 52-card deck, and it is black, what is the probability that its suit is spades?
+
+card deck has 52 cards
+number of black cards is half of that 26 so sample space s 26
+number of spades is half of that so prob is 13/26? 0.5
+
+```{r}
+cards(jokers = FALSE) %>%
+ mutate(black = suit %in% c("Spade","Club")) %>%   
+ filter(black) %>% 
+ filter(suit == "Spade")  
+```
+
