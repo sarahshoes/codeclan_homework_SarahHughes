@@ -1,0 +1,181 @@
+mm,location,param,data
+1,lerwick,Mean Daily Max Temperature,6.096666666666667
+1,lerwick,Mean Daily Min Temperature,2.21
+1,lerwick,Air Frost,5.533333333333333
+1,lerwick,Rainfall,150.73
+1,lerwick,Sunshine,26.650000000000002
+2,lerwick,Mean Daily Max Temperature,5.816666666666666
+2,lerwick,Mean Daily Min Temperature,1.81
+2,lerwick,Air Frost,6.4
+2,lerwick,Rainfall,123.61666666666667
+2,lerwick,Sunshine,55.74666666666667
+3,lerwick,Mean Daily Max Temperature,6.746666666666667
+3,lerwick,Mean Daily Min Temperature,2.4133333333333336
+3,lerwick,Air Frost,5.633333333333334
+3,lerwick,Rainfall,109.38333333333334
+3,lerwick,Sunshine,94.35666666666667
+4,lerwick,Mean Daily Max Temperature,8.37
+4,lerwick,Mean Daily Min Temperature,3.82
+4,lerwick,Air Frost,2.466666666666667
+4,lerwick,Rainfall,66.99666666666667
+4,lerwick,Sunshine,135.57666666666665
+5,lerwick,Mean Daily Max Temperature,10.566666666666666
+5,lerwick,Mean Daily Min Temperature,5.566666666666666
+5,lerwick,Air Frost,0.4333333333333333
+5,lerwick,Rainfall,56.67333333333333
+5,lerwick,Sunshine,182.48333333333332
+6,lerwick,Mean Daily Max Temperature,12.62
+6,lerwick,Mean Daily Min Temperature,8.046666666666667
+6,lerwick,Air Frost,0
+6,lerwick,Rainfall,59.35666666666667
+6,lerwick,Sunshine,139.19
+7,lerwick,Mean Daily Max Temperature,14.403333333333332
+7,lerwick,Mean Daily Min Temperature,10.08
+7,lerwick,Air Frost,0
+7,lerwick,Rainfall,67.7
+7,lerwick,Sunshine,120.29666666666667
+8,lerwick,Mean Daily Max Temperature,14.713333333333333
+8,lerwick,Mean Daily Min Temperature,10.473333333333333
+8,lerwick,Air Frost,0
+8,lerwick,Rainfall,89.55666666666667
+8,lerwick,Sunshine,125.13
+9,lerwick,Mean Daily Max Temperature,13.036666666666667
+9,lerwick,Mean Daily Min Temperature,9.106666666666667
+9,lerwick,Air Frost,0
+9,lerwick,Rainfall,105.78
+9,lerwick,Sunshine,94.86
+10,lerwick,Mean Daily Max Temperature,10.426666666666668
+10,lerwick,Mean Daily Min Temperature,6.633333333333334
+10,lerwick,Air Frost,0.2666666666666667
+10,lerwick,Rainfall,130.54666666666668
+10,lerwick,Sunshine,72.11333333333333
+11,lerwick,Mean Daily Max Temperature,8.11
+11,lerwick,Mean Daily Min Temperature,4.31
+11,lerwick,Air Frost,2.2
+11,lerwick,Rainfall,143.71
+11,lerwick,Sunshine,37.02333333333333
+12,lerwick,Mean Daily Max Temperature,6.56
+12,lerwick,Mean Daily Min Temperature,2.486666666666667
+12,lerwick,Air Frost,6.033333333333333
+12,lerwick,Rainfall,150.33
+12,lerwick,Sunshine,19.953333333333333
+1,paisley,Mean Daily Max Temperature,7.1033333333333335
+1,paisley,Mean Daily Min Temperature,2.0033333333333334
+1,paisley,Air Frost,8.533333333333333
+1,paisley,Rainfall,145.79333333333332
+1,paisley,Sunshine,39.410000000000004
+2,paisley,Mean Daily Max Temperature,7.803333333333334
+2,paisley,Mean Daily Min Temperature,2.086666666666667
+2,paisley,Air Frost,7.2
+2,paisley,Rainfall,116.26333333333334
+2,paisley,Sunshine,68.22333333333333
+3,paisley,Mean Daily Max Temperature,9.81
+3,paisley,Mean Daily Min Temperature,3.1366666666666667
+3,paisley,Air Frost,4.566666666666666
+3,paisley,Rainfall,97.85333333333334
+3,paisley,Sunshine,104.28333333333333
+4,paisley,Mean Daily Max Temperature,12.913333333333334
+4,paisley,Mean Daily Min Temperature,4.943333333333333
+4,paisley,Air Frost,1.3
+4,paisley,Rainfall,66.41
+4,paisley,Sunshine,145.91333333333333
+5,paisley,Mean Daily Max Temperature,16.053333333333335
+5,paisley,Mean Daily Min Temperature,7.346666666666667
+5,paisley,Air Frost,0.2
+5,paisley,Rainfall,68.54
+5,paisley,Sunshine,191.70666666666668
+6,paisley,Mean Daily Max Temperature,18.346666666666668
+6,paisley,Mean Daily Min Temperature,10.24
+6,paisley,Air Frost,0
+6,paisley,Rainfall,70.51333333333334
+6,paisley,Sunshine,161.58666666666667
+7,paisley,Mean Daily Max Temperature,19.75
+7,paisley,Mean Daily Min Temperature,11.993333333333334
+7,paisley,Air Frost,0
+7,paisley,Rainfall,81.66
+7,paisley,Sunshine,159.91666666666666
+8,paisley,Mean Daily Max Temperature,19.286666666666665
+8,paisley,Mean Daily Min Temperature,11.78
+8,paisley,Air Frost,0
+8,paisley,Rainfall,96.25666666666666
+8,paisley,Sunshine,149.05666666666667
+9,paisley,Mean Daily Max Temperature,16.703333333333333
+9,paisley,Mean Daily Min Temperature,9.8533333333333335
+9,paisley,Air Frost,0
+9,paisley,Rainfall,97.72666666666667
+9,paisley,Sunshine,118.95333333333333
+10,paisley,Mean Daily Max Temperature,12.986666666666666
+10,paisley,Mean Daily Min Temperature,6.833333333333333
+10,paisley,Air Frost,0.9333333333333331
+10,paisley,Rainfall,133.93666666666667
+10,paisley,Sunshine,87.44666666666666
+11,paisley,Mean Daily Max Temperature,9.56
+11,paisley,Mean Daily Min Temperature,4.1
+11,paisley,Air Frost,4.266666666666667
+11,paisley,Rainfall,131.85333333333332
+11,paisley,Sunshine,55.123333333333335
+12,paisley,Mean Daily Max Temperature,7.22
+12,paisley,Mean Daily Min Temperature,1.94
+12,paisley,Air Frost,8.766666666666667
+12,paisley,Rainfall,147.55666666666667
+12,paisley,Sunshine,34.89666666666667
+1,eastbourne,Mean Daily Max Temperature,8.483333333333334
+1,eastbourne,Mean Daily Min Temperature,3.933333333333333
+1,eastbourne,Air Frost,4.5
+1,eastbourne,Rainfall,82.86333333333333
+1,eastbourne,Sunshine,69.68
+2,eastbourne,Mean Daily Max Temperature,8.6
+2,eastbourne,Mean Daily Min Temperature,3.5966666666666667
+2,eastbourne,Air Frost,3.833333333333333
+2,eastbourne,Rainfall,58.446666666666665
+2,eastbourne,Sunshine,90.4
+3,eastbourne,Mean Daily Max Temperature,10.523333333333333
+3,eastbourne,Mean Daily Min Temperature,4.903333333333333
+3,eastbourne,Air Frost,1.1333333333333335
+3,eastbourne,Rainfall,48.04333333333334
+3,eastbourne,Sunshine,134.32
+4,eastbourne,Mean Daily Max Temperature,13.34
+4,eastbourne,Mean Daily Min Temperature,6.66
+4,eastbourne,Air Frost,0.2
+4,eastbourne,Rainfall,44.553333333333335
+4,eastbourne,Sunshine,202.53
+5,eastbourne,Mean Daily Max Temperature,16.27
+5,eastbourne,Mean Daily Min Temperature,9.6466666666666665
+5,eastbourne,Air Frost,0
+5,eastbourne,Rainfall,45.473333333333336
+5,eastbourne,Sunshine,235.61666666666667
+6,eastbourne,Mean Daily Max Temperature,18.926666666666666
+6,eastbourne,Mean Daily Min Temperature,12.49
+6,eastbourne,Air Frost,0
+6,eastbourne,Rainfall,46.876666666666665
+6,eastbourne,Sunshine,238.60666666666665
+7,eastbourne,Mean Daily Max Temperature,21.02
+7,eastbourne,Mean Daily Min Temperature,14.723333333333333
+7,eastbourne,Air Frost,0
+7,eastbourne,Rainfall,53.86
+7,eastbourne,Sunshine,252.13
+8,eastbourne,Mean Daily Max Temperature,21.3
+8,eastbourne,Mean Daily Min Temperature,14.906666666666666
+8,eastbourne,Air Frost,0
+8,eastbourne,Rainfall,60.00666666666667
+8,eastbourne,Sunshine,232.67
+9,eastbourne,Mean Daily Max Temperature,19.193333333333335
+9,eastbourne,Mean Daily Min Temperature,12.603333333333333
+9,eastbourne,Air Frost,0
+9,eastbourne,Rainfall,59.89666666666667
+9,eastbourne,Sunshine,172.41666666666666
+10,eastbourne,Mean Daily Max Temperature,15.686666666666667
+10,eastbourne,Mean Daily Min Temperature,9.94
+10,eastbourne,Air Frost,0
+10,eastbourne,Rainfall,93.12
+10,eastbourne,Sunshine,121.38666666666667
+11,eastbourne,Mean Daily Max Temperature,11.936666666666667
+11,eastbourne,Mean Daily Min Temperature,6.946666666666666
+11,eastbourne,Air Frost,0.5666666666666667
+11,eastbourne,Rainfall,98.14
+11,eastbourne,Sunshine,77.5
+12,eastbourne,Mean Daily Max Temperature,9.306666666666667
+12,eastbourne,Mean Daily Min Temperature,4.47
+12,eastbourne,Air Frost,3.7666666666666666
+12,eastbourne,Rainfall,100.32666666666667
+12,eastbourne,Sunshine,61.526666666666664

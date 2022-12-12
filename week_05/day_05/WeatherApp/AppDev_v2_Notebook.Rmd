@@ -1,0 +1,226 @@
+---
+title: "Load data and test plots"
+output: html_notebook
+---
+
+# Note that data input ignores 'provisional' tags on data
+# Data from most recent year is likely to be provisional
+
+#  the file structure is like this
+#  header line1 with location
+#  header line2 including position
+#  header line3
+#  header line4
+#  header line5
+#  yyyy  mm   tmax    tmin      af    rain     sun
+#              degC    degC    days      mm   hours
+
+# data quality flags are * for estimated data and # for different sun detector
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(colorfindr)
+library(lubridate)
+```
+
+
+## define function for stripping strings
+# keeps going until all strings have been removed
+```{r}
+strip_strings <- function(old_column, strings){
+  cleaned <- old_column
+  # order strings longest first so "string within string" is not a problem
+  order <- sort(nchar(strings), decreasing=TRUE, index.return=TRUE)
+  strings <- strings[order$ix]
+  for (badstring in strings){
+    cleaned <- str_remove(cleaned,str_c(" ",badstring)) 
+    #adding this doesnt allow for a string to be 'embedded'
+    cleaned <- str_trim(cleaned)
+  }
+    return(cleaned)  
+}
+```
+
+## define function for reading header
+```{r}
+extract_header <- function(filename){
+  #filename <-  "lerwickdata.txt"
+  header_txt <- read_lines(here::here("raw_data",filename),n_max = 7)
+  location_txt <- header_txt[1]
+  position_lat <- str_extract(header_txt[2], "Lat\\s.{6}") #identify lat string
+  position_lat <- as.numeric(str_remove(position_lat,"Lat ")) #strip lat string
+  position_lon <- str_extract(header_txt[2], "Lon\\s.{6}") #identify lon string
+  position_lon <- as.numeric(str_remove(position_lon,"Lon ")) #strip lon string
+  col_txt <- str_split(header_txt[6], pattern = "\\s{1,}", simplify = TRUE)
+  col_txt <- col_txt[2:8]
+  param_txt <- str_split(header_txt[7], pattern = "\\s{1,}", simplify = TRUE)
+  param_txt <- param_txt[2:5]
+  header <- list("location" = location_txt,
+                "param_names" = param_txt,
+                "col_names" = col_txt,
+                "latitude" = position_lat,
+                "longitude" = position_lon)
+}
+```
+
+```{r}
+header1 <- extract_header("lerwickdata.txt")
+data1 <- read.table(here::here("raw_data","lerwickdata.txt"), header = FALSE, skip = 7, comment.char = "P", fill = TRUE, flush = TRUE, col.names = header$col_names)
+data1 <- mutate(data2,location = header1$location)
+data1$rain <- strip_strings(data1$rain,c("\\*","\\#"))
+data1$rain <- as.double(data1$rain)
+data1$sun <- strip_strings(data1$sun,c("\\*","\\#"))
+data1$sun <- as.double(data1$sun)
+```
+
+```{r}
+header2 <- extract_header("paisleydata.txt")
+data2 <- read.table(here::here("raw_data","paisleydata.txt"), header = FALSE, skip = 7, comment.char = "P", fill = TRUE, flush = TRUE, col.names = header$col_names)
+data2 <- mutate(data2,location = header2$location)
+# need to get mutate cross to work on this!!  
+#mutate(across(is.character,~{strip_strings(x.,pattern)}))
+data2$tmax <- strip_strings(data2$tmax,c("\\*","\\#"))
+data2$tmax <- as.double(data2$tmax)
+data2$tmin <- strip_strings(data2$tmin,c("\\*","\\#"))
+data2$tmin <- as.double(data2$tmin)
+data2$af <- strip_strings(data2$af,c("\\*","\\#"))
+data2$af <- as.double(data2$af)
+data2$rain <- strip_strings(data2$rain,c("\\*","\\#"))
+data2$rain <- as.double(data2$rain)
+data2$sun <- strip_strings(data2$sun,c("\\*","\\#"))
+data2$sun <- as.double(data2$sun)  
+```
+```{r}
+header3 <- extract_header("eastbournedata.txt")
+data3 <- read.table(here::here("raw_data","eastbournedata.txt"), header = FALSE, skip = 7, comment.char = "P", fill = TRUE, flush = TRUE, col.names = header$col_names)
+data3 <- mutate(data3,location = header3$location)
+# need to get mutate cross to work on this!!  
+#mutate(across(is.character,~{strip_strings(x.,pattern)}))
+data3$tmax <- strip_strings(data3$tmax,c("\\*","\\#"))
+data3$tmax <- as.double(data3$tmax)
+data3$tmin <- strip_strings(data3$tmin,c("\\*","\\#"))
+data3$tmin <- as.double(data3$tmin)
+data3$af <- strip_strings(data3$af,c("\\*","\\#"))
+data3$af <- as.double(data3$af)
+data3$rain <- strip_strings(data3$rain,c("\\*","\\#"))
+data3$rain <- as.double(data3$rain)
+data3$sun <- strip_strings(data3$sun,c("\\*","\\#"))
+data3$sun <- as.double(data3$sun)  
+```
+
+## merge all files together
+```{r}
+data=left_join(data1,data2)
+data=left_join(data,data3)
+```
+
+
+
+
+
+
+```{r}
+# calculate long term averages
+data1_avg <- data1 %>% 
+  filter(yyyy %in% c(1991:2020)) %>%
+  group_by (mm) %>% 
+  summarise(across(everything(),
+                     ~{mean(.x, na.rm = TRUE)})) 
+## match using a join?
+```
+
+
+```{r}
+# calculate long term averages
+paisley_avg <- paisley_clean %>%
+  filter(yyyy %in% c(1991:2020)) %>%
+  group_by (mm) %>% 
+  summarise(across(everything(),
+                     ~{mean(.x, na.rm = TRUE)})) %>%
+  select(-yyyy) %>% 
+  mutate(location = "paisley") 
+
+paisley_clean
+```
+
+```{r}
+# calculate long term averages
+eastbourne_avg <- eastbourne_clean %>%
+  filter(yyyy %in% c(1991:2020)) %>%
+  group_by (mm) %>% 
+  summarise(across(everything(),
+                     ~{mean(.x, na.rm = TRUE)})) %>%
+  select(-yyyy) %>% 
+  mutate(location = "eastbourne") 
+```
+
+```{r}
+# merge them together
+met_data <-  full_join(lerwick_avg,paisley_avg)
+met_data <- full_join(met_data,eastbourne_avg)
+met_data = pivot_longer(met_data, c(tmax,tmin,af,rain,sun), 
+                        names_to = "param", 
+                        values_to = "data") %>% 
+  mutate(param = recode(param, "tmax" = "Mean Daily Max Temperature",
+                        "tmin" = "Mean Daily Min Temperature",
+                        "af"   = "Air Frost",
+                        "rain" = "Rainfall",
+                        "sun" = "Sunshine"))
+```
+
+```{r}
+write_csv(met_data,here::here(
+    "clean_data", "met_data.csv"))
+```
+
+
+
+```{r}
+#create example plot
+input <- list(param = "Sunshine", 
+location = c("lerwick","eastbourne"))
+
+param_list = unique(met_data$param)
+location_list = unique(met_data$location)
+units = c("degC","degC","days","mm","hours")
+
+met_select <- met_data %>% 
+filter(location %in% sel_location) %>% 
+filter(param == sel_param)
+
+ggplot(met_select) +
+(aes(x = mm, y = data, colour = location)) +
+geom_line(linewidth = 1.5) +
+geom_point(size = 3) +
+ylab(paste0(input$param," (",units[which(param_list == input$param)],")")) +
+xlab("Month") +  
+scale_x_continuous(n.breaks = 12) 
+#scale_colour_manual(values = palette$colours) +
+#theme_met
+```
+
+```{r}
+met_data%>% 
+  mutate(decyr = yyyy+((mm-0.5)/12)) %>% 
+  ggplot()+
+  aes(x = decyr, y = data)
+  geom_line()
+
+```
+
+
+
+
+# create theme colours
+
+# extract palette from screenshot of minty theme
+```{r}
+# If you rerun this colour selection will change
+#metpal <- get_colors(here::here("minty_screenshot.png"))%>%  make_palette(n = 10)
+
+#colours <- metpal[c(7,8,9)]
+#metpal2 <- as.data.frame(colours)
+#write_csv(metpal2,here::here("met_palette.csv"))
+```
+

@@ -18,6 +18,9 @@ param_list = unique(met_data$param)
 location_list = unique(met_data$location)
 units = c("degC","degC","days","mm","hours")
 
+sel_param = "tmax"
+sel_location = c("lerwick","eastbourne")
+
 ## theme for plot
 palette = read_csv(here::here("met_palette.csv"))
 
@@ -42,21 +45,21 @@ ui <- fluidPage(
     
     fluidRow(
         column(width = 6, align = "center",
-               checkboxGroupInput(inputId = "location",
+               checkboxGroupInput(inputId = "location_input",
                                   label = tags$strong("Select Locations to Plot"),
                                   choices = location_list)
         ),
         column(width = 6, align = "center",
-               selectInput(inputId = "param",
+               selectInput(inputId = "param_input",
                            label = tags$strong("Select Parameter to Plot"),
                            choices = param_list)
-        )
         ),
         fluidRow(
             column(width =10, offset =1,
                    plotOutput("met_plot")
             )
-        ),
+        )
+    ),
     tags$a("Data source: UK Metoffice historic station data. Average monthly values are calculated relative to 1991-2020 baseline", 
            href = "https://www.metoffice.gov.uk/research/climate/maps-and-data/historic-station-data")
 )
@@ -66,14 +69,14 @@ server <- function(input, output) {
     
     output$met_plot <- renderPlot({
         met_select <- met_data %>% 
-            filter(location %in% input$location) %>% 
-            filter(param == input$param)
+            filter(location %in% input$location_input) %>% 
+            filter(param == input$param_input)
         
         ggplot(met_select) +
             (aes(x = mm, y = data, colour = location)) +
             geom_line(linewidth = 1.5) +
             geom_point(size = 3) +
-            ylab(paste0(input$param," (",units[which(param_list == input$param)],")")) +
+            ylab(paste0(input$param_input," (",units[which(param_list == input$param_input)],")")) +
             xlab("Month") +  
             scale_x_continuous(n.breaks = 12) +
             scale_colour_manual(values = palette$colours) +
