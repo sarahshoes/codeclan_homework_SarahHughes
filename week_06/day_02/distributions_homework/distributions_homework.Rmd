@@ -1,0 +1,182 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(skimr)
+```
+
+# defining a 'mode' function 
+```{r}
+get_mode <- function(data){
+  tabled_data <- table(data)
+  table_names <- names(tabled_data)
+  return( table_names[tabled_data == max(tabled_data)] )
+}
+```
+
+```{r}
+mobile_data <- read_csv("data/20190928-items.csv") %>% 
+clean_names()
+```
+
+#explore dataset
+```{r}
+nrow(mobile_data)
+ncol(mobile_data)
+skim(mobile_data)
+```
+
+#Q2 find the brand with the highest number of phones in this dataset
+
+# do this by arranging count of brand by order
+```{r}
+mobile_data %>% 
+  group_by(brand) %>% 
+  summarise(count_brand = n()) %>% 
+  arrange(desc(count_brand)) %>% 
+  head(10)
+```
+#do this by looking at the distribution
+```{r}
+mobile_data %>% 
+  group_by(brand) %>% 
+  summarise(count_brand = n()) %>% 
+  ggplot(aes(x= brand, y = count_brand)) +
+  geom_col() +
+  coord_flip()
+```
+# do this using the mode function
+```{r}
+top_brand <- mobile_data %>% 
+  summarise(mode = get_mode(brand)) %>% 
+  pull()
+```
+
+# Q3 For your top brand, plot the distribution of phone ratings as a probability density, overlaying a fitted normal distribution. Do you think the normal distribution provides a good model of these ratings?
+
+```{r}
+stats_top_brand <- mobile_data %>% 
+  filter(brand == top_brand) %>% 
+  select(rating) %>% 
+  summarise(r_mean = mean(rating),
+            r_sd = sd(rating),
+            r_max = max(rating),
+            r_min = min(rating))
+```
+
+#what would a normal distribution look like?
+```{r}
+  #create a sequence covering range of the data
+  x=seq(from = stats_top_brand$r_min,
+        to = stats_top_brand$r_max,
+        by = (stats_top_brand$r_max-stats_top_brand$r_min)/20
+        )
+ #create a normal distribution over this set of values using mean and sd from dataset  
+ f1_x = dnorm(x = x, mean = stats_top_brand$r_mean, sd = stats_top_brand$r_sd) 
+```
+# put this data in a tibble to use later
+```{r}
+freq_dist <- tibble(
+    x = x,
+    f1_x = f1_x
+  ) 
+```
+
+
+#plot this
+```{r}
+ ggplot()+
+    aes(x = x, y = f1_x) +
+ geom_line(col = "red")
+ #geom_line(aes(x = x, y = f1_x),col = "red")
+```
+
+
+
+#plot a basic histogram. This is a frequency distribution
+```{r}
+mobile_data %>% 
+  filter(brand == top_brand) %>% 
+  select(rating) %>% 
+  ggplot(aes(x=rating)) +
+  geom_histogram(bins = 20)
+```
+#plot as a density plot using geom_density
+```{r}
+mobile_data %>% 
+  filter(brand == top_brand) %>% 
+  select(rating) %>% 
+  ggplot() +
+  geom_density(aes(x=rating)) +
+  #overlay this with the freq distribution we calculated earlier
+  geom_line(data = freq_dist, aes(x = x, y = f1_x),col = "red")
+```
+
+These two distributions look similar (ish). The data is more peaky than a normal distribution. Less spread than a normal distribution or variance about the mean is lower? 
+Not sure how do we quanitfy the similarness?
+
+#Q4 We can be more quantitative in comparing the distribution of top brand ratings with a normal distribution. You calculated the mean() and sd() of your distribution in an earlier question. Use these values to calculate the proportions of ratings within one-, two- and three standard deviations of the mean. Compare these proportions with those you expect for a normal distribution.
+
+```{r}
+within_1sd <- mobile_data %>% 
+  filter(brand == top_brand) %>% 
+  #first normalise ratings
+  mutate(norm_ratings = (rating-stats_top_brand$r_mean)/stats_top_brand$r_sd) %>% 
+  #then filter
+  filter(between(norm_ratings, left = -1, right = 1)) %>% 
+  summarise(count = n()/ sum(mobile_data$brand == top_brand))
+```
+
+```{r}
+within_2sd <- mobile_data %>% 
+  filter(brand == top_brand) %>% 
+  #first normalise ratings
+  mutate(norm_ratings = (rating-stats_top_brand$r_mean)/stats_top_brand$r_sd) %>% 
+  #then filter
+  filter(between(norm_ratings, left = -2, right = 2)) %>% 
+  summarise(count = n()/ sum(mobile_data$brand == top_brand))
+```
+
+```{r}
+within_3sd <- mobile_data %>% 
+  filter(brand == top_brand) %>% 
+  #first normalise ratings
+  mutate(norm_ratings = (rating-stats_top_brand$r_mean)/stats_top_brand$r_sd) %>% 
+  #then filter
+  filter(between(norm_ratings, left = -3, right = 3)) %>% 
+  summarise(count = n()/ sum(mobile_data$brand == top_brand))
+```
+
+```{r}
+within_1sd #more in here)
+pnorm(q=1)-pnorm(q=-1)
+within_2sd
+pnorm(q=2)-pnorm(q=-2)
+within_3sd #less out here
+pnorm(q=3)-pnorm(q=-3)
+```
+#Q5 Investigate the use of the qqnorm() plot in R to determine whether data is normally distributed. What is a ‘quantile-quantile plot’? What do we expect to see in a qqnorm() plot if data is nearly normally distributed?
+```{r}
+mobile_data %>% 
+  filter(brand == top_brand) %>% 
+  select(rating) %>% 
+  qqnorm(rating, )
+```
+```{r}
+  #create a sequence covering range of the data
+  x=seq(from = 0,
+        to = 10,
+        by = 0.001
+        )
+ #create a normal distribution over this set of values using mean and sd from dataset  
+ f1_x = dnorm(x = x, mean = 3, sd = 2)
+```
+
+qqnorm(f1_x)
+
+```
+

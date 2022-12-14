@@ -65,14 +65,124 @@ extract_header <- function(filename){
 ```
 
 ```{r}
-header1 <- extract_header("lerwickdata.txt")
-data1 <- read.table(here::here("raw_data","lerwickdata.txt"), header = FALSE, skip = 7, comment.char = "P", fill = TRUE, flush = TRUE, col.names = header$col_names)
-data1 <- mutate(data2,location = header1$location)
-data1$rain <- strip_strings(data1$rain,c("\\*","\\#"))
-data1$rain <- as.double(data1$rain)
-data1$sun <- strip_strings(data1$sun,c("\\*","\\#"))
-data1$sun <- as.double(data1$sun)
+input <- list(location = "lerwick",
+              param = "tmax",
+              baseline = "1991-2020")
+
+input$st_year = as.numeric(str_sub(input$baseline,1,4)) 
+input$end_year = as.numeric(str_sub(input$baseline,6,9))
 ```
+```{r}
+filename <- str_c(input$location,"data.txt")
+header <- extract_header(filename)
+data <- read.table(here::here("raw_data",filename), header = FALSE, skip = 7, comment.char = "P", fill = TRUE, flush = TRUE, col.names = header$col_names)
+data$tmax <- strip_strings(data$tmax,c("\\*","\\#"))
+data$tmax <- as.double(data$tmax)
+data$tmin <- strip_strings(data$tmin,c("\\*","\\#"))
+data$tmin <- as.double(data$tmin)
+data$af <- strip_strings(data$af,c("\\*","\\#"))
+data$af <- as.double(data$af)
+data$rain <- strip_strings(data$rain,c("\\*","\\#"))
+data$rain <- as.double(data$rain)
+data$sun <- strip_strings(data$sun,c("\\*","\\#"))
+data$sun <- as.double(data$sun)  
+data <- data %>% 
+  mutate(location = str_to_lower(header$location))
+rm(header)
+```
+# apply averaging
+```{r}
+avg_data <- data %>% 
+  filter(location == input$location) %>% 
+  filter(yyyy >= input$st_year & yyyy < input$end_year) %>% 
+  group_by (mm) %>% 
+  select(-yyyy) %>% 
+  summarise(across(where(is.numeric),
+                     ~{median(.x, na.rm = TRUE)})) 
+```
+
+```{r}
+max_data <- data %>% 
+  filter(location == input$location) %>% 
+  filter(yyyy >= input$st_year & yyyy < input$end_year) %>% 
+  group_by (mm) %>% 
+  select(-yyyy) %>% 
+  summarise(across(where(is.numeric),
+                     ~{max(.x, na.rm = TRUE)})) 
+```
+
+```{r}
+min_data <- data %>% 
+  filter(location == input$location) %>% 
+  filter(yyyy >= input$st_year & yyyy < input$end_year) %>% 
+  group_by (mm) %>% 
+  select(-yyyy) %>% 
+  summarise(across(where(is.numeric),
+                     ~{min(.x, na.rm = TRUE)})) 
+```
+
+# merge averages back into file
+```{r}
+met_data = pivot_longer(data, c(tmax,tmin,af,rain,sun), 
+                        names_to = "param", 
+                        values_to = "data") 
+```
+
+```{r}
+met_avg = pivot_longer(avg_data, c(tmax,tmin,af,rain,sun), 
+                        names_to = "param", 
+                        values_to = "mnth_avg_data") 
+```
+
+```{r}
+met_min = pivot_longer(min_data, c(tmax,tmin,af,rain,sun), 
+                        names_to = "param", 
+                        values_to = "mnth_min_data") 
+```
+
+```{r}
+met_max = pivot_longer(max_data, c(tmax,tmin,af,rain,sun), 
+                        names_to = "param", 
+                        values_to = "mnth_max_data") 
+```
+
+```{r}
+avg_merge = merge(met_avg,met_max)
+avg_merge = merge(avg_merge,met_min)
+rm(data,avg_data,max_data,min_data)
+rm (met_avg,met_max,met_min)
+```
+
+
+```{r}
+all_met = left_join(met_data,avg_merge, by = c("mm","param")) %>% 
+  mutate(anom_data = data - mnth_avg_data)
+```
+#test plot
+```{r}
+all_met %>%
+  # create decimal year data for plotting
+  mutate(dec_year = yyyy+(mm-0.5)/12) %>% 
+  # select param to plot
+  filter(param==input$param) %>% 
+  ggplot() +
+  #geom_line(aes(x=dec_year, y = data)) +
+  #geom_line(aes(x=dec_year, y = mnth_avg_data), col = "gray") +
+  geom_line(aes(x = dec_year, y = anom_data), col = "red")
+```
+
+
+
+```{r}
+met_data <- met_data  %>% 
+  mutate(param = recode(param, "tmax" = "Mean Daily Max Temperature",
+                        "tmin" = "Mean Daily Min Temperature",
+                        "af"   = "Air Frost",
+                        "rain" = "Rainfall",
+                        "sun" = "Sunshine"))
+```
+
+
 
 ```{r}
 header2 <- extract_header("paisleydata.txt")
