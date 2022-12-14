@@ -1,6 +1,8 @@
 ---
 title: "R Notebook"
 output: html_notebook
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r}
@@ -65,7 +67,8 @@ stats_top_brand <- mobile_data %>%
   summarise(r_mean = mean(rating),
             r_sd = sd(rating),
             r_max = max(rating),
-            r_min = min(rating))
+            r_min = min(rating),
+            r_count = n())
 ```
 
 #what would a normal distribution look like?
@@ -117,7 +120,7 @@ mobile_data %>%
 ```
 
 These two distributions look similar (ish). The data is more peaky than a normal distribution. Less spread than a normal distribution or variance about the mean is lower? 
-Not sure how do we quanitfy the similarness?
+Not sure how do we quantify the similarness?
 
 #Q4 We can be more quantitative in comparing the distribution of top brand ratings with a normal distribution. You calculated the mean() and sd() of your distribution in an earlier question. Use these values to calculate the proportions of ratings within one-, two- and three standard deviations of the mean. Compare these proportions with those you expect for a normal distribution.
 
@@ -160,23 +163,48 @@ within_3sd #less out here
 pnorm(q=3)-pnorm(q=-3)
 ```
 #Q5 Investigate the use of the qqnorm() plot in R to determine whether data is normally distributed. What is a ‘quantile-quantile plot’? What do we expect to see in a qqnorm() plot if data is nearly normally distributed?
+
 ```{r}
-mobile_data %>% 
-  filter(brand == top_brand) %>% 
-  select(rating) %>% 
-  qqnorm(rating, )
-```
-```{r}
-  #create a sequence covering range of the data
-  x=seq(from = 0,
-        to = 10,
-        by = 0.001
-        )
+  # this creates a uniform distribution
+  norm_points=qunif(ppoints(stats_top_brand$r_count))*stats_top_brand$r_max
+
+  # this creates a normal distribution 
+  # this is a set of values across the range of ratings - distributed around a mean of zero
+  norm_points <- rnorm(stats_top_brand$r_count)
+  
+  #, probs=seq(stats_top_brand$r_min,stats_top_brand$r_max,0.01))
+
+
  #create a normal distribution over this set of values using mean and sd from dataset  
- f1_x = dnorm(x = x, mean = 3, sd = 2)
+ ggplot() +
+ aes(x = norm_points) +
+ geom_histogram(bins=20)   
 ```
 
-qqnorm(f1_x)
+```{r}
+  qqnorm(norm_points)
+```
 
+
+```{r}
+top_brand_rating <- mobile_data %>% 
+  filter(brand == top_brand) %>% 
+  select(rating) 
+```
+
+```{r}
+ ggplot() +
+ aes(x = top_brand_rating$rating) +
+ geom_histogram(bins=20)   
+```
+
+```{r}
+  qqnorm(top_brand_rating$rating)
+```
+```{r}
+  qqnorm(top_brand_rating$rating)
+```
+```{r}
+qqplot(norm_points,top_brand_rating$rating)
 ```
 
