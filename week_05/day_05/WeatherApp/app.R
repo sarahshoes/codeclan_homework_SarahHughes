@@ -11,15 +11,18 @@ library(shiny)
 library(tidyverse)
 library(bslib)
 
-## initate data
-met_data = read_csv(here::here("clean_data/met_data.csv"))
+##read in data - creates all_data and all_header
+source(here::here("read_met_data.R"))
+
+##analyse data
+source(here::here("analyse_met_data.R"))
+met_data <- all_met
 
 param_list = unique(met_data$param)
 location_list = unique(met_data$location)
+
 units = c("degC","degC","days","mm","hours")
 
-sel_param = "tmax"
-sel_location = c("lerwick","eastbourne")
 
 ## theme for plot
 palette = read_csv(here::here("met_palette.csv"))

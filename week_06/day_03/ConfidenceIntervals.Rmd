@@ -10,7 +10,8 @@ library(tidyverse)
 library(infer)
 library(janitor)
 library(e1071) #for skewness
-library(plotrix)
+library(plotrix) #plots confidence intervals but can use ggplot
+library(tictoc) #for timing a computation
 ```
 
 #Task 1
@@ -242,42 +243,48 @@ results=rep(0,length(samples))
 analysis=tibble(samples,
                 results_prop=results,
                 results_ci_upper=results,
-                 results_ci_lower=results)
+                results_ci_lower=results,
+                analysis_time=results)
 ```
 
 # loop through sample sizes
 ```{r}
 for (isamp in 1:length(analysis$samples)){
-
-# specify that we want to look at lot_area variable, start with 200 reps
-infer_resample <- houses %>%
-  specify(response = pre_1920, success = "yes") %>%
-  generate(reps = analysis$samples[isamp], type = "bootstrap") %>%
-  calculate(stat = "prop")
-
-# calc ci 95
-infer_ci_95 <- infer_resample %>%
-  get_confidence_interval(level = 0.95, type = "percentile")
-
-analysis$results_ci_upper[isamp] <- infer_ci_95 %>%
-  select(upper_ci) %>% 
-  pull()
-analysis$results_ci_lower[isamp] <- infer_ci_95 %>%
-  select(lower_ci) %>% 
-  pull()
-
-#visualise
-infer_resample %>%
-  visualise(bins=30) +
-  shade_confidence_interval(endpoints = infer_ci_95)
-
-#capture estimate
-prop_infer <- infer_resample %>% 
-  summarise(mean = mean(stat))
-
-analysis$results_prop[isamp] <- prop_infer %>% 
-  pull()
+  
+  tic("loop")
+  # specify that we want to look at lot_area variable, 
+  # start with 200 reps
+  infer_resample <- houses %>%
+    specify(response = pre_1920, success = "yes") %>%
+    generate(reps = analysis$samples[isamp], type = "bootstrap") %>%
+    calculate(stat = "prop")
+  
+  # calc ci 95
+  infer_ci_95 <- infer_resample %>%
+    get_confidence_interval(level = 0.95, type = "percentile")
+  
+  analysis$results_ci_upper[isamp] <- infer_ci_95 %>%
+    select(upper_ci) %>% 
+    pull()
+  analysis$results_ci_lower[isamp] <- infer_ci_95 %>%
+    select(lower_ci) %>% 
+    pull()
+  
+  #visualise
+  infer_resample %>%
+    visualise(bins=30) +
+    shade_confidence_interval(endpoints = infer_ci_95)
+  
+  #capture estimate
+  prop_infer <- infer_resample %>% 
+    summarise(mean = mean(stat))
+  
+  analysis$results_prop[isamp] <- prop_infer %>% 
+    pull()
+  
+  toc() 
 }
+
 ```
 
 ```{r}
