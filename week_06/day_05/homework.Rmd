@@ -1,0 +1,490 @@
+---
+title: "Homework"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: inline
+---
+
+#Q1 Hypothesis testing practical
+
+#Recap of steps in hypothesis testing
+
+STEP 0 examine data and wrangle if necessary STEP 1 define test and significance
+level (alpha) STEP 2 Calculate sample statistic STEP 3 Generate null
+distribution STEP 4 Visualise null distribution STEP 5 Calculate P value STEP 6
+Draw conclusions
+
+#Q1.1.1
+
+```{r}
+library(tidyverse)
+library(skimr)
+library(infer)
+
+sleep_data <- (msleep)
+```
+
+```{r}
+glimpse(sleep_data)
+skim(sleep_data)
+```
+
+```{r}
+sleep_data %>% 
+ggplot() +
+  aes(x=sleep_total, y = vore) +
+  geom_boxplot()
+```
+
+```{r}
+sleep_data %>% 
+ggplot() +
+  aes(x=sleep_total, y = order) +
+  geom_boxplot()
+```
+
+#Q1.1.2 Jabberwockies
+
+Observed statistics. Average sleep for jabberwockies is 7 hours/night
+
+```{r}
+sleep_data %>% 
+ggplot() +
+  aes(x=sleep_total) +
+  geom_boxplot()
+```
+
+```{r}
+sleep_stats <- sleep_data %>% 
+  summarise(min = min(sleep_total),
+            q1 = quantile(sleep_total,0.25),
+            mean = mean(sleep_total),
+            q3 = quantile(sleep_total,0.75),
+            max = max(sleep_total))
+```
+
+sleep data shows that in the sampled animal population, sleep varies from 1.9 to
+19.9 with a mean of 10.4. If we sampled this, how often would we get a mean
+value that is 7. My guess is not very often.
+
+Null hypothesis is that the mean of the sample population is not different to 7.
+
+H0 mean_sleep_total = 7 HA mean_sleep_total != 7
+
+or
+
+H0 mean_sleep_total - 7 = 0 HA mean_sleep_total - 7 != 0
+
+Set alpha to be 0.05 for this test
+
+example infer workflow: specify() #specify the the variables of interest
+hypothesize() \# state the null hypothesis\
+generate() \# what method will use to generate null hypotheses\
+calculate() #statistic of interest
+
+```{r}
+null_distribution <- sleep_data %>% 
+  specify(response = sleep_total) %>%  #we want to test this variable
+  hypothesize(null = "point", mu = 7) %>%  #null hypothesis is that mean = 7
+  generate(reps = 10000, type = "bootstrap") %>%  # what method will use to generate null hypotheses  
+  calculate(stat = "mean") #statistic of interest
+```
+
+```{r}
+null_distribution %>%
+  visualise(bins = 20) +
+  shade_p_value(obs_stat = sleep_stats$mean, direction = "both")
+```
+
+```{r}
+p_value <- null_distribution %>% 
+ get_p_value(obs_stat = sleep_stats$mean, direction = "both") %>% 
+ pull()
+```
+
+```{r}
+p_value
+```
+
+The pvalue is very low (close to zero) this means that we can reject the null
+hypothesis. We can therefore have confidence that our alternative hypothesis is
+true. This alternative hypothesis was that the average sleep time for a
+jaberwocky, at 7 hours was significantly different to the mean of all the animal
+population.
+
+*diversion check this method using the sample with replacement code*
+
+```{r}
+results <- tibble()
+
+for (sample_num in 1:10000){
+  # sample with replacement from sleep_total
+  this_result <- sleep_data %>%
+    rep_sample_n(size = nrow(sleep_data), replace = TRUE) %>%
+    ungroup() %>%
+    select(sleep_total) %>% 
+    summarise(mean = mean(sleep_total))
+  
+  # add this_result to growing tibble of results
+  results <- results %>%
+    bind_rows(this_result)
+}
+results %>% 
+  mutate(mean = mean - (mean(mean) - 7)) %>% 
+ggplot() +
+  aes(x=mean) +
+  geom_histogram(bins=20)
+```
+
+OR
+
+```{r}
+  this_bootstrap <- sleep_data %>%
+    specify(response = sleep_total) %>%
+    generate(reps = 10000, type = "bootstrap") %>%
+    calculate(stat = "mean") %>% 
+    mutate(stat = stat - (mean(stat) - 7))
+```
+
+```{r}
+this_bootstrap %>% 
+ggplot() +
+  aes(x=stat) +
+  geom_histogram(bins=20)
+```
+
+#Q1.1.3 Omnivores v Herbivores - who is the sleepiest.
+
+Omnivores and Herbivores are two different populations in the animals dataset.
+This is a two-sample test
+
+Step 1.
+
+Our null hypothesis is that the mean sleep time for omnivores is less than or
+equal to the mean sleep time for herbivores
+
+The alternate hypothesis is that the mean sleep time for omnivores is greater
+than the mean sleep time for herbivores.
+
+H0 avg_sleep_omni - avg_sleep_herbi \<= 0 HA avg_sleep_omni - avg_sleep_herbi \>
+0
+
+Set alpha to be 0.05 for this test
+
+Now take a quick look at the data
+
+```{r}
+sleep_data %>% 
+  filter(vore %in% c("herbi","omni")) %>% 
+  ggplot() +
+  aes(y = sleep_total, x = vore) +
+  geom_boxplot()
+```
+
+The boxplot suggests that omnivores do not sleep longer than herbivores? But
+note that the central line on the boxplot is the median value not the mean.
+
+Step 2. Calculate observed stat
+
+```{r}
+vore_data <- sleep_data %>% 
+  filter(vore %in% c("herbi","omni")) 
+
+vore_stats <- sleep_data %>% 
+  filter(vore %in% c("herbi","omni")) %>% 
+  group_by(vore) %>% 
+  summarise(mean = mean(sleep_total)) 
+vore_stats_diff=diff(vore_stats$mean)
+```
+
+The mean sleep_total for omnivore is 10.93 and mean for herbivores is 9.51 The
+difference is 1.41 hours
+
+Step 3. Generate null distribution
+
+```{r}
+null_distribution <- vore_data %>% 
+  specify(response = sleep_total, explanatory = vore) %>% 
+  hypothesise(null = "independence") %>%  #H0 there is no dependance
+  generate(reps = 10000, type = "permute") %>% #permute to shuffle labels
+  calculate(stat = "diff in means", 
+            order = c("omni","herbi")) #omni - herbi 
+```
+
+Step 4. Visualise the null distribution with observed statistic
+
+```{r}
+null_distribution %>% 
+  visualise() +
+  shade_p_value(obs_stat = vore_stats_diff,
+                direction = "greater")
+```
+
+Step 5. extract p_value
+
+```{r}
+p_value <- null_distribution %>% 
+  get_p_value(obs_stat = vore_stats_diff,
+              direction = "greater") %>% 
+  pull()
+```
+
+Step 6. conclusions
+
+The p-value for this test is 0.12, this is greater than 0.05 and therefore we
+cannot reject the null hypothesis. We cannot say that omnivores sleep for longer
+(on average) than hermivores.
+
+#Q1.1.4 Proportion of domesticated animals
+
+STEP 1 define test and significance level (alpha)
+
+Our null hypothesis is that the proportion of domesticated animal types in the
+population of animals is less than or equal to 5%
+
+The alternate hypothesis is that the proportion of domesticated animal types is
+greater than 5%
+
+H0 prom_dom_animal \< = 0.05 HA prop_dom_animal \> 0.05
+
+Set alpha to be 0.05 for this test
+
+Take a quick look at the data , note that there are lots of NA values
+
+```{r}
+sleep_data %>% 
+  ggplot() +
+  aes(y = conservation) +
+  geom_bar()
+```
+
+STEP 2 Calculate sample statistic Calculate proportion of domesticated animals,
+assume NA can be categorised as 'not-domesticated'
+
+```{r}
+dom_data <- sleep_data %>%
+  #replace NA with unknown so we can analyse these rows
+  mutate(conservation = coalesce(conservation, "unknown")) %>% 
+  mutate(is_dom_animal = 
+         if_else(conservation == "domesticated",TRUE,FALSE)) %>% 
+  select(is_dom_animal)
+  
+dom_stat <- dom_data %>% 
+  filter(is_dom_animal) %>% 
+  summarise(prop_dom_animal =sum(is_dom_animal)/nrow(dom_data))
+```
+
+STEP 3 Generate null distribution
+
+```{r}
+null_distribution <- dom_data %>% 
+  specify(response = is_dom_animal, success = "TRUE") %>% 
+  hypothesise(null = "point", p = 0.05) %>% 
+  generate(reps = 10000, type = "draw") %>% 
+  calculate(stat = "prop")  
+```
+
+STEP 4 Visualise null distribution with observed stat
+
+```{r}
+null_distribution %>% 
+  visualise() +
+  shade_p_value(obs_stat = dom_stat,
+                direction = "greater")
+```
+
+STEP 5 Calculate P value
+
+```{r}
+null_distribution %>% 
+   get_p_value(obs_stat = dom_stat,
+                direction = "greater")
+```
+
+STEP 6 Draw conclusions
+
+The p value is 0.0083, this is lower than our alpha of 0.05. Therefore we can
+reject the null hypothesis that the proportion of domestic animal types is 5% or
+less.
+
+We can have confidence in the alternative hypothesis that the proportion of
+domestic animal types is greater than 5%
+
+#Q1.2 - Defining the hypothesis
+
+What kind of test would you use? Define the HO and HA? state methods used for
+null distribution
+
+#Q1.2.1
+
+Town population is 30,000, Random survey sample is 200 Have more than 40% of the
+population heard of the coffee shop?
+
+This is a one proportion test. The null hypothesis is that 40% or less of those
+that took the survey had heard of the coffee shop.
+
+H0 prop_aware_coffeeshop - 0.40 \<= 0 HA prop_aware_coffeeshop - 0.40 \> 0
+
+The null hypothesis would use the response of prop_aware_coffeshop it would be a
+"point" test using p = 0.4 and the method used would be "draw" the stat we
+calculate would be "prop"
+
+#Q1.2.2
+
+A/B testing over 5 days. 200 users in group A (banner on right) and 200 users in
+group B (banner at top) measured click through rate on banner
+
+This is a two sample test with independant data. The null hypothesis is that
+there is no difference in the CTR between group A and group B The alternative
+hypothesis is that the CTR for group B is greater than the CTR for group A.
+
+H0 ctr_group_b - ctr_group_a \<= 0 HA ctr_group_b - ctr group_a \> 0
+
+The null hypothesis would use the response of CTR for the explanatory variable
+group(either A or B) it would be an "independance" test and the method used
+would be "permute" the stat we calculate would be "diff in means" between group
+B and group A
+
+#Q1.2.3
+
+Car company looking at quality control. Sample size is 200 car parts. Target
+width of sample is 145mm. Quality hass drifted if average width of the samples
+is different from 145mm.
+
+This is a one sample test. The null hypothesis is that the mean sample width is
+145mm. The alternative hypothesis is that we have detected a problem in quality
+and the sample width has deviated significantly from 145mm.
+
+H0 mean_sample_width - 145 = 0 HA mean_sample_width -145 != 0
+
+null hypothesis would use the response of mean_sample_width it would be an
+"point" test and mu value would be 145. The method used would be "bootstrap" the
+stat we calculate would be "mean"
+
+#Q1.3 - Interpretation
+
+**p=value \> alpha, reject the null hypothesis in favour of the alternate
+hypothesis**
+
+**p=value \< alpha, must accept the null hypothesis**
+
+#Q1.3.1 The p-value of our results was 0.07, this is greater than 0.05 (although
+close) and therefore we cannot reject our null hypothesis. We must conclude that
+that 40% or less of those that took the survey had heard of the coffee shop.
+Coffee shop owner was right!
+
+#Q1.3.2 The p-value of our results is 0.006, this is less than the significance
+level of 0.01 and therefore we can reject the null hypothesis. We can assume our
+alternative hypotheses was correct, and that the CTR for group B is greater than
+the CTR for group A.
+
+#Q1.3.3 The p-value of our results is 0.55, this is higher than the significance
+level of 0.05 and so we cannot reject the null hypothesis. In this case everyone
+is happy as it means that the quality of samples remains good and that the mean
+width of the samples has not deviated from 145mm
+
+#Q2 Extension Question
+
+```{r}
+library(tidyverse)
+transactions <- read_csv("data/online_retail_subset.csv") %>% 
+janitor::clean_names()
+
+head(transactions, 20)
+```
+```{r}
+skim(transactions)
+```
+should we remove transactions where description was NA and unit price was 0. could maybe assume these are not valid purchases? Not sure if this affects results though.
+
+```{r}
+num_invoices <- transactions %>% 
+  select(invoice_no) %>% 
+  distinct(invoice_no)
+
+transactionAB <-transactions %>% 
+  select(invoice_no, stock_code, description) %>% 
+  filter(stock_code %in% c(22469,21110)) 
+```
+
+
+
+
+for item A is P(A) = num trans with A/tot num trans
+
+Item A is Heart of Wicker Small (stock code 22469)
+Item B is Large Cake Towel with Pink Spots (stock code 21110)
+
+```{r}
+#for item A is P(A) = num trans with A/tot num trans
+a_list <-transactions %>% 
+  filter(stock_code == 22469) %>% 
+  select(invoice_no, description) %>% 
+  rename(item_a = description)    
+  
+b_list <-transactions %>%
+  filter(stock_code == 21110) %>% 
+  select(invoice_no, description) %>% 
+  rename(item_b = description)   
+
+#Q2.1
+sup_a <- nrow(a_list)/nrow(num_invoices)
+sup_b <- nrow(b_list)/nrow(num_invoices)
+
+#Q2.2
+sup_ab <- length(intersect(a_list$invoice_no,b_list$invoice_no))/nrow(num_invoices)
+conf_ab <- sup_ab/sup_a
+
+#Q2.3
+lift_ab <- sup_ab/sup_a*sup_b
+#this value is < 1 so items A abd B are unlikely to be bought together
+```
+
+110 transactions out of 1406 had item A - support = 0.0782
+14 transactions out of 1496 had item B - support = 0.0100
+
+5 transactions where both A nd B were purchased - support = 0.0036
+
+
+```{r}
+library(arules)
+library(arulesViz)
+```
+
+```{r}
+transactions_reformat <- transactions %>%
+  select(invoice_no, description) %>%
+  rename(InvoiceNo = invoice_no, Description = description) %>% 
+  na.omit()
+```
+
+```{r}
+write_csv(transactions_reformat, "transactions_reformat.csv")
+
+shopping <- read.transactions("transactions_reformat.csv", format = "single", sep = ",", header = TRUE, cols = c("InvoiceNo", "Description"))
+```
+
+```{r}
+itemFrequencyPlot(shopping,topN=20, type="absolute")
+```
+```{r}
+rules <- apriori(shopping,parameter = list(supp=0.01, conf=0.8))
+```
+#show top 5 rules, but only 2 digits
+```{r}
+options(digits=2)
+inspect(rules[1:100])
+```
+
+```{r}
+rules <- sort(rules, by="confidence", decreasing = TRUE)
+```
+
+```{r}
+tkplot(g)
+plot(rules,method="graph",interactive=TRUE)
+```
+
