@@ -11,18 +11,28 @@ library(shiny)
 library(tidyverse)
 library(bslib)
 
+##set up default input
+input <- list(location = "lerwick",
+              param = "tmax",
+              baseline = "1991-2020")
+input$st_year = as.numeric(str_sub(input$baseline,1,4)) 
+input$end_year = as.numeric(str_sub(input$baseline,6,9))
+
 ##read in data - creates all_data and all_header
 source(here::here("read_met_data.R"))
 
 ##analyse data
 source(here::here("analyse_met_data.R"))
-met_data <- all_met
+met_data <- met_data  %>% 
+    mutate(param = recode(param, "tmax" = "Mean Daily Max Temperature",
+                          "tmin" = "Mean Daily Min Temperature",
+                          "af"   = "Air Frost",
+                          "rain" = "Rainfall",
+                          "sun" = "Sunshine"))
 
 param_list = unique(met_data$param)
 location_list = unique(met_data$location)
-
 units = c("degC","degC","days","mm","hours")
-
 
 ## theme for plot
 palette = read_csv(here::here("met_palette.csv"))
@@ -59,7 +69,7 @@ ui <- fluidPage(
         ),
         fluidRow(
             column(width =10, offset =1,
-                   plotOutput("met_plot")
+                   plotOutput("mnthly_met_plot")
             )
         )
     ),
@@ -70,13 +80,13 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
     
-    output$met_plot <- renderPlot({
+    output$mnthly_met_plot <- renderPlot({
         met_select <- met_data %>% 
             filter(location %in% input$location_input) %>% 
             filter(param == input$param_input)
         
         ggplot(met_select) +
-            (aes(x = mm, y = data, colour = location)) +
+            (aes(x = mm, y = mnth_avg_data, colour = location)) +
             geom_line(linewidth = 1.5) +
             geom_point(size = 3) +
             ylab(paste0(input$param_input," (",units[which(param_list == input$param_input)],")")) +

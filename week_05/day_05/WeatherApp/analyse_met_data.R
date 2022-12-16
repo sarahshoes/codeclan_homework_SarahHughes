@@ -8,7 +8,8 @@ avg_data <- all_data %>%
   group_by (location, mm) %>% 
   select(-yyyy) %>% 
   summarise(across(where(is.numeric),
-                   ~{median(.x, na.rm = TRUE)})) 
+                   ~{median(.x, na.rm = TRUE)})) %>% 
+  ungroup()
 
 
 max_data <- all_data %>% 
@@ -16,15 +17,16 @@ max_data <- all_data %>%
   group_by (location,mm) %>% 
   select(-yyyy) %>% 
   summarise(across(where(is.numeric),
-                   ~{max(.x, na.rm = TRUE)})) 
-
+                   ~{max(.x, na.rm = TRUE)})) %>%  
+  ungroup()
 
 min_data <- all_data %>% 
   filter(yyyy >= input$st_year & yyyy < input$end_year) %>% 
   group_by (location, mm) %>% 
   select(-yyyy) %>% 
   summarise(across(where(is.numeric),
-                   ~{min(.x, na.rm = TRUE)})) 
+                   ~{min(.x, na.rm = TRUE)})) %>% 
+  ungroup()
 
 
 # merge averages back into file
@@ -47,8 +49,8 @@ met_max = pivot_longer(max_data, c(tmax,tmin,af,rain,sun),
 
 avg_merge = merge(met_avg,met_max)
 avg_merge = merge(avg_merge,met_min)
-rm(data,avg_data,max_data,min_data)
+rm(avg_data,max_data,min_data)
 rm (met_avg,met_max,met_min)
 
-all_met = left_join(met_data,avg_merge, by = c("mm","param")) %>% 
-  mutate(anom_data = data - mnth_avg_data)
+met_data <- left_join(met_data,avg_merge, by = c("mm","param","location")) %>% 
+ mutate(anom_data = data - mnth_avg_data)

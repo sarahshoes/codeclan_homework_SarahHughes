@@ -121,3 +121,4 @@ for (iloc in 1:length(location_list)){
      }
 }
 rm(header,data)
+rm(filename,iloc)
