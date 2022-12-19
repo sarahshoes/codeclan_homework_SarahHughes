@@ -66,21 +66,23 @@ sleep_stats <- sleep_data %>%
             max = max(sleep_total))
 ```
 
-sleep data shows that in the sampled animal population, sleep varies from 1.9 to
-19.9 with a mean of 10.4. If we sampled this, how often would we get a mean
-value that is 7. My guess is not very often.
+sleep data shows that in the sampled animal population, sleep varies from 1.9 to 19.9 with a mean of 10.4. 
 
-Null hypothesis is that the mean of the sample population is not different to 7.
+Null hypothesis is that the mean of the sample population is not different to 7. In this dataset 10.4 seems like it could be significantly higher than 7.
 
-H0 mean_sleep_total = 7 HA mean_sleep_total != 7
+H0 mean_sleep_total = 7 
+HA mean_sleep_total != 7
 
 or
 
-H0 mean_sleep_total - 7 = 0 HA mean_sleep_total - 7 != 0
+H0 mean_sleep_total - 7 = 0 
+HA mean_sleep_total - 7 != 0
 
 Set alpha to be 0.05 for this test
 
-example infer workflow: specify() #specify the the variables of interest
+example infer workflow: 
+
+specify() #specify the the variables of interest
 hypothesize() \# state the null hypothesis\
 generate() \# what method will use to generate null hypotheses\
 calculate() #statistic of interest
@@ -158,22 +160,18 @@ ggplot() +
 
 #Q1.1.3 Omnivores v Herbivores - who is the sleepiest.
 
-Omnivores and Herbivores are two different populations in the animals dataset.
-This is a two-sample test
+Omnivores and Herbivores are two different populations in the animals dataset. This is a two-sample test
 
 Step 1.
 
-Our null hypothesis is that the mean sleep time for omnivores is less than or
-equal to the mean sleep time for herbivores
+Our null hypothesis is that the average sleep time for omnivores is less than or equal to the average sleep time for herbivores
 
-The alternate hypothesis is that the mean sleep time for omnivores is greater
-than the mean sleep time for herbivores.
+The alternate hypothesis is that the average sleep time for omnivores is greater than the average sleep time for herbivores.
 
-H0 avg_sleep_omni - avg_sleep_herbi \<= 0 HA avg_sleep_omni - avg_sleep_herbi \>
-0
+H0 avg_sleep_omni - avg_sleep_herbi \<= 0 
+HA avg_sleep_omni - avg_sleep_herbi \> 0
 
 Set alpha to be 0.05 for this test
-
 Now take a quick look at the data
 
 ```{r}
@@ -184,8 +182,7 @@ sleep_data %>%
   geom_boxplot()
 ```
 
-The boxplot suggests that omnivores do not sleep longer than herbivores? But
-note that the central line on the boxplot is the median value not the mean.
+The boxplot suggests that omnivores do not sleep longer than herbivores? Note that the central line on the boxplot is the median value not the mean. Since omnivores have a lot of outliers, maybe the median is a better test? Try with mean anyway and see what happens.
 
 Step 2. Calculate observed stat
 
@@ -197,11 +194,11 @@ vore_stats <- sleep_data %>%
   filter(vore %in% c("herbi","omni")) %>% 
   group_by(vore) %>% 
   summarise(mean = mean(sleep_total)) 
-vore_stats_diff=diff(vore_stats$mean)
+  vore_stats_diff=diff(vore_stats$mean)
 ```
 
-The mean sleep_total for omnivore is 10.93 and mean for herbivores is 9.51 The
-difference is 1.41 hours
+The mean sleep_total for omnivore is 10.92 and mean for herbivores is 9.5 
+The diff is 1.4 hours (omni mean is higher than herbi mean)
 
 Step 3. Generate null distribution
 
@@ -234,9 +231,8 @@ p_value <- null_distribution %>%
 
 Step 6. conclusions
 
-The p-value for this test is 0.12, this is greater than 0.05 and therefore we
-cannot reject the null hypothesis. We cannot say that omnivores sleep for longer
-(on average) than hermivores.
+The p-value for this test is 0.12, this is greater than 0.05 and therefore we cannot reject the null hypothesis. We cannot say that omnivores sleep for longer
+(on average) than herbivores.
 
 #Q1.1.4 Proportion of domesticated animals
 
@@ -248,7 +244,8 @@ population of animals is less than or equal to 5%
 The alternate hypothesis is that the proportion of domesticated animal types is
 greater than 5%
 
-H0 prom_dom_animal \< = 0.05 HA prop_dom_animal \> 0.05
+H0 prom_dom_animal \< = 0.05 
+HA prop_dom_animal \> 0.05
 
 Set alpha to be 0.05 for this test
 
@@ -261,8 +258,7 @@ sleep_data %>%
   geom_bar()
 ```
 
-STEP 2 Calculate sample statistic Calculate proportion of domesticated animals,
-assume NA can be categorised as 'not-domesticated'
+STEP 2 Calculate sample statistic Calculate proportion of domesticated animals, assume that a conservation status of NA can be categorised as 'not-domesticated'
 
 ```{r}
 dom_data <- sleep_data %>%
@@ -276,6 +272,7 @@ dom_stat <- dom_data %>%
   filter(is_dom_animal) %>% 
   summarise(prop_dom_animal =sum(is_dom_animal)/nrow(dom_data))
 ```
+The calculated proportion of domesticated animals is 0.12 (12%). At a guesss it looks looks we should be able to say this is greater thn 5%
 
 STEP 3 Generate null distribution
 
@@ -306,12 +303,9 @@ null_distribution %>%
 
 STEP 6 Draw conclusions
 
-The p value is 0.0083, this is lower than our alpha of 0.05. Therefore we can
-reject the null hypothesis that the proportion of domestic animal types is 5% or
-less.
+The p value is 0.0088, this is lower than our alpha of 0.05. Therefore we can reject the null hypothesis that the proportion of domestic animal types is 5% or less.
 
-We can have confidence in the alternative hypothesis that the proportion of
-domestic animal types is greater than 5%
+We can have confidence in the alternative hypothesis that the proportion of domestic animal types is greater than 5%
 
 #Q1.2 - Defining the hypothesis
 
@@ -471,12 +465,12 @@ shopping <- read.transactions("transactions_reformat.csv", format = "single", se
 itemFrequencyPlot(shopping,topN=20, type="absolute")
 ```
 ```{r}
-rules <- apriori(shopping,parameter = list(supp=0.01, conf=0.8))
+rules <- apriori(shopping,parameter = list(supp=0.02, conf=0.8))
 ```
 #show top 5 rules, but only 2 digits
 ```{r}
 options(digits=2)
-inspect(rules[1:100])
+inspect(rules[1:5])
 ```
 
 ```{r}
@@ -484,7 +478,6 @@ rules <- sort(rules, by="confidence", decreasing = TRUE)
 ```
 
 ```{r}
-tkplot(g)
 plot(rules,method="graph",interactive=TRUE)
 ```
-
+Interesting graph - not sure what to do next though? It looks like people who buy pink jam making sets also buy green and pink jam jar lids. Also people who buy green alarm clocks also buy orange ones. Is this a wholesaler, people buying sets of things not necessarily for personal use, maybe for resale? or maybe all the customers have twins ;)
